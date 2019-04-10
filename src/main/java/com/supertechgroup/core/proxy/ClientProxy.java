@@ -1,5 +1,6 @@
 package com.supertechgroup.core.proxy;
 
+import com.supertechgroup.core.BakedModelLoader;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -154,9 +155,9 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent e) {
 		super.preInit(e);
 		// ((ItemTechComponent) ModRegistry.itemTechComponent).registerModels();
-		// ModelLoaderRegistry.registerLoader(new BakedModelLoader());
+		ModelLoaderRegistry.registerLoader(new BakedModelLoader());
 		OBJLoader.INSTANCE.addDomain(Reference.MODID);
-		// ModelLoaderRegistry.registerLoader(ModelLoaderRock.INSTANCE);
+		//ModelLoaderRegistry.registerLoader(ModelLoaderRock.INSTANCE);
 	}
 
 	@Override

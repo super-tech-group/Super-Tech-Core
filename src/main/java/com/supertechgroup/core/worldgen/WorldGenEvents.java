@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
-import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -28,13 +27,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -210,7 +207,7 @@ public class WorldGenEvents {
 			int cz = chunkRandom.nextInt(10) + 3;
 			double height = chunkRandom.nextInt(6) + 12;
 			IBlockState kimberlite = RockManager.stoneSpawns.get("kimberlite").iterator().next();
-			ResourceLocation[] oresAdded = new ResourceLocation[] { new ResourceLocation("supertechtweaks:diamond") };
+			ResourceLocation[] oresAdded = new ResourceLocation[] { new ResourceLocation("supertechcore:diamond") };
 			for (double y = 0; y < height; y++) {
 				int s = (int) (4.0d * ((height - y) / height)) + 1;
 				for (int x = -s; x < s; x++) {

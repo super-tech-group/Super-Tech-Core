@@ -3,6 +3,7 @@ package com.supertechgroup.core.worldgen.rocks;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.Reference;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -20,7 +21,7 @@ public class BlockRock extends net.minecraft.block.Block {
 			int toolHardnessLevel, SoundType sound) {
 		super(Material.ROCK);
 		this.setRegistryName(name);
-		this.setUnlocalizedName("supertechtweaks." + name);
+		this.setUnlocalizedName(Reference.MODID + "." + name);
 		this.isStoneEquivalent = isStoneEquivalent;
 		this.setHardness((float) hardness); // dirt is 0.5, grass is 0.6, stone
 											// is 1.5,iron ore is 3, obsidian is

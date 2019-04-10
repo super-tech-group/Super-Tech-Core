@@ -26,7 +26,6 @@ public class MaterialItemBlock extends ItemBlock {
 				I18n.canTranslate("supertechtweaks.entry." + material.getName())
 						? I18n.translateToLocal("supertechtweaks.entry." + material.getName()) : material.getName());
 		
-		//return "TODO: getItemStackDisplayName() in MaterialItems";
 	}
 
 	@Override

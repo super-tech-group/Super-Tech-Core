@@ -99,6 +99,11 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 			return this;
 		}
 
+		public MaterialBuilder setSpecificHeat(double heat) {
+			building.specificHeat = heat;
+			return this;
+		}
+
 		/**
 		 * The harvest level of this
 		 */
@@ -202,6 +207,10 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 	 */
 	private double conductivity;
 	/**
+	 * Specific heat of the material measured in joule per kelvin
+	 */
+	private double specificHeat;
+	/**
 	 * Young's modulus measured in GPa
 	 *
 	 * This is how much pressure applied outward this material can withstand.
@@ -270,6 +279,13 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 			loc.put(blockIn.getDefaultState(), ClientProxy.blockLocation);
 			return loc;
 		});
+	}
+
+	/**
+	 * @return the specificHeat
+	 */
+	public double getSpecificHeat() {
+		return specificHeat;
 	}
 
 	public BlockMaterial getBlock() {
@@ -440,13 +456,14 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 										.setRegistryName(Reference.MODID, "pliers" + name));
 
 		// register pipe block
-		ItemStack pipeStack = new ItemStack(ModRegistry.blockPipe, 3);
-		Helpers.setItemMaterial(pipeStack, this);
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapedOreRecipe(new ResourceLocation("pipe"), pipeStack,
-						new Object[] { new String[] { "xxx", "   ", "xxx" }, 'x', new OreIngredient("plate" + name) })
-								.setRegistryName(Reference.MODID, "pipe" + name));
-
+		/*
+		 * ItemStack pipeStack = new ItemStack(ModRegistry.blockPipe, 3);
+		 * Helpers.setItemMaterial(pipeStack, this);
+		 * GameRegistry.findRegistry(IRecipe.class) .register(new ShapedOreRecipe(new
+		 * ResourceLocation("pipe"), pipeStack, new Object[] { new String[] { "xxx",
+		 * "   ", "xxx" }, 'x', new OreIngredient("plate" + name) })
+		 * .setRegistryName(Reference.MODID, "pipe" + name));
+		 */
 		// register dust to ingot
 		GameRegistry.addSmelting(new ItemStack(getMaterialItem(), 1, MaterialItem.DUST),
 				new ItemStack(getMaterialItem(), 1, MaterialItem.INGOT), 1);

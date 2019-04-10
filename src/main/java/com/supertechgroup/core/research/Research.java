@@ -6,6 +6,7 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 
 	private double InspirationChance;
 	private int researchProcceses;
+	public String researchName;
 
 	public double getInspirationChance() {
 		return InspirationChance;
@@ -27,5 +28,9 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
 		return ResearchSavedData.get(rt.getWorld()).getTeamFinishedResearch(rt, this);
+	}
+	
+	public String getResearchName() {
+		return researchName;
 	}
 }

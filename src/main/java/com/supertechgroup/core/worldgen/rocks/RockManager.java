@@ -41,7 +41,7 @@ public class RockManager {
 	 * technically different varieties of "stone".
 	 * 
 	 * @param state The blockstate to map a new texture to
-	 * @param rl    The REsourceLocation of the new texture
+	 * @param rl    The ResourceLocation of the new texture
 	 */
 	public static void addTextureOverride(IBlockState state, ResourceLocation rl) {
 		textureOverrides.put(state, rl);

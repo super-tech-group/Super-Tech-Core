@@ -25,22 +25,20 @@ import net.minecraftforge.common.util.Constants;
  */
 public class OreSavedData extends WorldSavedData {
 
-	private static final String DATA_NAME = Reference.MODID + "_OreData";
-
 	public static OreSavedData get(World world) {
 		MapStorage storage = world.getPerWorldStorage();// get the ore data per dimension, we don't want it shared here
-		OreSavedData instance = (OreSavedData) storage.getOrLoadData(OreSavedData.class, DATA_NAME);
+		OreSavedData instance = (OreSavedData) storage.getOrLoadData(OreSavedData.class, Reference.ORE_DATA_NAME);
 
 		if (instance == null) {
 			instance = new OreSavedData();
-			storage.setData(DATA_NAME, instance);
+			storage.setData(Reference.ORE_DATA_NAME, instance);
 		}
 		return instance;
 	}
 
 	public static void set(World world, OreSavedData newData) {
 		MapStorage storage = world.getPerWorldStorage();
-		storage.setData(DATA_NAME, newData);
+		storage.setData(Reference.ORE_DATA_NAME, newData);
 	}
 
 	/**
@@ -53,7 +51,7 @@ public class OreSavedData extends WorldSavedData {
 	// Required constructors
 
 	public OreSavedData() {
-		super(DATA_NAME);
+		super(Reference.ORE_DATA_NAME);
 	}
 
 	public OreSavedData(String s) {

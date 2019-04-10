@@ -7,7 +7,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.supertechgroup.core.metalurgy.Material;
+import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.util.ItemBase;
 
 import net.minecraft.advancements.CriteriaTriggers;

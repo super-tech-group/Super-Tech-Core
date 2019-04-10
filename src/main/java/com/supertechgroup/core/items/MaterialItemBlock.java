@@ -1,10 +1,11 @@
 package com.supertechgroup.core.items;
 
-import com.supertechgroup.core.metalurgy.Material;
+import com.supertechgroup.core.metallurgy.Material;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.translation.I18n;
 
 
 public class MaterialItemBlock extends ItemBlock {

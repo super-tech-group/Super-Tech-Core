@@ -1,6 +1,6 @@
 package com.supertechgroup.core.blocks;
 
-import com.supertechgroup.core.metalurgy.Material;
+import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.util.BlockBase;
 
 public class BlockMaterial extends BlockBase {

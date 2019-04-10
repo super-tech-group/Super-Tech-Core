@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.worldgen.WorldGenEvents;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
@@ -70,6 +71,9 @@ public abstract class CommonProxy {
 	}
 
 	public void registerModels(Ore ore) {
+	}
+
+	public void registerModels(Material material) {
 	}
 
 	public abstract void registerItemRenderer(Item item, int i, String name);

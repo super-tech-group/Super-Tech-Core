@@ -2,6 +2,7 @@ package com.supertechgroup.core;
 
 import org.apache.logging.log4j.Logger;
 
+import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.proxy.CommonProxy;
 
 import net.minecraftforge.fml.common.Mod;
@@ -36,4 +37,7 @@ public class SuperTechCoreMod {
 		logger.info(Reference.MODNAME + " is loading!");
 		proxy.preInit(event);
 	}
+	
+	public void registerModels(Material mat) {
+    }
 }

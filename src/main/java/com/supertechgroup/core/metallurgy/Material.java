@@ -1,4 +1,4 @@
-package com.supertechgroup.core.metalurgy;
+package com.supertechgroup.core.metallurgy;
 
 import java.util.HashMap;
 import java.util.Map;

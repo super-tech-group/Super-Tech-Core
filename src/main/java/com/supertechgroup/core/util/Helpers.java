@@ -8,7 +8,7 @@ import java.io.OutputStream;
 
 import org.apache.logging.log4j.core.util.Loader;
 
-import com.supertechgroup.core.metalurgy.Material;
+import com.supertechgroup.core.metallurgy.Material;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

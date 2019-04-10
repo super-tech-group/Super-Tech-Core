@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
-import com.supertechgroup.core.metalurgy.Material;
+import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.util.Helpers;
 
 import net.minecraft.advancements.CriteriaTriggers;

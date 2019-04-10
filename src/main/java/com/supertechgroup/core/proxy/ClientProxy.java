@@ -3,6 +3,9 @@ package com.supertechgroup.core.proxy;
 import com.supertechgroup.core.BakedModelLoader;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.blocks.BlockColor;
+import com.supertechgroup.core.metallurgy.Material;
+import com.supertechgroup.core.metallurgy.MetalColor;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.ores.OreColor;
 import com.supertechgroup.core.worldgen.ores.OreItem;
@@ -124,27 +127,20 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void postInit(FMLPostInitializationEvent e) {
 		super.postInit(e);
-		/*
-		 * Material.REGISTRY.getValuesCollection().forEach((m) -> {
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getMaterialItem());
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getItemPickaxe());
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getItemAxe());
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getItemShovel());
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getItemDrawplate());
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getItemPliers()); 
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.
-		 * INSTANCE, m.getItemHammer());
-		 * Minecraft.getMinecraft().getItemColors().registerItemColorHandler(BlockColor.
-		 * INSTANCE, m.getItemBlock());
-		 * Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
-		 * BlockColor.INSTANCE, m.getBlock()); });
-		 */
+
+		Material.REGISTRY.getValuesCollection().forEach((m) -> {
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE, m.getMaterialItem());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE, m.getItemPickaxe());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE, m.getItemAxe());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE, m.getItemShovel());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE,
+					m.getItemDrawplate());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE, m.getItemPliers());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(MetalColor.INSTANCE, m.getItemHammer());
+			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(BlockColor.INSTANCE, m.getItemBlock());
+			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(BlockColor.INSTANCE, m.getBlock());
+		});
+
 		Ore.REGISTRY.getValuesCollection().forEach((o) -> {
 			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(OreColor.INSTANCE, o.getItemOre());
 		});
@@ -157,7 +153,7 @@ public class ClientProxy extends CommonProxy {
 		// ((ItemTechComponent) ModRegistry.itemTechComponent).registerModels();
 		ModelLoaderRegistry.registerLoader(new BakedModelLoader());
 		OBJLoader.INSTANCE.addDomain(Reference.MODID);
-		//ModelLoaderRegistry.registerLoader(ModelLoaderRock.INSTANCE);
+		// ModelLoaderRegistry.registerLoader(ModelLoaderRock.INSTANCE);
 	}
 
 	@Override

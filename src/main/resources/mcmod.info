@@ -1,0 +1,16 @@
+[
+{
+  "modid": "supertechcore",
+  "name": "Super Tech Core",
+  "description": "Tweaks and additions originally for the SuperTech Pack. Adds custom ore gen and materials.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Oa10712", "Warreo"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,6 +1,8 @@
 package com.supertechgroup.core.research;
 
-public class Research implements ResearchRequirement {
+import net.minecraftforge.registries.IForgeRegistryEntry;
+
+public class Research extends IForgeRegistryEntry.Impl<Research> implements ResearchRequirement {
 
 	private double InspirationChance;
 	private int researchProcceses;
@@ -24,7 +26,6 @@ public class Research implements ResearchRequirement {
 
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
-		// TODO Auto-generated method stub
-		return false;
+		return ResearchSavedData.get(rt.getWorld()).getTeamFinishedResearch(rt, this);
 	}
 }

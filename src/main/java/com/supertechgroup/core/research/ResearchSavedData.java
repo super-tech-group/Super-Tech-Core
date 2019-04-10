@@ -9,6 +9,8 @@ import net.minecraft.world.storage.WorldSavedData;
 
 public class ResearchSavedData extends WorldSavedData {
 
+	private World world;
+
 	public static ResearchSavedData get(World world) {
 		MapStorage storage = world.getMapStorage();
 		ResearchSavedData instance = (ResearchSavedData) storage.getOrLoadData(ResearchSavedData.class,
@@ -21,8 +23,6 @@ public class ResearchSavedData extends WorldSavedData {
 		instance.world = world;
 		return instance;
 	}
-
-	private World world;
 
 	public ResearchSavedData() {
 		super(Reference.RESEARCH_DATA_NAME);
@@ -40,5 +40,10 @@ public class ResearchSavedData extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		System.out.println("Saving research");
 		return compound;
+	}
+
+	public boolean getTeamFinishedResearch(ResearchTeam rt, Research research) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

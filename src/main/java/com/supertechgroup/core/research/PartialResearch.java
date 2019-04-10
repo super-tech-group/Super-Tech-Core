@@ -12,10 +12,10 @@ public class PartialResearch implements ResearchRequirement {
 	}
 
 	@Override
-	public boolean isFulfilled() {
+	public boolean isFulfilled(ResearchTeam rt) {
 		int count = 0;
 		for (ResearchRequirement rr : requirements) {
-			if (rr.isFulfilled()) {
+			if (rr.isFulfilled(rt)) {
 				count++;
 			}
 		}

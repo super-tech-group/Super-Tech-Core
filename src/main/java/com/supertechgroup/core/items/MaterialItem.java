@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.util.ItemBase;
 
@@ -62,8 +63,8 @@ public class MaterialItem extends ItemBase {
 			return I18n.translateToLocal(getUnlocalizedNameInefficiently(stack) + '.' + material.getName());
 		}
 		return String.format(super.getItemStackDisplayName(stack),
-				I18n.canTranslate("supertechtweaks.entry." + material.getName())
-						? I18n.translateToLocal("supertechtweaks.entry." + material.getName())
+				I18n.canTranslate(Reference.MODID + ".entry." + material.getName())
+						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName())
 						: material.getName());
 						
 		//return "TODO: getItemStackDisplayName() in MaterialItem.java";
@@ -119,49 +120,49 @@ public class MaterialItem extends ItemBase {
 	public String getUnlocalizedName(ItemStack stack) {
 		int metadata = stack.getMetadata();
 		if (metadata == TINY) {
-			return "item.supertechtweaks.dustTiny";
+			return "item." + Reference.MODID + ".dustTiny";
 		}
 		if (metadata == FOIL) {
-			return "item.supertechtweaks.foil";
+			return "item." + Reference.MODID + ".foil";
 		}
 		if (metadata == DIRTY) {
-			return "item.supertechtweaks.dustDirty";
+			return "item." + Reference.MODID + ".dustDirty";
 		}
 		if (metadata == WIRE) {
-			return "item.supertechtweaks.wire";
+			return "item." + Reference.MODID + ".wire";
 		}
 		if (metadata == SHARD) {
-			return "item.supertechtweaks.shard";
+			return "item." + Reference.MODID + ".shard";
 		}
 		if (metadata == CRYSTAL) {
-			return "item.supertechtweaks.crystal";
+			return "item." + Reference.MODID + ".crystal";
 		}
 		if (metadata == CLUMP) {
-			return "item.supertechtweaks.clump";
+			return "item." + Reference.MODID + ".clump";
 		}
 		if (metadata == ROD) {
-			return "item.supertechtweaks.rod";
+			return "item." + Reference.MODID + ".rod";
 		}
 		if (metadata == PLATE) {
-			return "item.supertechtweaks.plate";
+			return "item." + Reference.MODID + ".plate";
 		}
 		if (metadata == NUGGET) {
-			return "item.supertechtweaks.nugget";
+			return "item." + Reference.MODID + ".nugget";
 		}
 		if (metadata == GEAR) {
-			return "item.supertechtweaks.gear";
+			return "item." + Reference.MODID + ".gear";
 		}
 		if (metadata == DUST) {
-			return "item.supertechtweaks.dust";
+			return "item." + Reference.MODID + ".dust";
 		}
 		if (metadata == INGOT) {
-			return "item.supertechtweaks.ingot";
+			return "item." + Reference.MODID + ".ingot";
 		}
 		if (metadata == COIN) {
-			return "item.supertechtweaks.coin";
+			return "item." + Reference.MODID + ".coin";
 		}
 		if (metadata == BLADE) {
-			return "item.supertechtweaks.blade";
+			return "item." + Reference.MODID + ".blade";
 		}
 		return "item.itemMaterialObject.ERROR_" + metadata;
 	}

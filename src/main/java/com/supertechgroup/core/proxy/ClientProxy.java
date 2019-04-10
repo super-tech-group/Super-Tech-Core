@@ -4,6 +4,7 @@ import com.supertechgroup.core.BakedModelLoader;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.blocks.BlockColor;
+import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.MetalColor;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -165,51 +166,32 @@ public class ClientProxy extends CommonProxy {
 					new ModelResourceLocation(Reference.MODID + ":" + id, "inventory"));
 		});
 	}
-	/*
-	 * @Override public void registerModels(Material mat) {
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.INGOT, ingotLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.DUST, dustLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.GEAR, gearLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.NUGGET, nuggetLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.PLATE, plateLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.ROD, rodLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.CLUMP, clumpLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.CRYSTAL, crystalLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.SHARD, shardLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.WIRE, wireLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.DIRTY, dustLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.FOIL, foilLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.TINY, tinyLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.COIN, coinLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(),
-	 * MaterialItem.BLADE, bladeLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getItemHammer(), 0,
-	 * hammerLocation);
-	 * 
-	 * ModelLoader.setCustomModelResourceLocation(mat.getItemPickaxe(), 0,
-	 * pickaxeLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getItemPliers(), 0,
-	 * pliersLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getItemDrawplate(), 0,
-	 * drawPlateLocation);
-	 * ModelLoader.setCustomModelResourceLocation(mat.getItemShovel(), 0,
-	 * shovelLocation); ModelLoader.setCustomModelResourceLocation(mat.getItemAxe(),
-	 * 0, axeLocation); }
-	 */
+
+	@Override
+	public void registerModels(Material mat) {
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.INGOT, ingotLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.DUST, dustLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.GEAR, gearLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.NUGGET, nuggetLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.PLATE, plateLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.ROD, rodLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.CLUMP, clumpLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.CRYSTAL, crystalLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.SHARD, shardLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.WIRE, wireLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.DIRTY, dustLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.FOIL, foilLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.TINY, tinyLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.COIN, coinLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getMaterialItem(), MaterialItem.BLADE, bladeLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getItemHammer(), 0, hammerLocation);
+
+		ModelLoader.setCustomModelResourceLocation(mat.getItemPickaxe(), 0, pickaxeLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getItemPliers(), 0, pliersLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getItemDrawplate(), 0, drawPlateLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getItemShovel(), 0, shovelLocation);
+		ModelLoader.setCustomModelResourceLocation(mat.getItemAxe(), 0, axeLocation);
+	}
 
 	@Override
 	public void registerModels(Ore ore) {

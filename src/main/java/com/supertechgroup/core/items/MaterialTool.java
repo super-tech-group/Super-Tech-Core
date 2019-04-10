@@ -170,8 +170,8 @@ public class MaterialTool extends ItemTool {
 			return I18n.translateToLocal(getUnlocalizedNameInefficiently(stack) + '.' + material.getName());
 		}
 		return String.format(super.getItemStackDisplayName(stack),
-				I18n.canTranslate("supertechtweaks.entry." + material.getName())
-						? I18n.translateToLocal("supertechtweaks.entry." + material.getName())
+				I18n.canTranslate(Reference.MODID + ".entry." + material.getName())
+						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName())
 						: material.getName());
 		
 		//return "TODO: getItemStackDisplayName() in MaterialTools.java";
@@ -237,17 +237,17 @@ public class MaterialTool extends ItemTool {
 	public String getUnlocalizedName(ItemStack stack) {
 		switch (toolType) {
 		case HAMMER:
-			return "item.supertechtweaks.hammer";
+			return "item." + Reference.MODID + ".hammer";
 		case PLIERS:
-			return "item.supertechtweaks.pliers";
+			return "item." + Reference.MODID + ".pliers";
 		case DRAW_PLATE:
-			return "item.supertechtweaks.drawPlate";
+			return "item." + Reference.MODID + ".drawPlate";
 		case PICKAXE:
-			return "item.supertechtweaks.pickaxe";
+			return "item." + Reference.MODID + ".pickaxe";
 		case AXE:
-			return "item.supertechtweaks.axe";
+			return "item." + Reference.MODID + ".axe";
 		case SHOVEL:
-			return "item.supertechtweaks.shovel";
+			return "item." + Reference.MODID + ".shovel";
 
 		}
 		return "item.itemMaterialTool.ERROR_" + toolType;
@@ -256,6 +256,6 @@ public class MaterialTool extends ItemTool {
 	public void registerItemModel() {
 		SuperTechCoreMod.proxy.registerItemRenderer(this, 0, "itemMaterialTool");
 		ModelLoader.setCustomModelResourceLocation(this, 0,
-				new ModelResourceLocation("supertechtweaks:itemMaterialTool", "inventory"));
+				new ModelResourceLocation(Reference.MODID + ":itemMaterialTool", "inventory"));
 	}
 }

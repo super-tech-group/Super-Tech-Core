@@ -13,9 +13,9 @@ public class Research implements ResearchRequirement {
 		return researchProcceses;
 	}
 
-	public boolean getRequirementsFulfilled() {
+	public boolean getRequirementsFulfilled(ResearchTeam rt) {
 		for (ResearchRequirement rr : requirements) {
-			if (!rr.isFulfilled()) {
+			if (!rr.isFulfilled(rt)) {
 				return false;
 			}
 		}
@@ -23,7 +23,7 @@ public class Research implements ResearchRequirement {
 	}
 
 	@Override
-	public boolean isFulfilled() {
+	public boolean isFulfilled(ResearchTeam rt) {
 		// TODO Auto-generated method stub
 		return false;
 	}

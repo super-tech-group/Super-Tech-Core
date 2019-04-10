@@ -6,7 +6,7 @@ public interface ResearchRequirement {
 
 	ArrayList<ResearchRequirement> requirements = new ArrayList<>();
 
-	boolean isFulfilled();
+	boolean isFulfilled(ResearchTeam rt);
 
 	default void addRequirement(ResearchRequirement rr) {
 		requirements.add(rr);

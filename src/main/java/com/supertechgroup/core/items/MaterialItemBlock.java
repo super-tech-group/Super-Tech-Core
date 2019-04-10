@@ -1,5 +1,6 @@
 package com.supertechgroup.core.items;
 
+import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.metallurgy.Material;
 
 import net.minecraft.block.Block;
@@ -23,14 +24,14 @@ public class MaterialItemBlock extends ItemBlock {
 			return I18n.translateToLocal(getUnlocalizedNameInefficiently(stack) + '.' + material.getName());
 		}
 		return String.format(super.getItemStackDisplayName(stack),
-				I18n.canTranslate("supertechtweaks.entry." + material.getName())
-						? I18n.translateToLocal("supertechtweaks.entry." + material.getName()) : material.getName());
+				I18n.canTranslate(Reference.MODID + ".entry." + material.getName())
+						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName()) : material.getName());
 		
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.supertechtweaks.block";
+		return "tile." + Reference.MODID + ".block";
 	}
 }

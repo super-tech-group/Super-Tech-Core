@@ -1,0 +1,84 @@
+tile.superore.name=Super Tech Ore
+tile.supertechcore.basicresearcher.name=Basic Research Station
+tile.supertechcore.multiwall.name=Multiblock Wall
+tile.supertechcore.researchselector.name=Research Selector
+tile.supertechcore.multiiteminterface.name=Multi-Item Interface
+tile.supertechcore.blockcable.name=Power Cabling
+tile.supertechcore.multipowerinput.name=Power Input
+tile.supertechcore.multipoweroutput.name=Power Output
+tile.supertechcore.multifluidinput.name=Fluid Input
+tile.supertechcore.multifluidoutput.name=Fluid Output
+tile.supertechcore.blockboiler.name=Solid Fuel Boiler
+tile.supertechcore.blocksteamengine.name=Steam Engine
+tile.supertechcore.blockcrusher.name=Mechanical Crusher
+tile.supertechcore.pressuretank.name=Pressurized Tank
+tile.supertechcore.conveyor.name=Conveyor Belt
+tile.supertechcore.extractor.name=Extractor Belt
+tile.supertechcore.inserter.name=Inserter Belt
+tile.supertechcore.blockpipe.name=Fluid Pipe
+tile.supertechcore.blockSolar.name=Solar Panel
+
+tile.supertechcore.amphibolite.name=Amphibolite
+tile.supertechcore.basalt.name=Basalt
+tile.supertechcore.chalk.name=Chalk
+tile.supertechcore.chert.name=Chert
+tile.supertechcore.dolomite.name=Dolomite
+tile.supertechcore.conglomerate.name=Conglomerate
+tile.supertechcore.gabbro.name=Gabbro
+tile.supertechcore.gneiss.name=Gneiss
+tile.supertechcore.kimberlite.name=Kimberlite
+tile.supertechcore.limestone.name=Limestone
+tile.supertechcore.marble.name=Marble
+tile.supertechcore.pegmatite.name=Pegmatite
+tile.supertechcore.phyllite.name=Phyllite
+tile.supertechcore.rhyolite.name=Rhyolite
+tile.supertechcore.schist.name=Schist
+tile.supertechcore.scoria.name=Scoria
+tile.supertechcore.shale.name=Shale
+tile.supertechcore.slate.name=Slate
+
+item.supertechcore.itemTechComponent.circuitBasic.name=Basic Circuit
+item.supertechcore.itemTechComponent.circuitAdvanced.name=Advanced Circuit
+item.supertechcore.itemTechComponent.circuitElite.name=Elite Circuit
+item.supertechcore.itemTechComponent.circuitUltimate.name=Ultimate Circuit
+item.supertechcore.itemTechComponent.casingBasic.name=Basic Casing
+item.supertechcore.itemTechComponent.heatingElement.name=Heating Element
+item.supertechcore.itemTechComponent.powerUnitSmall.name=Small Power Unit
+item.supertechcore.itemTechComponent.slag.name=Slag
+item.supertechcore.itemConstructor.name=Constructor
+
+
+#generic titles
+item.supertechcore.blade.name=%s Blade
+item.supertechcore.clump.name=%s Clump
+item.supertechcore.coin.name=%s Coin
+item.supertechcore.crystal.name=%s Crystal
+item.supertechcore.dust.name=%s Dust
+item.supertechcore.dustDirty.name=Dirty %s Dust
+item.supertechcore.dustTiny.name=Tiny %s Dust
+item.supertechcore.end.name=End %s Ore
+item.supertechcore.foil.name=%s Foil
+item.supertechcore.gear.name=%s Gear
+item.supertechcore.ingot.name=%s Ingot
+item.supertechcore.nether.name=Nether %s Ore
+item.supertechcore.nugget.name=%s Nugget
+item.supertechcore.ore.name=%s Ore
+item.supertechcore.plate.name=%s Plate
+item.supertechcore.rod.name=%s Rod
+item.supertechcore.shard.name=%s Shard
+item.supertechcore.wire.name=%s Wire
+tile.supertechcore.block.name=Block of %s
+item.supertechcore.hammer.name=%s Hammer
+item.supertechcore.pickaxe.name=%s Pickaxe
+item.supertechcore.pliers.name=%s Pliers
+item.supertechcore.shovel.name=%s Shovel
+item.supertechcore.axe.name=%s Axe
+item.supertechcore.drawPlate.name=%s Draw Plate
+item.supertechcore.crushed.name=Crushed %s Ore
+
+#specialized names, mostly multiple words
+supertechcore.entry.StainlessSteel=Stainless Steel
+supertechcore.entry.ColdIron=Cold Iron
+supertechcore.entry.BlackQuartz=Black Quartz
+supertechcore.entry.NetherQuartz=Nether Quartz
+supertechcore.entry.AluBrass=Aluminum Brass

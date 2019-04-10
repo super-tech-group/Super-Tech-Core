@@ -8,8 +8,11 @@ import java.io.OutputStream;
 
 import org.apache.logging.log4j.core.util.Loader;
 
+import com.supertechgroup.core.metalurgy.Material;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 /**
  *
@@ -47,6 +50,24 @@ public class Helpers {
 
 	public static void setNBTInt(ItemStack stack, String key, int val) {
 		getTag(stack).setInteger(key, val);
+	}
+	
+	public static Material getItemMaterial(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("sttMaterial")) {
+			return Material.REGISTRY.getValue(new ResourceLocation(stack.getTagCompound().getString("sttMaterial")));
+		}
+		return Material.REGISTRY.getValue(new ResourceLocation("supertechtweaks:silver"));
+	}
+
+	public static void setItemMaterial(ItemStack stack, Material material) {
+		NBTTagCompound tag;
+		if (stack.hasTagCompound()) {
+			tag = stack.getTagCompound();
+		} else {
+			tag = new NBTTagCompound();
+		}
+		tag.setString("sttMaterial", material.getRegistryName().toString());
+		stack.setTagCompound(tag);
 	}
 
 }

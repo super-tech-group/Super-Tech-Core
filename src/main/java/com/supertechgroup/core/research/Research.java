@@ -1,7 +1,8 @@
 package com.supertechgroup.core.research;
 
-import com.supertechgroup.core.worldgen.ores.Ore;
+import java.util.ArrayList;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -11,6 +12,7 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	private double InspirationChance;
 	private int researchProcceses;
 	public String researchName;
+	private ArrayList<ItemStack> unlockedItems = new ArrayList<>();
 
 	public double getInspirationChance() {
 		return InspirationChance;
@@ -32,9 +34,17 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	public int getResearchProcceses() {
 		return researchProcceses;
 	}
+	
+	public void addUnlockedItem(ItemStack stack) {
+		unlockedItems.add(stack);
+	}
 
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
 		return ResearchSavedData.get(rt.getWorld()).getTeamFinishedResearch(rt, this);
+	}
+
+	public ArrayList<ItemStack> getUnlockedItems() {
+		return (ArrayList<ItemStack>) unlockedItems.clone();
 	}
 }

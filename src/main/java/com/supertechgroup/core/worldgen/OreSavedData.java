@@ -111,7 +111,11 @@ public class OreSavedData extends WorldSavedData {
 		}
 		if (!hardnessData.get(x).containsKey(y)) {
 			hardnessData.get(x).put(y, new HashMap());
-		}	
+		}
+		if (hardnessData.get(x).get(y).containsKey(z)) {
+			hardnessData.get(x).get(y).get(z) = hardness;
+			return;
+		}
 		hardnessData.get(x).get(y).put(z, hardness);
 		markDirty();
 		

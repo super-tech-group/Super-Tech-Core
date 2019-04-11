@@ -93,34 +93,6 @@ public class OreSavedData extends WorldSavedData {
 		}
 	}
 
-	public Float getHardness(BlockPos pos) {
-		return getHardness(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public Float getHardness(int x, int y, int z) {
-		return hardnessData.get(x).get(y).get(z);
-	}
-
-	public void setHardness(BlockPos pos, Float hardness) {
-		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
-	}
-
-	public void setHardness(int x, int y, int z, Float hardness) {
-		if (!hardnessData.containsKey(x)) {
-			hardnessData.put(x, new HashMap());
-		}
-		if (!hardnessData.get(x).containsKey(y)) {
-			hardnessData.get(x).put(y, new HashMap());
-		}
-		if (hardnessData.get(x).get(y).containsKey(z)) {
-			hardnessData.get(x).get(y).get(z) = hardness;
-			return;
-		}
-		hardnessData.get(x).get(y).put(z, hardness);
-		markDirty();
-		
-	}
-
 	/**
 	 * Creates a tag of ore data in a chunk. Intended for use with #updateFromTag.
 	 *
@@ -185,6 +157,14 @@ public class OreSavedData extends WorldSavedData {
 			ret.setTag(pos.getX() + "", xTag);
 		}
 		return ret;
+	}
+
+	public Float getHardness(BlockPos pos) {
+		return getHardness(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public Float getHardness(int x, int y, int z) {
+		return hardnessData.get(x).get(y).get(z);
 	}
 
 	/**
@@ -326,6 +306,26 @@ public class OreSavedData extends WorldSavedData {
 		}
 		data.get(x).get(y).put(z, newData);
 		markDirty();
+	}
+
+	public void setHardness(BlockPos pos, Float hardness) {
+		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
+	}
+
+	public void setHardness(int x, int y, int z, Float hardness) {
+		if (!hardnessData.containsKey(x)) {
+			hardnessData.put(x, new HashMap());
+		}
+		if (!hardnessData.get(x).containsKey(y)) {
+			hardnessData.get(x).put(y, new HashMap());
+		}
+		if (hardnessData.get(x).get(y).containsKey(z)) {
+			hardnessData.get(x).get(y).put(z, hardness);
+			return;
+		}
+		hardnessData.get(x).get(y).put(z, hardness);
+		markDirty();
+
 	}
 
 	public void setOres(BlockPos pos, ResourceLocation[] ores) {

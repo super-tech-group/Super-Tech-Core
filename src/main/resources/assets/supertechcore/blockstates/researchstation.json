@@ -1,0 +1,12 @@
+{
+   "forge_marker": 1,
+   "variants":{
+      "normal":{
+         "model":"supertechcore:researchstation"
+      },
+      "inventory":{
+         "model":"supertechcore:researchstation",
+         "transform":"forge:default-block"
+      }
+   }
+}

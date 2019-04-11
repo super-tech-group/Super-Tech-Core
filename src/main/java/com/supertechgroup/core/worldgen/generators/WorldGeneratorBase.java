@@ -111,7 +111,7 @@ public abstract class WorldGeneratorBase {
 				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), RockManager.getTexture(state),
 						newOres, state.getBlockHardness(world, pos));
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
-				
+
 			}
 		} else if (Config.nether.containsKey(state) && state.equals(generatorStart)) {
 			ArrayList<ResourceLocation> oresAdded = new ArrayList<>();
@@ -125,7 +125,8 @@ public abstract class WorldGeneratorBase {
 				for (int i = 0; i < newOres.length; i++) {
 					newOres[i] = oresAdded.get(i);
 				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.nether.get(state), newOres, state.getBlockHardness(world, pos));
+				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.nether.get(state), newOres,
+						state.getBlockHardness(world, pos));
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 			}
 		} else if (Config.end.containsKey(state) && state.equals(generatorStart)) {
@@ -140,7 +141,8 @@ public abstract class WorldGeneratorBase {
 				for (int i = 0; i < newOres.length; i++) {
 					newOres[i] = oresAdded.get(i);
 				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.end.get(state), newOres, state.getBlockHardness(world, pos));
+				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.end.get(state), newOres,
+						state.getBlockHardness(world, pos));
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 			}
 		} else if (state.getBlock() == ModRegistry.superore) {

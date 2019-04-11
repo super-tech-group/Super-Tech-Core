@@ -22,6 +22,7 @@ import com.supertechgroup.core.worldgen.ores.OreItem;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -211,6 +212,15 @@ public abstract class CommonProxy {
 				new ItemStack(zincItem, 3, MaterialItem.NUGGET), 0.3f);
 		GameRegistry.addSmelting(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 0.5f);
+
+		// other recipies
+
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation("research"),
+						new ItemStack(ModRegistry.researchStation),
+						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK),
+								'c', new ItemStack(Blocks.CRAFTING_TABLE), 'b', new ItemStack(Items.BOOK) })
+										.setRegistryName(Reference.MODID, "basicResearchStation"));
 	}
 
 	public abstract Side getSide();

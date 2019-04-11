@@ -1,0 +1,40 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "minecraft:blocks/bookshelf",
+		"1": "minecraft:blocks/crafting_table_side",
+		"2": "minecraft:blocks/piston_top_normal",
+		"3": "minecraft:blocks/planks_oak",
+		"4": "supertechcore:blocks/book",
+		"particle": "minecraft:blocks/bookshelf"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#1"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#3"}
+			}
+		},
+		{
+			"name": "book",
+			"from": [5, 16, 4],
+			"to": [9, 17, 7],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [5, 8, 16, 12], "texture": "#4"},
+				"east": {"uv": [0, 0, 4, 8], "rotation": 90, "texture": "#4"},
+				"south": {"uv": [5, 12, 16, 16], "texture": "#4"},
+				"west": {"uv": [0, 0, 4, 8], "rotation": 270, "texture": "#4"},
+				"up": {"uv": [5, 0, 16, 8], "texture": "#4"},
+				"down": {"uv": [0, 0, 8, 11], "texture": "#4"}
+			}
+		}
+	]
+}

@@ -12,7 +12,6 @@ import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.util.BlockBase;
 import com.supertechgroup.core.worldgen.OreSavedData;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -67,9 +66,10 @@ public class OreBlock extends BlockBase {
 	@Override
 	@Deprecated
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		return	OreSavedData.get(worldIn).getHardness(pos);
-				//blockState.getBlockHardness(worldIn, pos);
-				 //Block.REGISTRY.getObject(OreSavedData.get(worldIn).getBase(pos)).getBlockHardness(blockState, worldIn,pos);
+		return 1.0f;
+		// blockState.getBlockHardness(worldIn, pos);
+		// Block.REGISTRY.getObject(OreSavedData.get(worldIn).getBase(pos)).getBlockHardness(blockState,
+		// worldIn,pos);
 	}
 
 	@SideOnly(Side.CLIENT)

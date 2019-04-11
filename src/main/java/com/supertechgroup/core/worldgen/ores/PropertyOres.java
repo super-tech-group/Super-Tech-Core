@@ -7,6 +7,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 /**
  * Property used to store a list of ores
+ *
  * @author oa10712
  */
 public class PropertyOres implements IUnlistedProperty<ResourceLocation[]> {

@@ -10,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
-import scala.actors.threadpool.Arrays;
 
 public class Config {
 
@@ -83,7 +82,7 @@ public class Config {
 	}
 
 	public static void parseTypes() {
-		stone = new HashMap<IBlockState, ResourceLocation>();
+		stone = new HashMap<>();
 		for (String type : types) {// Adds the read in stone types to the
 			// 'stone' block type. used for generation
 			String[] parts = type.split(",");
@@ -99,7 +98,7 @@ public class Config {
 				stone.put(Block.getBlockFromName(parts[0]).getDefaultState(), new ResourceLocation(parts[1]));
 			}
 		}
-		nether = new HashMap<IBlockState, ResourceLocation>();
+		nether = new HashMap<>();
 		for (String type : netherTypes) {// Adds the read in nether types to the
 			// 'nether' block type. used for generation
 			String[] parts = type.split(",");
@@ -112,7 +111,7 @@ public class Config {
 				nether.put(Block.getBlockFromName(parts[0]).getDefaultState(), new ResourceLocation(parts[1]));
 			}
 		}
-		end = new HashMap<IBlockState, ResourceLocation>();
+		end = new HashMap<>();
 		for (String type : endTypes) {// Adds the read in nether types to the
 			// 'nether' block type. used for generation
 			String[] parts = type.split(",");

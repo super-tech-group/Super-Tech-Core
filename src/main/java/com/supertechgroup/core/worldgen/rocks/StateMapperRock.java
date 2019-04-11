@@ -1,6 +1,5 @@
 package com.supertechgroup.core.worldgen.rocks;
 
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;

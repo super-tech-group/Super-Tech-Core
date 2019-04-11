@@ -12,7 +12,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- * 
+ *
  * @author oa10712
  *
  */
@@ -20,7 +20,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 	public static IForgeRegistry<Ore> REGISTRY;
 	private String name;
 	private OreItem itemOre;
-	private ArrayList<String> altNames = new ArrayList<String>();
+	private ArrayList<String> altNames = new ArrayList<>();
 
 	/**
 	 * The RGB code for the color of this ore
@@ -32,6 +32,11 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 		this.color = color;
 		itemOre = new OreItem(this);
 		altNames.add(string);
+	}
+
+	public Ore addDictSuffix(String name2) {
+		altNames.add(name2);
+		return this;
 	}
 
 	public int getColor() {
@@ -78,11 +83,6 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 			subItemStack = new ItemStack(itemOre, 1, OreItem.CRUSHED);
 			OreDictionary.registerOre("crushed" + s, subItemStack);
 		}
-	}
-
-	public Ore addDictSuffix(String name2) {
-		altNames.add(name2);
-		return this;
 	}
 
 }

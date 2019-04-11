@@ -1,32 +1,13 @@
 package com.supertechgroup.core.items;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.util.ItemBase;
 
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentDurability;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.*;
-import net.minecraft.world.World;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -66,8 +47,8 @@ public class MaterialItem extends ItemBase {
 				I18n.canTranslate(Reference.MODID + ".entry." + material.getName())
 						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName())
 						: material.getName());
-						
-		//return "TODO: getItemStackDisplayName() in MaterialItem.java";
+
+		// return "TODO: getItemStackDisplayName() in MaterialItem.java";
 	}
 
 	public Material getMaterial() {

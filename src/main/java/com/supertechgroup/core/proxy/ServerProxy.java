@@ -49,6 +49,6 @@ public class ServerProxy extends CommonProxy {
 
 	@Override
 	public void registerItemRenderer(Item item, int i, String name) {
-//Do nothing here, as the server can't render things		
+//Do nothing here, as the server can't render things
 	}
 }

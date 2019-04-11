@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * This represents an ore item. This can be unprocessed versions, or partially
  * processed before it becomes a resource item.
- * 
+ *
  * @author oa10712
  *
  */

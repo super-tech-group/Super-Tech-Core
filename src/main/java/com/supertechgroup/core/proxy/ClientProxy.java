@@ -116,10 +116,11 @@ public class ClientProxy extends CommonProxy {
 								+ entity.hoverStart) * 0.1F + 0.1F
 						: 0;
 				GlStateManager.translate(0f, -f1, 0f);
-				if (previous != null)
+				if (previous != null) {
 					previous.doRender(entity, x, y, z, entityYaw, partialTicks);
-				else
+				} else {
 					super.doRender(entity, x, y, z, entityYaw, partialTicks);
+				}
 				GlStateManager.translate(0f, f1, 0f);
 			}
 		});

@@ -94,11 +94,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 			return this;
 		}
 
-		public MaterialBuilder setSpecificHeat(double heat) {
-			building.specificHeat = heat;
-			return this;
-		}
-
 		/**
 		 * The harvest level of this
 		 */
@@ -119,6 +114,11 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 */
 		public MaterialBuilder setShearModulus(int shear) {
 			building.shear = shear;
+			return this;
+		}
+
+		public MaterialBuilder setSpecificHeat(double heat) {
+			building.specificHeat = heat;
 			return this;
 		}
 
@@ -247,14 +247,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		this.bulk = bulk;
 	}
 
-	public int getFluidTransferRate() {
-		return getYoungs() * 3;
-	}
-
-	public int getFluidCapacity() {
-		return getYoungs() * 30;
-	}
-
 	public void addBasicProcessing() {
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapelessOreRecipe(new ResourceLocation("dusts"),
@@ -268,17 +260,10 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, ClientProxy.itemLocation);
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, ClientProxy.blockLocation);
 		ModelLoader.setCustomStateMapper(block, blockIn -> {
-			final Map<IBlockState, ModelResourceLocation> loc = new HashMap<IBlockState, ModelResourceLocation>();
+			final Map<IBlockState, ModelResourceLocation> loc = new HashMap<>();
 			loc.put(blockIn.getDefaultState(), ClientProxy.blockLocation);
 			return loc;
 		});
-	}
-
-	/**
-	 * @return the specificHeat
-	 */
-	public double getSpecificHeat() {
-		return specificHeat;
 	}
 
 	public BlockMaterial getBlock() {
@@ -301,16 +286,62 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return density;
 	}
 
+	public int getFluidCapacity() {
+		return getYoungs() * 30;
+	}
+
+	public int getFluidTransferRate() {
+		return getYoungs() * 3;
+	}
+
 	public int getHarvest() {
 		return harvest;
+	}
+
+	public Item getItemAxe() {
+		return itemAxe;
 	}
 
 	public Item getItemBlock() {
 		return itemBlock;
 	}
 
+	public Item getItemDrawplate() {
+		return itemDrawplate;
+	}
+
+	public Item getItemHammer() {
+		return itemHammer;
+	}
+
+	public Item getItemPickaxe() {
+		return itemPickaxe;
+	}
+
+	public Item getItemPliers() {
+		return itemPliers;
+	}
+
+	public Item getItemShovel() {
+		return itemShovel;
+	}
+
 	public MaterialItem getMaterialItem() {
 		return itemMaterial;
+	}
+
+	public int getMaxToolDamage(int type) {
+		switch (type) {
+		case MaterialTool.PLIERS:
+			return shear * 2;
+		case MaterialTool.DRAW_PLATE:
+			return shear + bulk;
+		case MaterialTool.HAMMER:
+			return bulk * 3;
+		case MaterialTool.PICKAXE:
+			return bulk * 2;
+		}
+		return bulk;
 	}
 
 	public String getName() {
@@ -327,6 +358,13 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 
 	public int getShear() {
 		return shear;
+	}
+
+	/**
+	 * @return the specificHeat
+	 */
+	public double getSpecificHeat() {
+		return specificHeat;
 	}
 
 	public int getToolLevel() {
@@ -445,43 +483,5 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 	 */
 	private void setNativeHarvest(int nativeHarvest) {
 		this.nativeHarvest = nativeHarvest;
-	}
-
-	public int getMaxToolDamage(int type) {
-		switch (type) {
-		case MaterialTool.PLIERS:
-			return shear * 2;
-		case MaterialTool.DRAW_PLATE:
-			return shear + bulk;
-		case MaterialTool.HAMMER:
-			return bulk * 3;
-		case MaterialTool.PICKAXE:
-			return bulk * 2;
-		}
-		return bulk;
-	}
-
-	public Item getItemPickaxe() {
-		return itemPickaxe;
-	}
-
-	public Item getItemAxe() {
-		return itemAxe;
-	}
-
-	public Item getItemShovel() {
-		return itemShovel;
-	}
-
-	public Item getItemDrawplate() {
-		return itemDrawplate;
-	}
-
-	public Item getItemHammer() {
-		return itemHammer;
-	}
-
-	public Item getItemPliers() {
-		return itemPliers;
 	}
 }

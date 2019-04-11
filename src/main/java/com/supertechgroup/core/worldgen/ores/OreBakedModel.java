@@ -25,7 +25,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 
 /**
  * The 3d model for a ore block
- * 
+ *
  * @author oa10712
  *
  */

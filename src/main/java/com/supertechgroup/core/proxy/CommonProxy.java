@@ -29,11 +29,11 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class CommonProxy {
 	public static Configuration config;
-	private File configFolder;
 	public static SimpleNetworkWrapper simpleNetworkWrapper;
-	public static ArrayList<IBlockState> vanillaReplace = new ArrayList<IBlockState>();
+	public static ArrayList<IBlockState> vanillaReplace = new ArrayList<>();
+	public static ArrayList<WorldGeneratorBase> parsed = new ArrayList<>();
 
-	public static ArrayList<WorldGeneratorBase> parsed = new ArrayList<WorldGeneratorBase>();
+	private File configFolder;
 
 	public abstract Side getSide();
 
@@ -42,6 +42,21 @@ public abstract class CommonProxy {
 	}
 
 	public abstract World getWorld(IBlockAccess world);
+
+	public void init(FMLInitializationEvent event) {
+		vanillaReplace.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE));
+		vanillaReplace
+				.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE));
+		vanillaReplace
+				.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE));
+		vanillaReplace
+				.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE));
+	}
+
+	public void postInit(FMLPostInitializationEvent event) {
+		Config.parseTypes();
+
+	}
 
 	public void preInit(FMLPreInitializationEvent e) {
 
@@ -59,26 +74,11 @@ public abstract class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(re);
 	}
 
-	public void init(FMLInitializationEvent event) {
-		vanillaReplace.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.STONE));
-		vanillaReplace
-				.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE));
-		vanillaReplace
-				.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE));
-		vanillaReplace
-				.add(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE));
-	}
-
-	public void postInit(FMLPostInitializationEvent event) {
-		Config.parseTypes();
-
-	}
-
-	public void registerModels(Ore ore) {
-	}
+	public abstract void registerItemRenderer(Item item, int i, String name);
 
 	public void registerModels(Material material) {
 	}
 
-	public abstract void registerItemRenderer(Item item, int i, String name);
+	public void registerModels(Ore ore) {
+	}
 }

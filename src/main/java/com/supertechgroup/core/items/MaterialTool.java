@@ -1,6 +1,5 @@
 package com.supertechgroup.core.items;
 
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -169,8 +168,8 @@ public class MaterialTool extends ItemTool {
 				I18n.canTranslate(Reference.MODID + ".entry." + material.getName())
 						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName())
 						: material.getName());
-		
-		//return "TODO: getItemStackDisplayName() in MaterialTools.java";
+
+		// return "TODO: getItemStackDisplayName() in MaterialTools.java";
 	}
 
 	public Material getMaterial() {
@@ -178,40 +177,8 @@ public class MaterialTool extends ItemTool {
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
-		return stack.getMetadata() >= HAMMER;
-	}
-
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return stack.getMetadata() >= HAMMER;
-	}
-
-	/**
-	 * Called when a Block is destroyed using this Item. Return true to trigger the
-	 * "Use Item" statistic.
-	 */
-	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos,
-			EntityLivingBase entityLiving) {
-		if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0D && stack.getMetadata() >= HAMMER) {
-			damageTool(stack, 1, worldIn.rand, entityLiving);
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean showDurabilityBar(ItemStack stack) {
-		if (stack.getMetadata() >= HAMMER) {
-			return (Helpers.getNBTInt(stack, "toolDMG") > 0);
-		}
-		return false;
-	}
-
-	@Override
 	public java.util.Set<String> getToolClasses(ItemStack stack) {
-		HashSet<String> ret = new HashSet<String>();
+		HashSet<String> ret = new HashSet<>();
 		switch (toolType) {
 		case PICKAXE:
 			ret.add("pickaxe");
@@ -249,9 +216,41 @@ public class MaterialTool extends ItemTool {
 		return "item.itemMaterialTool.ERROR_" + toolType;
 	}
 
+	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+		return stack.getMetadata() >= HAMMER;
+	}
+
+	@Override
+	public boolean isEnchantable(ItemStack stack) {
+		return stack.getMetadata() >= HAMMER;
+	}
+
+	/**
+	 * Called when a Block is destroyed using this Item. Return true to trigger the
+	 * "Use Item" statistic.
+	 */
+	@Override
+	public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos,
+			EntityLivingBase entityLiving) {
+		if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0D && stack.getMetadata() >= HAMMER) {
+			damageTool(stack, 1, worldIn.rand, entityLiving);
+		}
+
+		return true;
+	}
+
 	public void registerItemModel() {
 		SuperTechCoreMod.proxy.registerItemRenderer(this, 0, "itemMaterialTool");
 		ModelLoader.setCustomModelResourceLocation(this, 0,
 				new ModelResourceLocation(Reference.MODID + ":itemMaterialTool", "inventory"));
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		if (stack.getMetadata() >= HAMMER) {
+			return (Helpers.getNBTInt(stack, "toolDMG") > 0);
+		}
+		return false;
 	}
 }

@@ -37,6 +37,13 @@ public class Helpers {
 		copyFileUsingStream(source, new File(dest));
 	}
 
+	public static Material getItemMaterial(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("sttMaterial")) {
+			return Material.REGISTRY.getValue(new ResourceLocation(stack.getTagCompound().getString("sttMaterial")));
+		}
+		return Material.REGISTRY.getValue(new ResourceLocation("supertechtweaks:silver"));
+	}
+
 	public static int getNBTInt(ItemStack stack, String key) {
 		return stack.hasTagCompound() ? getTag(stack).getInteger(key) : 0;
 	}
@@ -48,17 +55,6 @@ public class Helpers {
 		return stack.getTagCompound();
 	}
 
-	public static void setNBTInt(ItemStack stack, String key, int val) {
-		getTag(stack).setInteger(key, val);
-	}
-	
-	public static Material getItemMaterial(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("sttMaterial")) {
-			return Material.REGISTRY.getValue(new ResourceLocation(stack.getTagCompound().getString("sttMaterial")));
-		}
-		return Material.REGISTRY.getValue(new ResourceLocation("supertechtweaks:silver"));
-	}
-
 	public static void setItemMaterial(ItemStack stack, Material material) {
 		NBTTagCompound tag;
 		if (stack.hasTagCompound()) {
@@ -68,6 +64,10 @@ public class Helpers {
 		}
 		tag.setString("sttMaterial", material.getRegistryName().toString());
 		stack.setTagCompound(tag);
+	}
+
+	public static void setNBTInt(ItemStack stack, String key, int val) {
+		getTag(stack).setInteger(key, val);
 	}
 
 }

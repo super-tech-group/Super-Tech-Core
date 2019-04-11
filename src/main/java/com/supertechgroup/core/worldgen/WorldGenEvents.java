@@ -10,11 +10,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
-import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.integration.jei.JEIMainPlugin;
-import com.supertechgroup.core.items.MaterialItem;
-import com.supertechgroup.core.items.MaterialTool;
-import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -25,7 +20,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -39,24 +33,19 @@ import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 /**
  * This class handles most events relating to ores and terrain generation
- * 
+ *
  * @author oa10712
  *
  */
 public class WorldGenEvents {
 
-	private static final ArrayList<EventType> vanillaOreGeneration = new ArrayList<EventType>();
-
-	double genScale = 0.004;
-
+	private static final ArrayList<EventType> vanillaOreGeneration = new ArrayList<>();
 
 	static {
 		vanillaOreGeneration.add(OreGenEvent.GenerateMinable.EventType.COAL);
@@ -72,6 +61,8 @@ public class WorldGenEvents {
 		vanillaOreGeneration.add(OreGenEvent.GenerateMinable.EventType.DIORITE);
 		vanillaOreGeneration.add(OreGenEvent.GenerateMinable.EventType.GRANITE);
 	}
+
+	double genScale = 0.004;
 
 	HashMap<UUID, ArrayList<MutablePair<Integer, Integer>>> sentChunks = new HashMap<>();
 
@@ -90,74 +81,6 @@ public class WorldGenEvents {
 				sentChunks.get(e.getUniqueID()).add(new MutablePair<>(newChunkX, newChunkZ));
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerLogin(EntityJoinWorldEvent e) {
-		if (e.getEntity() instanceof EntityPlayerMP) {
-			EntityPlayerMP player = (EntityPlayerMP) e.getEntity();
-			sentChunks.put(player.getUniqueID(), new ArrayList<MutablePair<Integer, Integer>>());
-		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent e) {
-		if (e.player instanceof EntityPlayerMP) {
-			sentChunks.remove(e.player.getUniqueID());// remove the player from
-														// the chunk tracker
-		}
-	}
-
-	/**
-	 * cleanup to keep the server ram usage down
-	 *
-	 * @param e
-	 */
-	@SubscribeEvent
-	public void onPlayerUnWatchChunk(ChunkWatchEvent.UnWatch e) {
-		int x = e.getChunkInstance().x;
-		int z = e.getChunkInstance().z;
-		if (sentChunks.containsKey(e.getPlayer().getUniqueID())) {
-			sentChunks.get(e.getPlayer().getUniqueID()).remove(new MutablePair<>(x, z));
-		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerWatchChunk(ChunkWatchEvent.Watch e) {
-		int x = e.getChunkInstance().x;
-		int z = e.getChunkInstance().z;
-
-		OreSavedData get = OreSavedData.get(e.getPlayer().world);
-		Chunk chunk = e.getPlayer().world.getChunkFromChunkCoords(x, z);
-		NBTTagCompound forChunk = get.getForChunk(x, z);
-
-		World world = e.getPlayer().world;
-		if (forChunk.hasNoTags() || !get.isChunkGenerated(x, z)) {
-			for (int x1 = chunk.x * 16; x1 < chunk.x * 16 + 16; x1++) {
-				for (int y1 = 0; y1 < 256; y1++) {
-					for (int z1 = chunk.z * 16; z1 < chunk.z * 16 + 16; z1++) {
-
-						BlockPos targetBlockPos = new BlockPos(x1, y1, z1);
-						IBlockState targetBlockState = world.getBlockState(targetBlockPos);
-						Block targetBlock = targetBlockState.getBlock();
-
-						if (targetBlock.equals(ModRegistry.superore)
-								&& get.getBase(targetBlockPos) == new ResourceLocation("minecraft:stone")) {
-							world.setBlockState(targetBlockPos, Blocks.STONE.getDefaultState());
-						}
-
-					}
-				}
-			}
-			Random random = chunk.getRandomWithSeed(world.getSeed());
-			CommonProxy.parsed.forEach((gen) -> {
-				gen.generate(random, chunk.x, chunk.z, world, null, world.getChunkProvider());
-			});
-
-			get.setChunkGenerated(x, z);
-		}
-
-		handleOreUpdate(e.getPlayer(), x, z);
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
@@ -236,6 +159,74 @@ public class WorldGenEvents {
 			}
 		}
 		chunk.setModified(true);// this is important as it marks it to be saved
+	}
+
+	@SubscribeEvent
+	public void onPlayerLogin(EntityJoinWorldEvent e) {
+		if (e.getEntity() instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) e.getEntity();
+			sentChunks.put(player.getUniqueID(), new ArrayList<MutablePair<Integer, Integer>>());
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent e) {
+		if (e.player instanceof EntityPlayerMP) {
+			sentChunks.remove(e.player.getUniqueID());// remove the player from
+														// the chunk tracker
+		}
+	}
+
+	/**
+	 * cleanup to keep the server ram usage down
+	 *
+	 * @param e
+	 */
+	@SubscribeEvent
+	public void onPlayerUnWatchChunk(ChunkWatchEvent.UnWatch e) {
+		int x = e.getChunkInstance().x;
+		int z = e.getChunkInstance().z;
+		if (sentChunks.containsKey(e.getPlayer().getUniqueID())) {
+			sentChunks.get(e.getPlayer().getUniqueID()).remove(new MutablePair<>(x, z));
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerWatchChunk(ChunkWatchEvent.Watch e) {
+		int x = e.getChunkInstance().x;
+		int z = e.getChunkInstance().z;
+
+		OreSavedData get = OreSavedData.get(e.getPlayer().world);
+		Chunk chunk = e.getPlayer().world.getChunkFromChunkCoords(x, z);
+		NBTTagCompound forChunk = get.getForChunk(x, z);
+
+		World world = e.getPlayer().world;
+		if (forChunk.hasNoTags() || !get.isChunkGenerated(x, z)) {
+			for (int x1 = chunk.x * 16; x1 < chunk.x * 16 + 16; x1++) {
+				for (int y1 = 0; y1 < 256; y1++) {
+					for (int z1 = chunk.z * 16; z1 < chunk.z * 16 + 16; z1++) {
+
+						BlockPos targetBlockPos = new BlockPos(x1, y1, z1);
+						IBlockState targetBlockState = world.getBlockState(targetBlockPos);
+						Block targetBlock = targetBlockState.getBlock();
+
+						if (targetBlock.equals(ModRegistry.superore)
+								&& get.getBase(targetBlockPos) == new ResourceLocation("minecraft:stone")) {
+							world.setBlockState(targetBlockPos, Blocks.STONE.getDefaultState());
+						}
+
+					}
+				}
+			}
+			Random random = chunk.getRandomWithSeed(world.getSeed());
+			CommonProxy.parsed.forEach((gen) -> {
+				gen.generate(random, chunk.x, chunk.z, world, null, world.getChunkProvider());
+			});
+
+			get.setChunkGenerated(x, z);
+		}
+
+		handleOreUpdate(e.getPlayer(), x, z);
 	}
 
 	private IBlockState pickBlockFromSet(double value, Set<IBlockState> list) {

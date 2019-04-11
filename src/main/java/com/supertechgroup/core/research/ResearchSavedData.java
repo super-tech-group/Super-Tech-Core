@@ -10,12 +10,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.util.Constants;
 
 public class ResearchSavedData extends WorldSavedData {
-
-	private World world;
-	private ResearchTeam[] teams;
 
 	public static ResearchSavedData get(World world) {
 		MapStorage storage = world.getMapStorage();
@@ -30,6 +26,10 @@ public class ResearchSavedData extends WorldSavedData {
 		return instance;
 	}
 
+	private World world;
+
+	private ResearchTeam[] teams;
+
 	public ResearchSavedData() {
 		super(Reference.RESEARCH_DATA_NAME);
 	}
@@ -38,16 +38,24 @@ public class ResearchSavedData extends WorldSavedData {
 		super(s);
 	}
 
+	public boolean getTeamFinishedResearch(ResearchTeam rt, Research research) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		NBTTagList tagList = nbt.getTagList("TeamData", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound tag = tagList.getCompoundTagAt(i);
-			String s = tag.getString("MyString" + i);
-			stringList.add(i, s);
+
+	}
+
+	public boolean setTeamName(ResearchTeam team, String newName) {
+		for (ResearchTeam t : teams) {
+			if (t.getTeamName() == newName) {
+				return false; // Name in use already
+			}
 		}
-				
-		
+		team.setTeamName(newName);
+		return true;
 	}
 
 	@Override
@@ -55,7 +63,7 @@ public class ResearchSavedData extends WorldSavedData {
 		NBTTagCompound teamList = new NBTTagCompound();
 		for (ResearchTeam team : teams) {
 			NBTTagList tagList = new NBTTagList();
-			List<String> compResearch = new ArrayList<String>();
+			List<String> compResearch = new ArrayList<>();
 			for (Research r : team.getCompletedResearch()) {
 				compResearch.add(r.getResearchName());
 			}
@@ -81,20 +89,5 @@ public class ResearchSavedData extends WorldSavedData {
 
 		System.out.println("Saving research");
 		return compound;
-	}
-
-	public boolean getTeamFinishedResearch(ResearchTeam rt, Research research) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean setTeamName(ResearchTeam team, String newName) {
-		for (ResearchTeam t : teams) {
-			if (t.getTeamName() == newName) {
-				return false; // Name in use already
-			}
-		}
-		team.setTeamName(newName);
-		return true;
 	}
 }

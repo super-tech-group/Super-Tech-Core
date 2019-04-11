@@ -12,10 +12,6 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 		return InspirationChance;
 	}
 
-	public int getResearchProcceses() {
-		return researchProcceses;
-	}
-
 	public boolean getRequirementsFulfilled(ResearchTeam rt) {
 		for (ResearchRequirement rr : requirements) {
 			if (!rr.isFulfilled(rt)) {
@@ -25,12 +21,16 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 		return true;
 	}
 
+	public String getResearchName() {
+		return researchName;
+	}
+
+	public int getResearchProcceses() {
+		return researchProcceses;
+	}
+
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
 		return ResearchSavedData.get(rt.getWorld()).getTeamFinishedResearch(rt, this);
-	}
-	
-	public String getResearchName() {
-		return researchName;
 	}
 }

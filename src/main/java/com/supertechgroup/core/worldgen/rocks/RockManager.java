@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * This is essentially a Registry for the different kinds of rocks we use in ore
  * gen.
- * 
+ *
  * @author oa10712
  *
  */
@@ -17,9 +17,9 @@ public class RockManager {
 
 	public static final LinkedHashSet<IBlockState> allStones = new LinkedHashSet<>();
 
-	public static final HashMap<String, LinkedHashSet<IBlockState>> stoneSpawns = new HashMap<String, LinkedHashSet<IBlockState>>();
+	public static final HashMap<String, LinkedHashSet<IBlockState>> stoneSpawns = new HashMap<>();
 
-	public static final HashMap<IBlockState, ResourceLocation> textureOverrides = new HashMap<IBlockState, ResourceLocation>();
+	public static final HashMap<IBlockState, ResourceLocation> textureOverrides = new HashMap<>();
 
 	public static void addRockTypes(IBlockState state, String... types) {
 		allStones.add(state);
@@ -27,7 +27,7 @@ public class RockManager {
 			if (stoneSpawns.containsKey(s)) {
 				stoneSpawns.get(s).add(state);
 			} else {
-				LinkedHashSet<IBlockState> newType = new LinkedHashSet<IBlockState>();
+				LinkedHashSet<IBlockState> newType = new LinkedHashSet<>();
 				newType.add(state);
 				stoneSpawns.put(s, newType);
 			}
@@ -39,7 +39,7 @@ public class RockManager {
 	 * "MODID:blocks/Block_Name", but some mods have alternate resource structuring.
 	 * As an example, the vanilla rock types need this because they are all
 	 * technically different varieties of "stone".
-	 * 
+	 *
 	 * @param state The blockstate to map a new texture to
 	 * @param rl    The ResourceLocation of the new texture
 	 */
@@ -48,7 +48,7 @@ public class RockManager {
 	}
 
 	public static LinkedHashSet<IBlockState> getStones(String s) {
-		LinkedHashSet<IBlockState> ret = new LinkedHashSet<IBlockState>();
+		LinkedHashSet<IBlockState> ret = new LinkedHashSet<>();
 		if (stoneSpawns.containsKey(s)) {
 			ret.addAll(stoneSpawns.get(s));
 		}

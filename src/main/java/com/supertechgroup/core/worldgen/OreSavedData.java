@@ -158,7 +158,7 @@ public class OreSavedData extends WorldSavedData {
 
 	/**
 	 * returns an array of all Ores within a single block at position 'pos'
-	 * 
+	 *
 	 * @param pos
 	 * @return
 	 */
@@ -168,7 +168,7 @@ public class OreSavedData extends WorldSavedData {
 
 	/**
 	 * returns an array of all Ores within a single block at position 'x,y,z'
-	 * 
+	 *
 	 * @param pos
 	 * @return
 	 */
@@ -187,7 +187,7 @@ public class OreSavedData extends WorldSavedData {
 
 	/**
 	 * Check if we have attempted ore generation in a specified chunk
-	 * 
+	 *
 	 * @param chunkX
 	 * @param chunkZ
 	 * @return

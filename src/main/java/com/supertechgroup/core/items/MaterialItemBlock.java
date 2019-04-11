@@ -8,7 +8,6 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 
-
 public class MaterialItemBlock extends ItemBlock {
 	Material material;
 
@@ -25,8 +24,9 @@ public class MaterialItemBlock extends ItemBlock {
 		}
 		return String.format(super.getItemStackDisplayName(stack),
 				I18n.canTranslate(Reference.MODID + ".entry." + material.getName())
-						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName()) : material.getName());
-		
+						? I18n.translateToLocal(Reference.MODID + ".entry." + material.getName())
+						: material.getName());
+
 	}
 
 	@Override

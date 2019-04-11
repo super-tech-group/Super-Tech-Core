@@ -5,6 +5,7 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 /**
  * Property used to store a string
+ *
  * @author oa10712
  */
 public class PropertyBase implements IUnlistedProperty<ResourceLocation> {

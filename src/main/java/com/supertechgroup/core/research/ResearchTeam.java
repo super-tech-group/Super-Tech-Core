@@ -1,6 +1,5 @@
 package com.supertechgroup.core.research;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -11,27 +10,14 @@ public class ResearchTeam {
 	private ArrayList<UUID> members;
 	private ArrayList<Research> completedResearch;
 	private String TeamName;
-	
-	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+
+	public void addCompletedResearch(Research r) {
+		completedResearch.add(r);
 	}
-	
-	public ArrayList<UUID> getMembers(){
-		return members;
-	}
-	
+
 	public boolean addMember(UUID newMember) {
-		if(!members.contains(newMember)){
+		if (!members.contains(newMember)) {
 			members.add(newMember);
-			return true;
-		}
-		return false;
-	}
-	
-	public boolean removeMember(UUID toRemove) {
-		if(members.contains(toRemove)) {
-			members.remove(toRemove);
 			return true;
 		}
 		return false;
@@ -40,17 +26,30 @@ public class ResearchTeam {
 	public ArrayList<Research> getCompletedResearch() {
 		return completedResearch;
 	}
-	
-	public void addCompletedResearch(Research r) {
-		completedResearch.add(r);
+
+	public ArrayList<UUID> getMembers() {
+		return members;
 	}
-	
+
 	public String getTeamName() {
 		return TeamName;
 	}
-	
+
+	public World getWorld() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean removeMember(UUID toRemove) {
+		if (members.contains(toRemove)) {
+			members.remove(toRemove);
+			return true;
+		}
+		return false;
+	}
+
 	public void setTeamName(String newName) {
 		TeamName = newName;
 	}
-	
+
 }

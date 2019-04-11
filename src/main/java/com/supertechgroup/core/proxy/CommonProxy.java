@@ -16,7 +16,6 @@ import com.supertechgroup.core.worldgen.WorldGenEvents;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.ores.Ore;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -47,7 +46,7 @@ public abstract class CommonProxy {
 
 	public World getWorld() {
 		return getWorld(null);
-	} 
+	}
 
 	public abstract World getWorld(IBlockAccess world);
 

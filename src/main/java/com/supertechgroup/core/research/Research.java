@@ -14,6 +14,10 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	public String researchName;
 	private ArrayList<ItemStack> unlockedItems = new ArrayList<>();
 
+	public void addUnlockedItem(ItemStack stack) {
+		unlockedItems.add(stack);
+	}
+
 	public double getInspirationChance() {
 		return InspirationChance;
 	}
@@ -34,17 +38,13 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	public int getResearchProcceses() {
 		return researchProcceses;
 	}
-	
-	public void addUnlockedItem(ItemStack stack) {
-		unlockedItems.add(stack);
+
+	public ArrayList<ItemStack> getUnlockedItems() {
+		return (ArrayList<ItemStack>) unlockedItems.clone();
 	}
 
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
 		return ResearchSavedData.get(rt.getWorld()).getTeamFinishedResearch(rt, this);
-	}
-
-	public ArrayList<ItemStack> getUnlockedItems() {
-		return (ArrayList<ItemStack>) unlockedItems.clone();
 	}
 }

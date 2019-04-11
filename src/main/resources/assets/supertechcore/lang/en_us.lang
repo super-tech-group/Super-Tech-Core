@@ -37,6 +37,25 @@ tile.supertechcore.scoria.name=Scoria
 tile.supertechcore.shale.name=Shale
 tile.supertechcore.slate.name=Slate
 
+tile.supertechcore.amphibolitecobble.name=Amphibolite Cobblestone
+tile.supertechcore.basaltcobble.name=Basalt Cobblestone
+tile.supertechcore.chalkcobble.name=Chalk Cobblestone
+tile.supertechcore.chertcobble.name=Chert Cobblestone
+tile.supertechcore.dolomitecobble.name=Dolomite Cobblestone
+tile.supertechcore.conglomeratecobble.name=Conglomerate Cobblestone
+tile.supertechcore.gabbrocobble.name=Gabbro Cobblestone
+tile.supertechcore.gneisscobble.name=Gneiss Cobblestone
+tile.supertechcore.kimberlitecobble.name=Kimberlite Cobblestone
+tile.supertechcore.limestonecobble.name=Limestone Cobblestone
+tile.supertechcore.marblecobble.name=Marble Cobblestone
+tile.supertechcore.pegmatitecobble.name=Pegmatite Cobblestone
+tile.supertechcore.phyllitecobble.name=Phyllite Cobblestone
+tile.supertechcore.rhyolitecobble.name=Rhyolite Cobblestone
+tile.supertechcore.schistcobble.name=Schist Cobblestone
+tile.supertechcore.scoriacobble.name=Scoria Cobblestone
+tile.supertechcore.shalecobble.name=Shale Cobblestone
+tile.supertechcore.slatecobble.name=Slate Cobblestone
+
 item.supertechcore.itemTechComponent.circuitBasic.name=Basic Circuit
 item.supertechcore.itemTechComponent.circuitAdvanced.name=Advanced Circuit
 item.supertechcore.itemTechComponent.circuitElite.name=Elite Circuit

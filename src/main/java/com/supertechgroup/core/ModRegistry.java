@@ -1,5 +1,8 @@
 package com.supertechgroup.core;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
@@ -18,6 +21,7 @@ import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,6 +30,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -74,24 +80,27 @@ public class ModRegistry {
 	 */
 	private static void createStoneType(String name, double hardness, double blastResistance, int toolHardnessLevel,
 			RegistryEvent.Register<Block> event, String... types) {
-		final Block rock;
-		// rockCobble = new BlockRock(name + "cobble", true, (float) hardness, (float)
-		// blastResistance, toolHardnessLevel,SoundType.STONE);
+		final Block rock, rockCobble;
 
 		ItemBlock itemBlock /*
 							 * = (ItemBlock) new
 							 * ItemBlock(rockCobble).setRegistryName(rockCobble.getRegistryName())
 							 */;
 		// ForgeRegistries.ITEMS.register(itemBlock);
+		rockCobble = new BlockRock(name + "cobble", true, (float) hardness, (float) blastResistance, toolHardnessLevel,
+				SoundType.STONE);
+
+		ForgeRegistries.ITEMS.register(new ItemBlock(rockCobble).setRegistryName(rockCobble.getRegistryName()));
+
 		rock = new BlockRock(name, true, (float) hardness, (float) blastResistance, toolHardnessLevel,
 				SoundType.STONE) {
-			/*
-			 * @Override public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos,
-			 * IBlockState state, int fortune) { return Arrays.asList(new
-			 * ItemStack(Item.getItemFromBlock(rockCobble)));
-			 *
-			 * }
-			 */
+
+			@Override
+			public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+				return Arrays.asList(new ItemStack(Item.getItemFromBlock(rockCobble)));
+
+			}
+
 		};
 
 		String[] newArray = new String[types.length + 1];
@@ -111,49 +120,22 @@ public class ModRegistry {
 		itemBlock = (ItemBlock) new ItemBlock(rock).setRegistryName(rock.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
 
-		// GameRegistry.addSmelting(rock, new ItemStack(Blocks.STONE), 0.1F);
-		event.getRegistry().registerAll(rock/* , rockCobble , rockStairs, rockSlab, rockSlabDouble */);
-
-		/*
-		 * GameRegistry.findRegistry(IRecipe.class).register(new ShapedOreRecipe(new
-		 * ResourceLocation("stairs"), new ItemStack(rockStairs, 4), "x  ", "xx ",
-		 * "xxx", 'x', rock)); GameRegistry.findRegistry(IRecipe.class).register( new
-		 * ShapedOreRecipe(new ResourceLocation("slabs"), new ItemStack(rockSlab, 6),
-		 * "xxx", 'x', rock));
-		 *
-		 * GameRegistry.findRegistry(IRecipe.class).register( new ShapedOreRecipe(new
-		 * ResourceLocation("blocks"), new ItemStack(brick, 4), "xx", "xx", 'x', rock));
-		 * GameRegistry.findRegistry(IRecipe.class).register(new ShapedOreRecipe(new
-		 * ResourceLocation("stairs"), new ItemStack(brickStairs, 4), "x  ", "xx ",
-		 * "xxx", 'x', brick)); GameRegistry.findRegistry(IRecipe.class).register( new
-		 * ShapedOreRecipe(new ResourceLocation("slabs"), new ItemStack(brickSlab, 6),
-		 * "xxx", 'x', brick));
-		 *
-		 * GameRegistry.findRegistry(IRecipe.class) .register(new ShapedOreRecipe(new
-		 * ResourceLocation("blocks"), new ItemStack(smooth, 1), rock, "sand"));
-		 * GameRegistry.findRegistry(IRecipe.class).register(new ShapedOreRecipe(new
-		 * ResourceLocation("stairs"), new ItemStack(smoothStairs, 4), "x  ", "xx ",
-		 * "xxx", 'x', smooth)); GameRegistry.findRegistry(IRecipe.class).register( new
-		 * ShapedOreRecipe(new ResourceLocation("slabs"), new ItemStack(smoothSlab, 6),
-		 * "xxx", 'x', smooth)); GameRegistry.findRegistry(IRecipe.class).register(new
-		 * ShapedOreRecipe(new ResourceLocation("blocks"), new ItemStack(smoothBrick,
-		 * 4), "xx", "xx", 'x', smooth));
-		 * GameRegistry.findRegistry(IRecipe.class).register(new ShapedOreRecipe(new
-		 * ResourceLocation("stairs"), new ItemStack(smoothBrickStairs, 4), "x  ",
-		 * "xx ", "xxx", 'x', smoothBrick));
-		 * GameRegistry.findRegistry(IRecipe.class).register(new ShapedOreRecipe(new
-		 * ResourceLocation("slabs"), new ItemStack(smoothBrickSlab, 6), "xxx", 'x',
-		 * smoothBrick));
-		 */
+		GameRegistry.addSmelting(rockCobble, new ItemStack(rock), 0.0f);
+		event.getRegistry().registerAll(rock, rockCobble);
 
 		OreDictionary.registerOre("stone", rock);
-		// OreDictionary.registerOre("cobblestone", rockCobble);
+		OreDictionary.registerOre("cobblestone", rockCobble);
 
 		final Item item = Item.getItemFromBlock(rock);
 		ModelLoader.setCustomModelResourceLocation(item, 0,
 				new ModelResourceLocation(new ResourceLocation(rock.getRegistryName().getResourceDomain(), "rock"),
 						rock.getRegistryName().getResourcePath()));
+		final Item cobble = Item.getItemFromBlock(rockCobble);
+		ModelLoader.setCustomModelResourceLocation(cobble, 0,
+				new ModelResourceLocation(new ResourceLocation(rockCobble.getRegistryName().getResourceDomain(), "rock"),
+						rockCobble.getRegistryName().getResourcePath()));
 		ModelLoader.setCustomStateMapper(rock, new StateMapperRock());
+		ModelLoader.setCustomStateMapper(rockCobble, new StateMapperRock());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -400,14 +382,58 @@ public class ModRegistry {
 
 		// add basic tool recipies
 
-		Material wood = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":wood"));
+		Material stone = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":stone"));
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(
 						new ShapedOreRecipe(new ResourceLocation("hammers"),
-								new ItemStack(wood.getItemHammer(), 1, MaterialTool.HAMMER),
+								new ItemStack(stone.getItemHammer(), 1, MaterialTool.HAMMER),
 								new Object[] { new String[] { " x ", " sx", "s  " }, 'x',
+										new OreIngredient("cobblestone"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "hammerStone"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("axes"),
+								new ItemStack(stone.getItemAxe(), 1, MaterialTool.AXE),
+								new Object[] { new String[] { " xx", " sx", " s " }, 'x',
+										new OreIngredient("cobblestone"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "axeStone"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("shovels"),
+								new ItemStack(stone.getItemShovel(), 1, MaterialTool.SHOVEL),
+								new Object[] { new String[] { " x ", " s ", " s " }, 'x',
+										new OreIngredient("cobblestone"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "shovelStone"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("pickaxes"),
+								new ItemStack(stone.getItemPickaxe(), 1, MaterialTool.PICKAXE),
+								new Object[] { new String[] { "xxx", " s ", " s " }, 'x',
+										new OreIngredient("cobblestone"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "pickaxeStone"));
+
+		Material wood = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":wood"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("axes"),
+								new ItemStack(wood.getItemAxe(), 1, MaterialTool.AXE),
+								new Object[] { new String[] { " xx", " sx", " s " }, 'x',
 										new OreIngredient("plankWood"), 's', new OreIngredient("stickWood") })
-												.setRegistryName(Reference.MODID, "hammerWood"));
+												.setRegistryName(Reference.MODID, "axeWood"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("shovels"),
+								new ItemStack(wood.getItemShovel(), 1, MaterialTool.SHOVEL),
+								new Object[] { new String[] { " x ", " s ", " s " }, 'x',
+										new OreIngredient("plankWood"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "shovelWood"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("pickaxes"),
+								new ItemStack(wood.getItemPickaxe(), 1, MaterialTool.PICKAXE),
+								new Object[] { new String[] { "xxx", " s ", " s " }, 'x',
+										new OreIngredient("plankWood"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "pickaxeWood"));
 	}
 
 	@SubscribeEvent

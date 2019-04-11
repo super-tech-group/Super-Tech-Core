@@ -10,7 +10,15 @@ public class ResearchTeam {
 	private ArrayList<UUID> members;
 	private ArrayList<Research> completedResearch;
 	private String TeamName;
+	
+	public ResearchTeam() {
+		members = new ArrayList();
+	}
 
+	public ResearchTeam(String name) {
+		TeamName = name;
+		members = new ArrayList();
+	}
 	public void addCompletedResearch(Research r) {
 		completedResearch.add(r);
 	}
@@ -51,5 +59,8 @@ public class ResearchTeam {
 	public void setTeamName(String newName) {
 		TeamName = newName;
 	}
-
+	
+	public boolean hasMember(UUID player) {
+		return members.contains(player);
+	}
 }

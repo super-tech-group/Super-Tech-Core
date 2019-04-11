@@ -21,6 +21,20 @@ public class JoinResearchTeamCommmand extends CommandBase {
 	}
 
 	@Override
+	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+		return true;
+	}
+
+	@Override
+	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+		if (sender instanceof EntityPlayer) {
+			EntityPlayerMP player = (EntityPlayerMP) sender;
+			ResearchSavedData rsd = ResearchSavedData.get(player.getServerWorld());
+			rsd.joinTeam(player);
+		}
+	}
+
+	@Override
 	public List<String> getAliases() {
 		return aliases;
 	}
@@ -33,20 +47,6 @@ public class JoinResearchTeamCommmand extends CommandBase {
 	@Override
 	public String getUsage(ICommandSender sender) {
 		return "join";
-	}
-
-	@Override
-	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-		return true;
-	}
-
-	@Override
-	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		if (sender instanceof EntityPlayer) {
-			EntityPlayerMP player = (EntityPlayerMP) sender;
-			ResearchSavedData rsd = ResearchSavedData.get(player.getServerWorld());
-			rsd.joinTeam(player);
-		}
 	}
 
 }

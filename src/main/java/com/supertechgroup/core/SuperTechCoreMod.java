@@ -43,10 +43,10 @@ public class SuperTechCoreMod {
 
 	public void registerModels(Material mat) {
 	}
-	
+
 	@Mod.EventHandler
-    public void serverLoad(FMLServerStartingEvent event) {
-        event.registerServerCommand(new InviteToResearchTeamCommand());
-        event.registerServerCommand(new JoinResearchTeamCommmand());
-    }
+	public void serverLoad(FMLServerStartingEvent event) {
+		event.registerServerCommand(new InviteToResearchTeamCommand());
+		event.registerServerCommand(new JoinResearchTeamCommmand());
+	}
 }

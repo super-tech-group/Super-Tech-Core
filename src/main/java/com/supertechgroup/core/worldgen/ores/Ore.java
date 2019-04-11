@@ -2,12 +2,17 @@ package com.supertechgroup.core.worldgen.ores;
 
 import java.util.ArrayList;
 
+import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -68,6 +73,12 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 
 		registerOreDict();
 		SuperTechCoreMod.proxy.registerModels(this);
+
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapelessOreRecipe(new ResourceLocation("crushingOres"),
+						new ItemStack(itemOre, 1, OreItem.CRUSHED),
+						new Object[] { new OreIngredient("toolHammer"), new ItemStack(itemOre, 1, OreItem.ORE) })
+								.setRegistryName(Reference.MODID, "crushed" + name));
 
 		Ore.REGISTRY.register(this);
 	}

@@ -10,7 +10,7 @@ public class ResearchTeam {
 	private ArrayList<UUID> members;
 	private ArrayList<Research> completedResearch;
 	private String TeamName;
-	
+
 	public ResearchTeam() {
 		members = new ArrayList();
 	}
@@ -19,6 +19,7 @@ public class ResearchTeam {
 		TeamName = name;
 		members = new ArrayList();
 	}
+
 	public void addCompletedResearch(Research r) {
 		completedResearch.add(r);
 	}
@@ -48,6 +49,10 @@ public class ResearchTeam {
 		return null;
 	}
 
+	public boolean hasMember(UUID player) {
+		return members.contains(player);
+	}
+
 	public boolean removeMember(UUID toRemove) {
 		if (members.contains(toRemove)) {
 			members.remove(toRemove);
@@ -58,9 +63,5 @@ public class ResearchTeam {
 
 	public void setTeamName(String newName) {
 		TeamName = newName;
-	}
-	
-	public boolean hasMember(UUID player) {
-		return members.contains(player);
 	}
 }

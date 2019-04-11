@@ -1,9 +1,13 @@
 package com.supertechgroup.core.research;
 
+import com.supertechgroup.core.worldgen.ores.Ore;
+
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class Research extends IForgeRegistryEntry.Impl<Research> implements ResearchRequirement {
 
+	public static IForgeRegistry<Research> REGISTRY;
 	private double InspirationChance;
 	private int researchProcceses;
 	public String researchName;

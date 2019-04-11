@@ -3,12 +3,14 @@ package com.supertechgroup.core.research;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import com.supertechgroup.core.Reference;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
@@ -49,6 +51,24 @@ public class ResearchSavedData extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		NBTTagList teamList = nbt.getTagList("TeamList", Constants.NBT.TAG_COMPOUND);
+		teamList.forEach((tag) -> {
+			NBTTagCompound teamInfo = (NBTTagCompound) tag;
+
+			ResearchTeam team = new ResearchTeam();
+
+			team.setTeamName(teamInfo.getString("name"));
+
+			teamInfo.getTagList("completedResearch", Constants.NBT.TAG_STRING).forEach((cr) -> {
+				NBTTagString stringTag = (NBTTagString) cr;
+				team.addCompletedResearch(Research.REGISTRY.getValue(new ResourceLocation(stringTag.toString())));
+			});
+
+			teamInfo.getTagList("members", Constants.NBT.TAG_STRING).forEach((m) -> {
+				NBTTagString stringTag = (NBTTagString) m;
+				team.addMember(UUID.fromString(stringTag.toString()));
+			});
+
+		});
 
 	}
 
@@ -75,17 +95,16 @@ public class ResearchSavedData extends WorldSavedData {
 				compResearch.appendTag(new NBTTagString(r.getRegistryName().toString()));
 			}
 			teamInfo.setTag("completedResearch", compResearch);
-			
+
 			NBTTagList members = new NBTTagList();
-			team.getMembers().forEach((uuid)->{
+			team.getMembers().forEach((uuid) -> {
 				members.appendTag(new NBTTagString(uuid.toString()));
 			});
 			teamInfo.setTag("members", members);
-			
-			
+
 			teamList.appendTag(teamInfo);
 		}
-		
+
 		compound.setTag("TeamList", teamList);
 
 		System.out.println("Saving research");

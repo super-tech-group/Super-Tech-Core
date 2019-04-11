@@ -3,6 +3,7 @@ package com.supertechgroup.core;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
@@ -503,7 +504,10 @@ public class ModRegistry {
 				.setIDRange(0, 512).create();
 		Ore.REGISTRY = GameRegistry.findRegistry(Ore.class);
 		new RegistryBuilder<Material>().setType(Material.class)
-				.setName(new ResourceLocation(Reference.MODID, "MaterialRegistry")).setIDRange(0, 256).create();
+				.setName(new ResourceLocation(Reference.MODID, "MaterialRegistry")).setIDRange(0, 512).create();
 		Material.REGISTRY = GameRegistry.findRegistry(Material.class);
+		new RegistryBuilder<Research>().setType(Research.class)
+				.setName(new ResourceLocation(Reference.MODID, "ResearchRegistry")).setIDRange(0, 2048).create();
+		Research.REGISTRY = GameRegistry.findRegistry(Research.class);
 	}
 }

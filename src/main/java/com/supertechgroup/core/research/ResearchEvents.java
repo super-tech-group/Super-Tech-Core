@@ -42,7 +42,15 @@ public class ResearchEvents {
 
 		//Unhide some basic stuff
 		Material wood = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":wood"));
-		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemHammer(), 1, MaterialTool.HAMMER), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemShovel(), 1, MaterialTool.SHOVEL), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemPickaxe(), 1, MaterialTool.PICKAXE), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemAxe(), 1, MaterialTool.AXE), false);
+
+		Material stone = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":stone"));
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(stone.getItemShovel(), 1, MaterialTool.SHOVEL), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(stone.getItemPickaxe(), 1, MaterialTool.PICKAXE), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(stone.getItemAxe(), 1, MaterialTool.AXE), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(stone.getItemHammer(), 1, MaterialTool.HAMMER), false);
 
 	}
 

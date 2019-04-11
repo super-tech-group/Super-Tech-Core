@@ -67,7 +67,7 @@ public class ResearchSavedData extends WorldSavedData {
 				NBTTagString stringTag = (NBTTagString) m;
 				team.addMember(UUID.fromString(stringTag.toString()));
 			});
-
+			teams.add(team);
 		});
 
 	}

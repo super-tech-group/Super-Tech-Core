@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
+import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 
@@ -52,6 +53,25 @@ public class ResearchEvents {
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(stone.getItemAxe(), 1, MaterialTool.AXE), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(stone.getItemHammer(), 1, MaterialTool.HAMMER), false);
 
+		Material iron = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":iron"));
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(iron.getMaterialItem(), 1, MaterialItem.NUGGET), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(iron.getMaterialItem(), 1, MaterialItem.INGOT), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(iron.getMaterialItem(), 1, MaterialItem.PLATE), false);
+
+		Material tin = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":tin"));
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(tin.getMaterialItem(), 1, MaterialItem.NUGGET), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(tin.getMaterialItem(), 1, MaterialItem.INGOT), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(tin.getMaterialItem(), 1, MaterialItem.PLATE), false);
+
+		Material copper = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":copper"));
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(copper.getMaterialItem(), 1, MaterialItem.NUGGET), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(copper.getMaterialItem(), 1, MaterialItem.INGOT), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(copper.getMaterialItem(), 1, MaterialItem.PLATE), false);
+
+		Material zinc = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":zinc"));
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.NUGGET), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.INGOT), false);
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.PLATE), false);
 	}
 
 	// Research Team stuff

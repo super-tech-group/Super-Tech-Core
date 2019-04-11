@@ -119,7 +119,7 @@ public class OreBlock extends BlockBase {
 
 		ResourceLocation[] ores = OreSavedData.get(SuperTechCoreMod.proxy.getWorld(world)).getOres(pos);
 		ResourceLocation base = OreSavedData.get(SuperTechCoreMod.proxy.getWorld(world)).getBase(pos);
-		ArrayList<ResourceLocation> oreList = new ArrayList();
+		ArrayList<ResourceLocation> oreList = new ArrayList<>();
 		for (ResourceLocation i : ores) {
 			oreList.add(i);
 		}
@@ -230,7 +230,7 @@ public class OreBlock extends BlockBase {
 	}
 
 	private ResourceLocation[] removeNulls(ResourceLocation[] ores) {
-		ArrayList<ResourceLocation> temp = new ArrayList();
+		ArrayList<ResourceLocation> temp = new ArrayList<>();
 		for (ResourceLocation ore : ores) {
 			if (ore != null) {
 				temp.add(ore);

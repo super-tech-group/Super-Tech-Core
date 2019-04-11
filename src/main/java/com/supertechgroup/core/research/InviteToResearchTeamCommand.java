@@ -24,21 +24,6 @@ public class InviteToResearchTeamCommand extends CommandBase {
 	}
 
 	@Override
-	public String getName() {
-		return "invite";
-	}
-
-	@Override
-	public List<String> getAliases() {
-		return aliases;
-	}
-
-	@Override
-	public String getUsage(ICommandSender sender) {
-		return "invite <Player>";
-	}
-
-	@Override
 	public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
 		return true;
 	}
@@ -77,6 +62,21 @@ public class InviteToResearchTeamCommand extends CommandBase {
 
 		}
 
+	}
+
+	@Override
+	public List<String> getAliases() {
+		return aliases;
+	}
+
+	@Override
+	public String getName() {
+		return "invite";
+	}
+
+	@Override
+	public String getUsage(ICommandSender sender) {
+		return "invite <Player>";
 	}
 
 }

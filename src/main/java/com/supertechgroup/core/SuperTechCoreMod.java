@@ -4,12 +4,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.research.InviteToResearchTeamCommand;
+import com.supertechgroup.core.research.JoinResearchTeamCommmand;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Reference.MODID, name = Reference.MODNAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_MINECRAFT_VERSIONS)
 public class SuperTechCoreMod {
@@ -40,4 +43,10 @@ public class SuperTechCoreMod {
 
 	public void registerModels(Material mat) {
 	}
+	
+	@Mod.EventHandler
+    public void serverLoad(FMLServerStartingEvent event) {
+        event.registerServerCommand(new InviteToResearchTeamCommand());
+        event.registerServerCommand(new JoinResearchTeamCommmand());
+    }
 }

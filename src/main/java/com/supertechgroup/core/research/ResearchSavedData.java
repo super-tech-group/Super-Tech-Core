@@ -1,14 +1,21 @@
 package com.supertechgroup.core.research;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.supertechgroup.core.Reference;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
@@ -31,7 +38,8 @@ public class ResearchSavedData extends WorldSavedData {
 
 	private World world;
 
-	private ArrayList<ResearchTeam> teams;
+	private ArrayList<ResearchTeam> teams = new ArrayList<ResearchTeam>();
+	private HashMap<UUID, ResearchTeam> teamInvites = new HashMap<UUID, ResearchTeam>();
 
 	public ResearchSavedData() {
 		super(Reference.RESEARCH_DATA_NAME);
@@ -107,5 +115,73 @@ public class ResearchSavedData extends WorldSavedData {
 
 		System.out.println("Saving research");
 		return compound;
+	}
+
+	public boolean doesPlayerHaveTeam(UUID player) {
+		if (teams.size() > 0) {
+			for (ResearchTeam rt : teams) {
+				if (rt.hasMember(player)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public ResearchTeam findPlayersResearchTeam(UUID player) {
+		if (teams.size() > 0) {
+			for (ResearchTeam rt : teams) {
+				if (rt.hasMember(player)) {
+					return rt;
+				}
+			}
+		}
+		return null;
+	}
+
+	public ResearchTeam createNewTeam(String teamName, UUID newMember) {
+		ResearchTeam r = new ResearchTeam(teamName);
+		r.addMember(newMember);
+		teams.add(r);
+		return r;
+	}
+
+	public boolean doesPlayerHaveInvite(UUID uuid) {
+		if (teamInvites.containsKey(uuid)) {
+			return true;
+		}
+		return false;
+	}
+
+	public ResearchTeam getTeamInvite(UUID uuid) {
+		return teamInvites.get(uuid);
+	}
+
+	public void addInvite(UUID uuid, ResearchTeam researchTeam) {
+		teamInvites.put(uuid, researchTeam);
+	}
+
+	public boolean joinTeam(EntityPlayer player) {
+		UUID uuid = player.getUniqueID();
+		if (doesPlayerHaveInvite(uuid)) {
+			ResearchTeam newTeam = getTeamInvite(uuid);
+			ResearchTeam oldTeam = findPlayersResearchTeam(uuid);
+			if (oldTeam != null) {
+				newTeam.addMember(uuid);
+				player.getServer().getPlayerList().getPlayerByUUID(uuid).sendMessage(new TextComponentString(
+						TextFormatting.GREEN + "You have joined " + newTeam.getTeamName() + "."));
+				oldTeam.removeMember(uuid);
+				if (oldTeam.getMembers().size() == 0) {
+					teams.remove(oldTeam);
+				}
+				return true;
+			} else {
+				newTeam.addMember(uuid);
+				player.getServer().getPlayerList().getPlayerByUUID(uuid).sendMessage(new TextComponentString(
+						TextFormatting.GREEN + "You have joined " + newTeam.getTeamName() + "."));
+				return true;
+			}
+		}
+		return false;
 	}
 }

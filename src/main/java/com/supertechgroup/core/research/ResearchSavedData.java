@@ -2,14 +2,17 @@ package com.supertechgroup.core.research;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.supertechgroup.core.Reference;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.common.util.Constants;
 
 public class ResearchSavedData extends WorldSavedData {
 
@@ -28,7 +31,7 @@ public class ResearchSavedData extends WorldSavedData {
 
 	private World world;
 
-	private ResearchTeam[] teams;
+	private ArrayList<ResearchTeam> teams;
 
 	public ResearchSavedData() {
 		super(Reference.RESEARCH_DATA_NAME);
@@ -45,6 +48,7 @@ public class ResearchSavedData extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
+		NBTTagList teamList = nbt.getTagList("TeamList", Constants.NBT.TAG_COMPOUND);
 
 	}
 
@@ -60,32 +64,29 @@ public class ResearchSavedData extends WorldSavedData {
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		NBTTagCompound teamList = new NBTTagCompound();
+		NBTTagList teamList = new NBTTagList();
 		for (ResearchTeam team : teams) {
-			NBTTagList tagList = new NBTTagList();
-			List<String> compResearch = new ArrayList<>();
+			NBTTagCompound teamInfo = new NBTTagCompound();
+
+			teamInfo.setString("name", team.getTeamName());
+
+			NBTTagList compResearch = new NBTTagList();
 			for (Research r : team.getCompletedResearch()) {
-				compResearch.add(r.getResearchName());
+				compResearch.appendTag(new NBTTagString(r.getRegistryName().toString()));
 			}
-			for (int i = 0; i < compResearch.size(); i++) {
-				String s = compResearch.get(i);
-				if (s != null) {
-					NBTTagCompound tag = new NBTTagCompound();
-					tag.setString("Research" + i, s);
-					tagList.appendTag(tag);
-				}
-			}
-			for (int i = 0; i < team.getMembers().size(); i++) {
-				String s = team.getMembers().get(i).toString();
-				if (s != null) {
-					NBTTagCompound tag = new NBTTagCompound();
-					tag.setString("Member" + i, s);
-					tagList.appendTag(tag);
-				}
-			}
-			teamList.setTag("ResearchTeam:" + team.getTeamName(), tagList);
+			teamInfo.setTag("completedResearch", compResearch);
+			
+			NBTTagList members = new NBTTagList();
+			team.getMembers().forEach((uuid)->{
+				members.appendTag(new NBTTagString(uuid.toString()));
+			});
+			teamInfo.setTag("members", members);
+			
+			
+			teamList.appendTag(teamInfo);
 		}
-		compound.setTag("TeamData", teamList);
+		
+		compound.setTag("TeamList", teamList);
 
 		System.out.println("Saving research");
 		return compound;

@@ -112,13 +112,8 @@ public class OreSavedData extends WorldSavedData {
 		if (!hardnessData.get(x).containsKey(y)) {
 			hardnessData.get(x).put(y, new HashMap());
 		}
-		if (hardnessData.get(x).get(y).containsKey(z)) {
-			hardnessData.get(x).get(y).get(z) = hardness;
-			return;
-		}
 		hardnessData.get(x).get(y).put(z, hardness);
 		markDirty();
-		
 	}
 
 	/**
@@ -369,6 +364,18 @@ public class OreSavedData extends WorldSavedData {
 				xTag.setTag(y.toString(), yTag);
 			});
 			parentNBTTagCompound.setTag(x.toString(), xTag);
+		});
+		hardnessData.forEach((Integer x, HashMap<Integer, HashMap<Integer, Float>> xData) -> {
+			NBTTagCompound xTag = new NBTTagCompound();
+			xData.forEach((Integer y, HashMap<Integer, Float> yData) -> {
+				NBTTagCompound yTag = new NBTTagCompound();
+				yData.forEach((Integer z, Float hardness) -> {
+					NBTTagCompound zTag = new NBTTagCompound();
+					zTag.setFloat(z.toString(), hardness);
+				});
+				
+			});
+
 		});
 		return parentNBTTagCompound;
 	}

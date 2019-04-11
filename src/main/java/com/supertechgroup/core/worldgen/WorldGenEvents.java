@@ -148,7 +148,7 @@ public class WorldGenEvents {
 						if (!chunk.getBlockState(pos).equals(Blocks.BEDROCK.getDefaultState())) {
 							if (chunkRandom.nextDouble() < .1) {
 								OreSavedData.get(event.getWorld()).setData(pos.getX(), pos.getY(), pos.getZ(),
-										RockManager.getTexture(kimberlite), oresAdded);
+										RockManager.getTexture(kimberlite), oresAdded, kimberlite.getBlockHardness(chunk.getWorld(), pos));
 								chunk.setBlockState(pos, ModRegistry.superore.getDefaultState());
 							} else {
 								chunk.setBlockState(pos, kimberlite);

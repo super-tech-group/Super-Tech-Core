@@ -48,6 +48,8 @@ public class OreSavedData extends WorldSavedData {
 	HashMap<Integer, HashMap<Integer, HashMap<Integer, ResourceLocation[]>>> data = new HashMap();
 
 	HashMap<Integer, ArrayList<Integer>> generated = new HashMap();
+
+	HashMap<Integer, HashMap<Integer, HashMap<Integer, Float>>> hardnessData = new HashMap();
 	// Required constructors
 
 	public OreSavedData() {
@@ -61,6 +63,7 @@ public class OreSavedData extends WorldSavedData {
 	public void clearData() {
 		data = new HashMap();
 		generated = new HashMap();
+		hardnessData = new HashMap();
 		markDirty();
 	}
 
@@ -88,6 +91,30 @@ public class OreSavedData extends WorldSavedData {
 		} catch (Exception ex) {
 			return new ResourceLocation("minecraft:stone");
 		}
+	}
+
+	public Float getHardness(BlockPos pos) {
+		return getHardness(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public Float getHardness(int x, int y, int z) {
+		return hardnessData.get(x).get(y).get(z);
+	}
+
+	public void setHardness(BlockPos pos, Float hardness) {
+		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
+	}
+
+	public void setHardness(int x, int y, int z, Float hardness) {
+		if (!hardnessData.containsKey(x)) {
+			hardnessData.put(x, new HashMap());
+		}
+		if (!hardnessData.get(x).containsKey(y)) {
+			hardnessData.get(x).put(y, new HashMap());
+		}	
+		hardnessData.get(x).get(y).put(z, hardness);
+		markDirty();
+		
 	}
 
 	/**
@@ -267,8 +294,9 @@ public class OreSavedData extends WorldSavedData {
 	 * @param base The texture location for the background rock
 	 * @param ores The ore location for the ore data.
 	 */
-	public void setData(int x, int y, int z, ResourceLocation base, ResourceLocation[] ores) {
+	public void setData(int x, int y, int z, ResourceLocation base, ResourceLocation[] ores, Float hardness) {
 		setData(x, y, z, ArrayUtils.add(ores.clone(), 0, base));
+		setHardness(x, y, z, hardness);
 	}
 
 	/**

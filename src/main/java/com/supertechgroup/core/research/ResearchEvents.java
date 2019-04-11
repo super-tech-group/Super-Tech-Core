@@ -41,8 +41,7 @@ public class ResearchEvents {
 			JEIMainPlugin.handleItemBlacklisting(new ItemStack(i), true);
 		}
 
-//Unhide some basic stuff
-
+		//Unhide some basic stuff
 		Material wood = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":wood"));
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemShovel(), 1, MaterialTool.SHOVEL), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemPickaxe(), 1, MaterialTool.PICKAXE), false);

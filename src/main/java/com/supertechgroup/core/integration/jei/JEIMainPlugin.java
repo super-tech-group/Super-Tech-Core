@@ -18,7 +18,6 @@ public class JEIMainPlugin implements IModPlugin {
 
 	private static void blacklistItem(ItemStack stack) {
 		if (jeiActive) {
-			System.out.println("Blacklisting item: " + stack);
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				ingredientRegistry.removeIngredientsAtRuntime(VanillaTypes.ITEM, Collections.singletonList(stack));
 			});
@@ -37,7 +36,6 @@ public class JEIMainPlugin implements IModPlugin {
 
 	private static void whitelistItem(ItemStack stack) {
 		if (jeiActive) {
-			System.out.println("Whitelisting item: " + stack);
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				ingredientRegistry.addIngredientsAtRuntime(VanillaTypes.ITEM, Collections.singletonList(stack));
 			});

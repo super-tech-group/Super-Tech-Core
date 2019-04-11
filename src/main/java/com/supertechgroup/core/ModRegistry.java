@@ -1,5 +1,6 @@
 package com.supertechgroup.core;
 
+import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -23,6 +24,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
@@ -33,10 +35,27 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @EventBusSubscriber(modid = Reference.MODID)
 public class ModRegistry {
+
+	public static final Item[] disabledVanillaItems = new Item[] { Items.WOODEN_AXE, Items.WOODEN_HOE,
+			Items.WOODEN_PICKAXE, Items.WOODEN_SHOVEL, Items.WOODEN_SWORD, Items.STONE_AXE, Items.STONE_HOE,
+			Items.STONE_PICKAXE, Items.STONE_SHOVEL, Items.STONE_SWORD, Items.IRON_AXE, Items.IRON_HOE,
+			Items.IRON_PICKAXE, Items.IRON_SHOVEL, Items.IRON_SWORD, Items.GOLDEN_AXE, Items.GOLDEN_HOE,
+			Items.GOLDEN_PICKAXE, Items.GOLDEN_SHOVEL, Items.GOLDEN_SWORD, Items.DIAMOND_AXE, Items.DIAMOND_HOE,
+			Items.DIAMOND_PICKAXE, Items.DIAMOND_SHOVEL, Items.DIAMOND_SWORD, Items.GOLD_INGOT, Items.IRON_INGOT,
+			Item.getItemFromBlock(Blocks.COAL_ORE), Item.getItemFromBlock(Blocks.DIAMOND_ORE),
+			Item.getItemFromBlock(Blocks.EMERALD_ORE), Item.getItemFromBlock(Blocks.GOLD_ORE),
+			Item.getItemFromBlock(Blocks.IRON_ORE), Item.getItemFromBlock(Blocks.LAPIS_ORE),
+			Item.getItemFromBlock(Blocks.LIT_REDSTONE_ORE), Item.getItemFromBlock(Blocks.QUARTZ_ORE),
+			Item.getItemFromBlock(Blocks.REDSTONE_ORE), Item.getItemFromBlock(Blocks.COAL_BLOCK),
+			Item.getItemFromBlock(Blocks.DIAMOND_BLOCK), Item.getItemFromBlock(Blocks.EMERALD_BLOCK),
+			Item.getItemFromBlock(Blocks.GOLD_BLOCK), Item.getItemFromBlock(Blocks.IRON_BLOCK),
+			Item.getItemFromBlock(Blocks.LAPIS_BLOCK), Item.getItemFromBlock(Blocks.QUARTZ_BLOCK) };
 
 	public static OreBlock superore;
 
@@ -378,6 +397,17 @@ public class ModRegistry {
 				.setElectricalResistance(43.9).setHarvestLevel(1).setNativeHarvest(1).setShearModulus(17)
 				.setThermalConductivity(156).setThermalExpansion(24.8).setYoungsModulus(45).build();
 		magnesium.registerMaterial();
+
+		// add basic tool recipies
+
+		Material wood = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":wood"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("hammers"),
+								new ItemStack(wood.getItemHammer(), 1, MaterialTool.HAMMER),
+								new Object[] { new String[] { " x ", " sx", "s  " }, 'x',
+										new OreIngredient("plankWood"), 's', new OreIngredient("stickWood") })
+												.setRegistryName(Reference.MODID, "hammerWood"));
 	}
 
 	@SubscribeEvent
@@ -510,4 +540,5 @@ public class ModRegistry {
 				.setName(new ResourceLocation(Reference.MODID, "ResearchRegistry")).setIDRange(0, 2048).create();
 		Research.REGISTRY = GameRegistry.findRegistry(Research.class);
 	}
+
 }

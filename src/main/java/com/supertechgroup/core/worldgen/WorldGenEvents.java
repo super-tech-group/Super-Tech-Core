@@ -10,6 +10,11 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
+import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.integration.jei.JEIMainPlugin;
+import com.supertechgroup.core.items.MaterialItem;
+import com.supertechgroup.core.items.MaterialTool;
+import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -20,6 +25,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -33,9 +39,11 @@ import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 /**
  * This class handles most events relating to ores and terrain generation
@@ -48,6 +56,7 @@ public class WorldGenEvents {
 	private static final ArrayList<EventType> vanillaOreGeneration = new ArrayList<EventType>();
 
 	double genScale = 0.004;
+
 
 	static {
 		vanillaOreGeneration.add(OreGenEvent.GenerateMinable.EventType.COAL);

@@ -4,7 +4,6 @@ package com.supertechgroup.core.items;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -15,11 +14,9 @@ import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.util.Helpers;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -29,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;

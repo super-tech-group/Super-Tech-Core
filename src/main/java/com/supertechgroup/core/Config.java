@@ -96,7 +96,6 @@ public class Config {
 						new ResourceLocation(parts[1]));
 			} else {// This one is called for items without metadata, such as
 					// "minecraft:dirt"
-				System.err.println("parts: " + Arrays.toString(parts));
 				stone.put(Block.getBlockFromName(parts[0]).getDefaultState(), new ResourceLocation(parts[1]));
 			}
 		}

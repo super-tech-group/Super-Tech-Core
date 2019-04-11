@@ -7,6 +7,7 @@ import com.supertechgroup.core.Config;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.research.ResearchEvents;
 import com.supertechgroup.core.worldgen.WorldGenEvents;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -53,6 +54,9 @@ public abstract class CommonProxy {
 		WorldGenEvents wge = new WorldGenEvents();
 		MinecraftForge.EVENT_BUS.register(wge);
 		MinecraftForge.ORE_GEN_BUS.register(wge);
+
+		ResearchEvents re = new ResearchEvents();
+		MinecraftForge.EVENT_BUS.register(re);
 	}
 
 	public void init(FMLInitializationEvent event) {

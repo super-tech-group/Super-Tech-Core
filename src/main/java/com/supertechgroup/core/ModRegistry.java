@@ -381,19 +381,19 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerOres(RegistryEvent.Register<Ore> event) {
-		new Ore("Bauxite", 0x7CFC00).registerOre();
-		new Ore("Bornite", 0x8B4513).registerOre();
-		new Ore("Magnetite", 0x494d51).registerOre();
-		new Ore("Limonite", 0xFFF44F).registerOre();
-		new Ore("Chalcocite", 0x2F4F4F).registerOre();
-		new Ore("Cassiterite", 0x654321).registerOre();
-		new Ore("Chromite", 0xC0C0CC).registerOre();
-		new Ore("Cinnabar", 0x8b0017).registerOre();
-		new Ore("Cobaltite", 0xd2b48c).registerOre();
-		new Ore("Galena", 0xbeb2b2).registerOre();
-		new Ore("Hematite", 0x101c1f).registerOre();
-		new Ore("Ilmenite", 0x323230).registerOre();
-		new Ore("Sphalerite", 0x323230).registerOre();
+		new Ore("Bauxite", 0x7CFC00).registerOre();//aluminium
+		new Ore("Bornite", 0x8B4513).registerOre();//copper, iron, sulfur
+		new Ore("Magnetite", 0x494d51).registerOre();//iron ore
+		new Ore("Limonite", 0xFFF44F).registerOre();//iron ore
+		new Ore("Chalcocite", 0x2F4F4F).registerOre();//copper, sulfur
+		new Ore("Cassiterite", 0x654321).registerOre();//tin
+		new Ore("Chromite", 0xC0C0CC).registerOre();//iron, chromium. potential for magnesium
+		new Ore("Cinnabar", 0x8b0017).registerOre();//mercury, sulfur
+		new Ore("Cobaltite", 0xd2b48c).registerOre();//cobale, arsenic, sulfur; small percentage of iron and nickel
+		new Ore("Galena", 0xbeb2b2).registerOre();//silver/lead ore
+		new Ore("Hematite", 0x101c1f).registerOre();//iron ore
+		new Ore("Ilmenite", 0x323230).registerOre();//iron, titanium
+		new Ore("Sphalerite", 0x323230).registerOre();//zinc, sulfur, iron. 
 		new Ore("Coal", 0x060607) {
 			@Override
 			public ItemStack getDrops(byte base) {

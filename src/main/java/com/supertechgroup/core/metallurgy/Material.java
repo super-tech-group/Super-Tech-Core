@@ -3,7 +3,6 @@ package com.supertechgroup.core.metallurgy;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.blocks.BlockMaterial;
@@ -11,7 +10,6 @@ import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialItemBlock;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.proxy.ClientProxy;
-import com.supertechgroup.core.util.Helpers;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.ores.OreItem;
 
@@ -19,19 +17,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -237,8 +232,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 	private MaterialTool itemDrawplate;
 	private MaterialTool itemPickaxe;
 
-	private Ore ore;
-
 	private Material(String name, int color, int harvest, int mine, double density, double resistance, double expansion,
 			int shear, double conductivity, int young, int bulk) {
 		this.name = name;
@@ -422,51 +415,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		subItemStack = new ItemStack(itemDrawplate, 1, MaterialTool.DRAW_PLATE);
 		OreDictionary.registerOre("drawplate" + getName(), subItemStack);
 		OreDictionary.registerOre("toolDrawPlate", subItemStack);
-
-		// register block
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapedOreRecipe(new ResourceLocation("blocks"), new ItemStack(block),
-						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("ingot" + name), })
-								.setRegistryName(Reference.MODID, "ingot_block" + name));
-		// register ingot
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapedOreRecipe(new ResourceLocation("ingots"),
-						new ItemStack(itemMaterial, 1, MaterialItem.INGOT),
-						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("nugget" + name), })
-								.setRegistryName(Reference.MODID, "nugget_ingot" + name));
-		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("nuggets"),
-				new ItemStack(itemMaterial, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingot" + name) })
-						.setRegistryName(Reference.MODID, "ingot_nugget" + name));
-		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("ingots"),
-				new ItemStack(itemMaterial, 9, MaterialItem.INGOT), new Object[] { new OreIngredient("block" + name) })
-						.setRegistryName(Reference.MODID, "block_ingot" + name));
-
-		// register hammer
-		GameRegistry.findRegistry(IRecipe.class).register(new ShapedOreRecipe(new ResourceLocation("hammers"),
-				new ItemStack(itemHammer, 1, MaterialTool.HAMMER), new Object[] { new String[] { " x ", " sx", "s  " },
-						'x', new OreIngredient("ingot" + name), 's', new OreIngredient("stickWood") })
-								.setRegistryName(Reference.MODID, "hammer" + name));
-
-		// register pliers
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapedOreRecipe(new ResourceLocation("pliers"),
-						new ItemStack(itemPliers, 1, MaterialTool.PLIERS),
-						new Object[] { new String[] { "x x", " p ", "s s" }, 'x', new OreIngredient("ingot" + name),
-								'p', new OreIngredient("plate" + name), 's', new OreIngredient("stickWood") })
-										.setRegistryName(Reference.MODID, "pliers" + name));
-
-		// register pipe block
-		/*
-		 * ItemStack pipeStack = new ItemStack(ModRegistry.blockPipe, 3);
-		 * Helpers.setItemMaterial(pipeStack, this);
-		 * GameRegistry.findRegistry(IRecipe.class) .register(new ShapedOreRecipe(new
-		 * ResourceLocation("pipe"), pipeStack, new Object[] { new String[] { "xxx",
-		 * "   ", "xxx" }, 'x', new OreIngredient("plate" + name) })
-		 * .setRegistryName(Reference.MODID, "pipe" + name));
-		 */
-		// register dust to ingot
-		GameRegistry.addSmelting(new ItemStack(getMaterialItem(), 1, MaterialItem.DUST),
-				new ItemStack(getMaterialItem(), 1, MaterialItem.INGOT), 1);
 
 		if (getNativeHarvest() != -1) {
 			Ore nat = Ore.REGISTRY

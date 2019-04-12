@@ -28,13 +28,16 @@ public class ResearchSavedData extends WorldSavedData {
 		if (instance == null) {
 			instance = new ResearchSavedData();
 			storage.setData(Reference.RESEARCH_DATA_NAME, instance);
+			instance.setWorld(world);
 		}
-		instance.world = world;
 		return instance;
 	}
 
-	private World world;
+	private void setWorld(World world2) {
+		world = world2;
+	}
 
+	World world;
 	public ArrayList<ResearchTeam> teams = new ArrayList<>();
 	private HashMap<UUID, ResearchTeam> teamInvites = new HashMap<>();
 
@@ -52,6 +55,7 @@ public class ResearchSavedData extends WorldSavedData {
 
 	public ResearchTeam createNewTeam(String teamName, UUID newMember) {
 		ResearchTeam r = new ResearchTeam(teamName);
+		r.setWorld(this.world);
 		r.addMember(newMember);
 		teams.add(r);
 		this.markDirty();
@@ -152,6 +156,7 @@ public class ResearchSavedData extends WorldSavedData {
 				NBTTagString stringTag = (NBTTagString) m;
 				team.addMember(UUID.fromString(stringTag.getString()));
 			});
+			team.setWorld(this.world);
 			teams.add(team);
 		});
 

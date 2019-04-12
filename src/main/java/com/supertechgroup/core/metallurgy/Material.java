@@ -265,6 +265,10 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return bulk;
 	}
 
+	public double getExpansion() {
+		return expansion;
+	}
+
 	public int getColor() {
 		return color;
 	}

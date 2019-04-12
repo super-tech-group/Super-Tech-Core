@@ -24,7 +24,7 @@ public class BakedModelLoader implements ICustomModelLoader {
 	 * final ModelPipe PIPE_MODEL = new ModelPipe();
 	 */
 
-	ArrayList<String> blocks = new ArrayList();
+	ArrayList<String> blocks = new ArrayList<>();
 	{
 		blocks.add("superore");
 		/*

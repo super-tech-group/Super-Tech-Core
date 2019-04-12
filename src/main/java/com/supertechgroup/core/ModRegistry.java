@@ -3,6 +3,7 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -370,7 +371,6 @@ public class ModRegistry {
 				.setElectricalResistance(43.9).setHarvestLevel(1).setShearModulus(17).setThermalConductivity(156)
 				.setThermalExpansion(24.8).setYoungsModulus(45).build();
 		magnesium.registerMaterial();
-
 	}
 
 	@SubscribeEvent
@@ -496,12 +496,24 @@ public class ModRegistry {
 		new RegistryBuilder<Ore>().setType(Ore.class).setName(new ResourceLocation(Reference.MODID, "OreRegistry"))
 				.setIDRange(0, 512).create();
 		Ore.REGISTRY = GameRegistry.findRegistry(Ore.class);
+		
 		new RegistryBuilder<Material>().setType(Material.class)
 				.setName(new ResourceLocation(Reference.MODID, "MaterialRegistry")).setIDRange(0, 512).create();
 		Material.REGISTRY = GameRegistry.findRegistry(Material.class);
+		
 		new RegistryBuilder<Research>().setType(Research.class)
 				.setName(new ResourceLocation(Reference.MODID, "ResearchRegistry")).setIDRange(0, 2048).create();
 		Research.REGISTRY = GameRegistry.findRegistry(Research.class);
 	}
 
+	@SubscribeEvent
+	public static void registerResearch(RegistryEvent.Register<Research> event) {
+		Research bronze = new Research("bronze");
+		bronze.addUnlockedItem(new ItemStack(
+				Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(), 1,
+				MaterialItem.INGOT));
+		bronze.registerResearch();
+		
+		
+	}
 }

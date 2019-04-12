@@ -14,6 +14,10 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	public String researchName;
 	private ArrayList<ItemStack> unlockedItems = new ArrayList<>();
 
+	public Research(String name) {
+		this.setRegistryName(name);
+	}
+
 	public void addUnlockedItem(ItemStack stack) {
 		unlockedItems.add(stack);
 	}
@@ -46,5 +50,10 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
 		return ResearchSavedData.get(rt.getWorld()).getTeamFinishedResearch(rt, this);
+	}
+
+	public void registerResearch() {
+		System.out.println("Registering resh " + this.getRegistryName().toString());
+		Research.REGISTRY.register(this);
 	}
 }

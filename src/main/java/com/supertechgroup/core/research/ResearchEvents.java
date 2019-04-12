@@ -8,6 +8,8 @@ import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
+import com.supertechgroup.core.network.CompleteResearchPacket;
+import com.supertechgroup.core.network.PacketHandler;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -89,6 +91,10 @@ public class ResearchEvents {
 				});
 			}
 
+			// send team's completed research
+			CompleteResearchPacket packet = new CompleteResearchPacket(rsd.findPlayersResearchTeam(player.getUniqueID())
+					.getCompletedResearch().toArray(new Research[] {}));
+			PacketHandler.INSTANCE.sendTo(packet, player);
 		}
 	}
 }

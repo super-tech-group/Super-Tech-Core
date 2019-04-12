@@ -30,6 +30,8 @@ public class PacketHandler {
 
 	public static void registerMessages() {
 		INSTANCE.registerMessage(UpdateOresPacket.Handler.class, UpdateOresPacket.class, nextID(), Side.CLIENT);
+		INSTANCE.registerMessage(CompleteResearchPacket.Handler.class, CompleteResearchPacket.class, nextID(),
+				Side.CLIENT);
 
 	}
 

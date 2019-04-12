@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 public class ResearchTeam {
 
 	private ArrayList<UUID> members;
-	private ArrayList<Research> completedResearch;
+	private ArrayList<Research> completedResearch = new ArrayList<>();
 	private String TeamName;
 
 	public ResearchTeam() {

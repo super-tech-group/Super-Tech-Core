@@ -84,6 +84,9 @@ public class ResearchEvents {
 			if (!rsd.doesPlayerHaveTeam(uuid)) {
 				rsd.createNewTeam(player.getName() + "'s Team", uuid);
 				player.sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
+				rsd.teams.forEach((t) -> {
+					player.sendMessage(new TextComponentString(t.getTeamName()));
+				});
 			}
 
 		}

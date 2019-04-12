@@ -1,8 +1,10 @@
 package com.supertechgroup.core.research;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -13,6 +15,11 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	private int researchProcceses;
 	public String researchName;
 	private ArrayList<ItemStack> unlockedItems = new ArrayList<>();
+	private HashMap<ResourceLocation, Integer> tasks = new HashMap<>();
+
+	public void addTask(ResourceLocation taskType, int taskCount) {
+		tasks.put(taskType, taskCount);
+	}
 
 	public Research(String name) {
 		this.setRegistryName(name);
@@ -55,5 +62,9 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements Rese
 	public void registerResearch() {
 		System.out.println("Registering resh " + this.getRegistryName().toString());
 		Research.REGISTRY.register(this);
+	}
+
+	public boolean hasTask(ResourceLocation task) {
+		return tasks.containsKey(task);
 	}
 }

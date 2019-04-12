@@ -15,9 +15,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 public class ResearchEvents {
@@ -96,5 +98,10 @@ public class ResearchEvents {
 					.getCompletedResearch().toArray(new Research[] {}));
 			PacketHandler.INSTANCE.sendTo(packet, player);
 		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
+		event.player.sendMessage(new TextComponentString(event.crafting.getDisplayName()));
 	}
 }

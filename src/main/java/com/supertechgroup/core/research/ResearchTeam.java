@@ -75,6 +75,5 @@ public class ResearchTeam {
 
 	public void setWorld(World world2) {
 		world = world2;
-
 	}
 }

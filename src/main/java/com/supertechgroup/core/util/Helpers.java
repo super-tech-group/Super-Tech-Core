@@ -41,7 +41,7 @@ public class Helpers {
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("sttMaterial")) {
 			return Material.REGISTRY.getValue(new ResourceLocation(stack.getTagCompound().getString("sttMaterial")));
 		}
-		return Material.REGISTRY.getValue(new ResourceLocation("supertechtweaks:silver"));
+		return Material.REGISTRY.getValue(new ResourceLocation("supertechcore:silver"));
 	}
 
 	public static int getNBTInt(ItemStack stack, String key) {

@@ -30,7 +30,7 @@ public class BlockBase extends Block implements ItemModelProvider {
 		setUnlocalizedName(Reference.MODID + "." + name);
 		setRegistryName(name);
 
-		// setCreativeTab(SuperTechTweaksMod.creativeTab);
+		// setCreativeTab(supertechcoreMod.creativeTab);
 	}
 
 	@SideOnly(Side.CLIENT)

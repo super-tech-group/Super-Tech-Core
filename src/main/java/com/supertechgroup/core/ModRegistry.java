@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.supertechgroup.core.items.MaterialItem;
+import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -63,6 +64,8 @@ public class ModRegistry {
 
 	public static OreBlock superore;
 	public static BlockResearchStation researchStation;
+
+	public static SuperTechItem itemTech;
 
 	/**
 	 *
@@ -130,6 +133,7 @@ public class ModRegistry {
 
 	@SideOnly(Side.CLIENT)
 	public static void initModels() {
+		itemTech.registerModels();
 
 	}
 
@@ -189,9 +193,13 @@ public class ModRegistry {
 		createStoneType("kimberlite", 2.0, 14, 3, event, "gabbro");
 	}
 
+	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
-		event.getRegistry()
-				.registerAll(new ItemBlock(researchStation).setRegistryName(researchStation.getRegistryName()));
+		itemTech = new SuperTechItem();
+
+		event.getRegistry().registerAll(itemTech);
+
+		itemTech.setupDictionary();
 	}
 
 	@SubscribeEvent
@@ -496,11 +504,11 @@ public class ModRegistry {
 		new RegistryBuilder<Ore>().setType(Ore.class).setName(new ResourceLocation(Reference.MODID, "OreRegistry"))
 				.setIDRange(0, 512).create();
 		Ore.REGISTRY = GameRegistry.findRegistry(Ore.class);
-		
+
 		new RegistryBuilder<Material>().setType(Material.class)
 				.setName(new ResourceLocation(Reference.MODID, "MaterialRegistry")).setIDRange(0, 512).create();
 		Material.REGISTRY = GameRegistry.findRegistry(Material.class);
-		
+
 		new RegistryBuilder<Research>().setType(Research.class)
 				.setName(new ResourceLocation(Reference.MODID, "ResearchRegistry")).setIDRange(0, 2048).create();
 		Research.REGISTRY = GameRegistry.findRegistry(Research.class);
@@ -513,7 +521,6 @@ public class ModRegistry {
 				Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(), 1,
 				MaterialItem.INGOT));
 		bronze.registerResearch();
-		
-		
+
 	}
 }

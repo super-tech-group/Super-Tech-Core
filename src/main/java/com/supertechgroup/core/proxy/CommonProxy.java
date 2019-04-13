@@ -13,7 +13,9 @@ import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
+import com.supertechgroup.core.research.ShapedResearchRecipe;
 import com.supertechgroup.core.worldgen.WorldGenEvents;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -23,12 +25,14 @@ import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -221,6 +225,10 @@ public abstract class CommonProxy {
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
 								new ItemStack(Blocks.CRAFTING_TABLE), 'b', new ItemStack(Items.BOOK) })
 										.setRegistryName(Reference.MODID, "basicResearchStation"));
+		ShapedResearchRecipe srr = new ShapedResearchRecipe(new ResourceLocation("asdf"), new ItemStack(Items.APPLE),
+				new Object[] { new String[] { "aaa" }, 'a', new OreIngredient("plankWood") });
+		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation("bronze")));
+		GameRegistry.findRegistry(IRecipe.class).register(srr.setRegistryName("testing"));
 	}
 
 	public abstract Side getSide();

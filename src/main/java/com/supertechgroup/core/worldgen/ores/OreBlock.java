@@ -67,7 +67,7 @@ public class OreBlock extends BlockBase {
 	@Override
 	@Deprecated
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		return	OreSavedData.get(worldIn).getHardness(pos);
+		return	OreSavedData.get(worldIn).getHardness(pos) == null ? OreSavedData.get(worldIn).getHardness(pos) : 1f;
 				//blockState.getBlockHardness(worldIn, pos);
 				 //Block.REGISTRY.getObject(OreSavedData.get(worldIn).getBase(pos)).getBlockHardness(blockState, worldIn,pos);
 	}

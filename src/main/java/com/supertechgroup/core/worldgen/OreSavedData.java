@@ -227,27 +227,38 @@ public class OreSavedData extends WorldSavedData {
 	public void readFromNBT(NBTTagCompound parentNBTTagCompound) {
 		parentNBTTagCompound.getKeySet().forEach((x) -> {
 			NBTTagCompound xTag = parentNBTTagCompound.getCompoundTag(x);
-			xTag.getKeySet().forEach((y) -> {
-				NBTTagCompound yTag = xTag.getCompoundTag(y);
-				yTag.getKeySet().forEach((z) -> {
-
-					NBTTagList tag = yTag.getTagList(z, Constants.NBT.TAG_STRING);
-					ResourceLocation[] dataList = new ResourceLocation[tag.tagCount()];
-
-					for (int i = 0; i < tag.tagCount(); i++) {
-						dataList[i] = new ResourceLocation(tag.getStringTagAt(i));
-					}
-					setData(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z), dataList);
-					BlockPos pos = new BlockPos(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z));
-					if (SuperTechCoreMod.proxy instanceof ClientProxy) {
-						try {
-							SuperTechCoreMod.proxy.getWorld().markBlockRangeForRenderUpdate(pos, pos);
-						} catch (Exception ex) {
-						}
-					}
-					setChunkGenerated((Integer.parseInt(x) / 16), (Integer.parseInt(z) / 16));
+			if (x.contains("h")) {
+				System.out.println("Found a hardness");
+				xTag.getKeySet().forEach((y) -> {
+					NBTTagCompound yTag = xTag.getCompoundTag(y);
+					yTag.getKeySet().forEach((z) -> {
+						float hardness = yTag.getFloat(z);
+						setHardness(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z), hardness);
+					});
 				});
-			});
+			} else {
+				xTag.getKeySet().forEach((y) -> {
+					NBTTagCompound yTag = xTag.getCompoundTag(y);
+					yTag.getKeySet().forEach((z) -> {
+
+						NBTTagList tag = yTag.getTagList(z, Constants.NBT.TAG_STRING);
+						ResourceLocation[] dataList = new ResourceLocation[tag.tagCount()];
+
+						for (int i = 0; i < tag.tagCount(); i++) {
+							dataList[i] = new ResourceLocation(tag.getStringTagAt(i));
+						}
+						setData(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z), dataList);
+						BlockPos pos = new BlockPos(Integer.parseInt(x), Integer.parseInt(y), Integer.parseInt(z));
+						if (SuperTechCoreMod.proxy instanceof ClientProxy) {
+							try {
+								SuperTechCoreMod.proxy.getWorld().markBlockRangeForRenderUpdate(pos, pos);
+							} catch (Exception ex) {
+							}
+						}
+						setChunkGenerated((Integer.parseInt(x) / 16), (Integer.parseInt(z) / 16));
+					});
+				});
+			}
 		});
 		markDirty();
 	}
@@ -370,11 +381,13 @@ public class OreSavedData extends WorldSavedData {
 			xData.forEach((Integer y, HashMap<Integer, Float> yData) -> {
 				NBTTagCompound yTag = new NBTTagCompound();
 				yData.forEach((Integer z, Float hardness) -> {
-					NBTTagCompound zTag = new NBTTagCompound();
-					zTag.setFloat(z.toString(), hardness);
+					// NBTTagCompound zTag = new NBTTagCompound();
+					yTag.setFloat(z.toString(), hardness);
 				});
-				
+				xTag.setTag(y.toString(), yTag);
 			});
+			parentNBTTagCompound.setTag(x.toString() + "h", xTag);
+			System.out.println("Set a hardness");
 
 		});
 		return parentNBTTagCompound;

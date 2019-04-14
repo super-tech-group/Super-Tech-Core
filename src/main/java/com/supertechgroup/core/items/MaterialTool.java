@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.metallurgy.Material;
+import com.supertechgroup.core.metallurgy.Material.Property;
 import com.supertechgroup.core.util.Helpers;
 
 import net.minecraft.advancements.CriteriaTriggers;
@@ -117,7 +118,8 @@ public class MaterialTool extends ItemTool {
 	public float getDestroySpeed(ItemStack stack, IBlockState state) {
 		for (String type : getToolClasses(stack)) {
 			if (state.getBlock().isToolEffective(type, state)) {
-				return (float) (Math.log(material.getShear()) + Math.log(material.getBulk()));
+				return (float) (Math.log(material.getProperty(Property.SHEAR_MODULUS))
+						+ Math.log(material.getProperty(Property.BULK_MODULUS)));
 			}
 		}
 		return 1.0F;

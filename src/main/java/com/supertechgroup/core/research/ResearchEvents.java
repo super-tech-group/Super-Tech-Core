@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -78,6 +77,11 @@ public class ResearchEvents {
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.PLATE), false);
 	}
 
+	@SubscribeEvent
+	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
+		event.player.sendMessage(new TextComponentString(event.crafting.getDisplayName()));
+	}
+
 	// Research Team stuff
 	@SubscribeEvent
 	public void onPlayerLogin(EntityJoinWorldEvent e) {
@@ -98,10 +102,5 @@ public class ResearchEvents {
 					.getCompletedResearch().toArray(new Research[] {}));
 			PacketHandler.INSTANCE.sendTo(packet, player);
 		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
-		event.player.sendMessage(new TextComponentString(event.crafting.getDisplayName()));
 	}
 }

@@ -12,22 +12,6 @@ public class TileEntityResearchStation extends TileEntity {
 
 	HashMap<Research, HashMap<ResourceLocation, Integer>> researchProgress = new HashMap<>();
 
-	public ResearchTeam getTeam() {
-		// We've got to do it this way, the ResearchSavedData isn't ready to be read
-		// from when tile entities are created.
-		return ResearchSavedData.get(world).getTeamByName(team);
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		team = compound.getString("team");
-	}
-
-	public void setTeam(ResearchTeam nTeam) {
-		team = nTeam.getTeamName();
-	}
-
 	public void addResearchProgress(ResourceLocation task) {
 		Research.REGISTRY.forEach((r) -> {
 			// if the research isn't already done, and all requirements to progress are met
@@ -45,9 +29,25 @@ public class TileEntityResearchStation extends TileEntity {
 					progress.put(task, 1);
 					researchProgress.put(r, progress);
 				}
-				//TODO check if task is done
+				// TODO check if task is done
 			}
 		});
+	}
+
+	public ResearchTeam getTeam() {
+		// We've got to do it this way, the ResearchSavedData isn't ready to be read
+		// from when tile entities are created.
+		return ResearchSavedData.get(world).getTeamByName(team);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		team = compound.getString("team");
+	}
+
+	public void setTeam(ResearchTeam nTeam) {
+		team = nTeam.getTeamName();
 	}
 
 	@Override

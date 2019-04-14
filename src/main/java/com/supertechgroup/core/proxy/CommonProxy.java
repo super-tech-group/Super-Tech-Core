@@ -25,14 +25,12 @@ import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -227,7 +225,7 @@ public abstract class CommonProxy {
 										.setRegistryName(Reference.MODID, "basicResearchStation"));
 		ShapedResearchRecipe srr = new ShapedResearchRecipe(new ResourceLocation("asdf"), new ItemStack(Items.APPLE),
 				new Object[] { new String[] { "aaa" }, 'a', new OreIngredient("plankWood") });
-		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation("bronze")));
+		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
 		GameRegistry.findRegistry(IRecipe.class).register(srr.setRegistryName("testing"));
 	}
 

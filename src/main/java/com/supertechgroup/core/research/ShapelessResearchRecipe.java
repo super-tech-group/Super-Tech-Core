@@ -14,9 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-public class ShapedResearchRecipe extends ShapedOreRecipe {
+public class ShapelessResearchRecipe extends ShapelessOreRecipe {
 
 	private static final Field eventHandlerField = ObfuscationReflectionHelper.findField(InventoryCrafting.class,
 			"eventHandler");
@@ -45,7 +45,7 @@ public class ShapedResearchRecipe extends ShapedOreRecipe {
 
 	ComplexResearchRequirement req = new ComplexResearchRequirement(1);
 
-	public ShapedResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe) {
+	public ShapelessResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe) {
 		super(group, result, recipe);
 	}
 

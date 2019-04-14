@@ -496,11 +496,11 @@ public class ModRegistry {
 		new RegistryBuilder<Ore>().setType(Ore.class).setName(new ResourceLocation(Reference.MODID, "OreRegistry"))
 				.setIDRange(0, 512).create();
 		Ore.REGISTRY = GameRegistry.findRegistry(Ore.class);
-		
+
 		new RegistryBuilder<Material>().setType(Material.class)
 				.setName(new ResourceLocation(Reference.MODID, "MaterialRegistry")).setIDRange(0, 512).create();
 		Material.REGISTRY = GameRegistry.findRegistry(Material.class);
-		
+
 		new RegistryBuilder<Research>().setType(Research.class)
 				.setName(new ResourceLocation(Reference.MODID, "ResearchRegistry")).setIDRange(0, 2048).create();
 		Research.REGISTRY = GameRegistry.findRegistry(Research.class);
@@ -513,7 +513,6 @@ public class ModRegistry {
 				Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(), 1,
 				MaterialItem.INGOT));
 		bronze.registerResearch();
-		
-		
+
 	}
 }

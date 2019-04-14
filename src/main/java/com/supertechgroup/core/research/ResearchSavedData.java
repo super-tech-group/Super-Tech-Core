@@ -33,11 +33,8 @@ public class ResearchSavedData extends WorldSavedData {
 		return instance;
 	}
 
-	private void setWorld(World world2) {
-		world = world2;
-	}
-
 	World world;
+
 	public ArrayList<ResearchTeam> teams = new ArrayList<>();
 	private HashMap<UUID, ResearchTeam> teamInvites = new HashMap<>();
 
@@ -100,11 +97,6 @@ public class ResearchSavedData extends WorldSavedData {
 			}
 		}
 		return null;
-	}
-
-	public boolean getTeamFinishedResearch(ResearchTeam rt, Research research) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public ResearchTeam getTeamInvite(UUID uuid) {
@@ -171,6 +163,10 @@ public class ResearchSavedData extends WorldSavedData {
 		team.setTeamName(newName);
 		this.markDirty();
 		return true;
+	}
+
+	private void setWorld(World world2) {
+		world = world2;
 	}
 
 	@Override

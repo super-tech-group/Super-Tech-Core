@@ -30,6 +30,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class Material extends IForgeRegistryEntry.Impl<Material> {
+
 	public static class MaterialBuilder {
 		Material building;
 
@@ -265,10 +266,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return bulk;
 	}
 
-	public double getExpansion() {
-		return expansion;
-	}
-
 	public int getColor() {
 		return color;
 	}
@@ -279,6 +276,10 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 
 	public double getDensity() {
 		return density;
+	}
+
+	public double getExpansion() {
+		return expansion;
 	}
 
 	public int getFluidCapacity() {

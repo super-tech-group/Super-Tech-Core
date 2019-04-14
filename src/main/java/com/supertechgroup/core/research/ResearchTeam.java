@@ -61,6 +61,10 @@ public class ResearchTeam {
 		return members.contains(player);
 	}
 
+	public boolean isResearchCompleted(Research research) {
+		return completedResearch.contains(research);
+	}
+
 	public boolean removeMember(UUID toRemove) {
 		if (members.contains(toRemove)) {
 			members.remove(toRemove);

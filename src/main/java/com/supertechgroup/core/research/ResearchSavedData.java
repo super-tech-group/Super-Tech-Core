@@ -28,14 +28,17 @@ public class ResearchSavedData extends WorldSavedData {
 		if (instance == null) {
 			instance = new ResearchSavedData();
 			storage.setData(Reference.RESEARCH_DATA_NAME, instance);
+			instance.setWorld(world);
 		}
-		instance.world = world;
 		return instance;
 	}
 
-	private World world;
+	private void setWorld(World world2) {
+		world = world2;
+	}
 
-	private ArrayList<ResearchTeam> teams = new ArrayList<>();
+	World world;
+	public ArrayList<ResearchTeam> teams = new ArrayList<>();
 	private HashMap<UUID, ResearchTeam> teamInvites = new HashMap<>();
 
 	public ResearchSavedData() {
@@ -52,8 +55,10 @@ public class ResearchSavedData extends WorldSavedData {
 
 	public ResearchTeam createNewTeam(String teamName, UUID newMember) {
 		ResearchTeam r = new ResearchTeam(teamName);
+		r.setWorld(this.world);
 		r.addMember(newMember);
 		teams.add(r);
+		this.markDirty();
 		return r;
 	}
 
@@ -86,6 +91,17 @@ public class ResearchSavedData extends WorldSavedData {
 		return null;
 	}
 
+	public ResearchTeam getTeamByName(String name) {
+		if (teams.size() > 0) {
+			for (ResearchTeam rt : teams) {
+				if (rt.getTeamName().equals(name)) {
+					return rt;
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean getTeamFinishedResearch(ResearchTeam rt, Research research) {
 		// TODO Auto-generated method stub
 		return false;
@@ -108,11 +124,13 @@ public class ResearchSavedData extends WorldSavedData {
 				if (oldTeam.getMembers().size() == 0) {
 					teams.remove(oldTeam);
 				}
+				this.markDirty();
 				return true;
 			} else {
 				newTeam.addMember(uuid);
 				player.getServer().getPlayerList().getPlayerByUUID(uuid).sendMessage(new TextComponentString(
 						TextFormatting.GREEN + "You have joined " + newTeam.getTeamName() + "."));
+				this.markDirty();
 				return true;
 			}
 		}
@@ -136,8 +154,9 @@ public class ResearchSavedData extends WorldSavedData {
 
 			teamInfo.getTagList("members", Constants.NBT.TAG_STRING).forEach((m) -> {
 				NBTTagString stringTag = (NBTTagString) m;
-				team.addMember(UUID.fromString(stringTag.toString()));
+				team.addMember(UUID.fromString(stringTag.getString()));
 			});
+			team.setWorld(this.world);
 			teams.add(team);
 		});
 
@@ -150,6 +169,7 @@ public class ResearchSavedData extends WorldSavedData {
 			}
 		}
 		team.setTeamName(newName);
+		this.markDirty();
 		return true;
 	}
 
@@ -177,8 +197,6 @@ public class ResearchSavedData extends WorldSavedData {
 		}
 
 		compound.setTag("TeamList", teamList);
-
-		System.out.println("Saving research");
 		return compound;
 	}
 }

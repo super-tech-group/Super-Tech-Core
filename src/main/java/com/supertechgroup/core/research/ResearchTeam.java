@@ -3,25 +3,34 @@ package com.supertechgroup.core.research;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.supertechgroup.core.network.CompleteResearchPacket;
+import com.supertechgroup.core.network.PacketHandler;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 public class ResearchTeam {
 
 	private ArrayList<UUID> members;
-	private ArrayList<Research> completedResearch;
+	private ArrayList<Research> completedResearch = new ArrayList<>();
 	private String TeamName;
+	private World world;
 
 	public ResearchTeam() {
-		members = new ArrayList();
+		members = new ArrayList<>();
 	}
 
 	public ResearchTeam(String name) {
 		TeamName = name;
-		members = new ArrayList();
+		members = new ArrayList<>();
 	}
 
 	public void addCompletedResearch(Research r) {
 		completedResearch.add(r);
+		this.members.forEach((uuid) -> {
+			CompleteResearchPacket packet = new CompleteResearchPacket(r);
+			PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) this.world.getPlayerEntityByUUID(uuid));
+		});
 	}
 
 	public boolean addMember(UUID newMember) {
@@ -45,8 +54,7 @@ public class ResearchTeam {
 	}
 
 	public World getWorld() {
-		// TODO Auto-generated method stub
-		return null;
+		return world;
 	}
 
 	public boolean hasMember(UUID player) {
@@ -63,5 +71,10 @@ public class ResearchTeam {
 
 	public void setTeamName(String newName) {
 		TeamName = newName;
+	}
+
+	public void setWorld(World world2) {
+		world = world2;
+
 	}
 }

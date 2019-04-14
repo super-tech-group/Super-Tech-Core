@@ -3,9 +3,12 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.items.MaterialItem;
+import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.research.BlockResearchStation;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
@@ -60,6 +63,9 @@ public class ModRegistry {
 			Item.getItemFromBlock(Blocks.LAPIS_BLOCK), Item.getItemFromBlock(Blocks.QUARTZ_BLOCK) };
 
 	public static OreBlock superore;
+	public static BlockResearchStation researchStation;
+
+	public static SuperTechItem itemTech;
 
 	/**
 	 *
@@ -78,11 +84,6 @@ public class ModRegistry {
 			RegistryEvent.Register<Block> event, String... types) {
 		final Block rock, rockCobble;
 
-		ItemBlock itemBlock /*
-							 * = (ItemBlock) new
-							 * ItemBlock(rockCobble).setRegistryName(rockCobble.getRegistryName())
-							 */;
-		// ForgeRegistries.ITEMS.register(itemBlock);
 		rockCobble = new BlockRock(name + "cobble", true, (float) hardness, (float) blastResistance, toolHardnessLevel,
 				SoundType.STONE);
 
@@ -104,16 +105,7 @@ public class ModRegistry {
 		newArray[newArray.length - 1] = name;
 		RockManager.addRockTypes(rock.getDefaultState(), newArray);
 
-		/*
-		 * rockStairs = new BlockRockStairs(name + "_stairs", rock, (float) hardness,
-		 * (float) blastResistance, toolHardnessLevel, SoundType.STONE); rockSlab = new
-		 * BlockRockSlab.Half(name + "_slab", (float) hardness, (float) blastResistance,
-		 * toolHardnessLevel, SoundType.STONE); rockSlabDouble = new
-		 * BlockRockSlab.Double(name + "_slab_double", (float) hardness, (float)
-		 * blastResistance, toolHardnessLevel, SoundType.STONE);
-		 */
-
-		itemBlock = (ItemBlock) new ItemBlock(rock).setRegistryName(rock.getRegistryName());
+		ItemBlock itemBlock = (ItemBlock) new ItemBlock(rock).setRegistryName(rock.getRegistryName());
 		ForgeRegistries.ITEMS.register(itemBlock);
 
 		GameRegistry.addSmelting(rockCobble, new ItemStack(rock), 0.0f);
@@ -141,7 +133,7 @@ public class ModRegistry {
 
 	@SideOnly(Side.CLIENT)
 	public static void initModels() {
-		// TODO Auto-generated method stub
+		itemTech.registerModels();
 
 	}
 
@@ -149,6 +141,12 @@ public class ModRegistry {
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		superore = new OreBlock();
 		event.getRegistry().register(superore);
+
+		researchStation = new BlockResearchStation();
+		ForgeRegistries.ITEMS
+				.register(new ItemBlock(researchStation).setRegistryName(researchStation.getRegistryName()));
+		event.getRegistry().register(researchStation);
+		GameRegistry.registerTileEntity(researchStation.getTileEntityClass(), researchStation.getRegistryName());
 
 		// Rocks
 
@@ -193,6 +191,15 @@ public class ModRegistry {
 		createStoneType("slate", 1.5, 10, 0, event, "metamorphic");
 
 		createStoneType("kimberlite", 2.0, 14, 3, event, "gabbro");
+	}
+
+	@SubscribeEvent
+	public static void registerItems(RegistryEvent.Register<Item> event) {
+		itemTech = new SuperTechItem();
+
+		event.getRegistry().registerAll(itemTech);
+
+		itemTech.setupDictionary();
 	}
 
 	@SubscribeEvent
@@ -372,7 +379,6 @@ public class ModRegistry {
 				.setElectricalResistance(43.9).setHarvestLevel(1).setShearModulus(17).setThermalConductivity(156)
 				.setThermalExpansion(24.8).setYoungsModulus(45).build();
 		magnesium.registerMaterial();
-
 	}
 
 	@SubscribeEvent
@@ -498,12 +504,23 @@ public class ModRegistry {
 		new RegistryBuilder<Ore>().setType(Ore.class).setName(new ResourceLocation(Reference.MODID, "OreRegistry"))
 				.setIDRange(0, 512).create();
 		Ore.REGISTRY = GameRegistry.findRegistry(Ore.class);
+
 		new RegistryBuilder<Material>().setType(Material.class)
 				.setName(new ResourceLocation(Reference.MODID, "MaterialRegistry")).setIDRange(0, 512).create();
 		Material.REGISTRY = GameRegistry.findRegistry(Material.class);
+
 		new RegistryBuilder<Research>().setType(Research.class)
 				.setName(new ResourceLocation(Reference.MODID, "ResearchRegistry")).setIDRange(0, 2048).create();
 		Research.REGISTRY = GameRegistry.findRegistry(Research.class);
 	}
 
+	@SubscribeEvent
+	public static void registerResearch(RegistryEvent.Register<Research> event) {
+		Research bronze = new Research("bronze");
+		bronze.addUnlockedItem(new ItemStack(
+				Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(), 1,
+				MaterialItem.INGOT));
+		bronze.registerResearch();
+
+	}
 }

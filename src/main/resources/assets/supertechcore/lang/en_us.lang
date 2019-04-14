@@ -1,22 +1,7 @@
 tile.superore.name=Super Tech Ore
 tile.supertechcore.basicresearcher.name=Basic Research Station
 tile.supertechcore.multiwall.name=Multiblock Wall
-tile.supertechcore.researchselector.name=Research Selector
-tile.supertechcore.multiiteminterface.name=Multi-Item Interface
-tile.supertechcore.blockcable.name=Power Cabling
-tile.supertechcore.multipowerinput.name=Power Input
-tile.supertechcore.multipoweroutput.name=Power Output
-tile.supertechcore.multifluidinput.name=Fluid Input
-tile.supertechcore.multifluidoutput.name=Fluid Output
-tile.supertechcore.blockboiler.name=Solid Fuel Boiler
-tile.supertechcore.blocksteamengine.name=Steam Engine
-tile.supertechcore.blockcrusher.name=Mechanical Crusher
-tile.supertechcore.pressuretank.name=Pressurized Tank
-tile.supertechcore.conveyor.name=Conveyor Belt
-tile.supertechcore.extractor.name=Extractor Belt
-tile.supertechcore.inserter.name=Inserter Belt
-tile.supertechcore.blockpipe.name=Fluid Pipe
-tile.supertechcore.blockSolar.name=Solar Panel
+tile.supertechcore.researchStation.name=Research Station
 
 tile.supertechcore.amphibolite.name=Amphibolite
 tile.supertechcore.basalt.name=Basalt

@@ -46,11 +46,11 @@ public class OreSavedData extends WorldSavedData {
 	 * <X,<Y,<Z,Data>>> where Data[0] is the rock type of the ore and the remaining
 	 * elements are the ore data
 	 */
-	HashMap<Integer, HashMap<Integer, HashMap<Integer, ResourceLocation[]>>> data = new HashMap();
+	HashMap<Integer, HashMap<Integer, HashMap<Integer, ResourceLocation[]>>> data = new HashMap<>();
 
-	HashMap<Integer, ArrayList<Integer>> generated = new HashMap();
+	HashMap<Integer, ArrayList<Integer>> generated = new HashMap<>();
 
-	HashMap<Integer, HashMap<Integer, HashMap<Integer, Float>>> hardnessData = new HashMap();
+	HashMap<Integer, HashMap<Integer, HashMap<Integer, Float>>> hardnessData = new HashMap<>();
 	// Required constructors
 
 	public OreSavedData() {
@@ -62,9 +62,9 @@ public class OreSavedData extends WorldSavedData {
 	}
 
 	public void clearData() {
-		data = new HashMap();
-		generated = new HashMap();
-		hardnessData = new HashMap();
+		data = new HashMap<>();
+		generated = new HashMap<>();
+		hardnessData = new HashMap<>();
 		markDirty();
 	}
 
@@ -138,8 +138,7 @@ public class OreSavedData extends WorldSavedData {
 		// System.out.println("Set hardness at" + x + ":" + y + ":" + z);
 		markDirty();
 
-	}
-
+	
 	/**
 	 * Creates a tag of ore data in a chunk. Intended for use with #updateFromTag.
 	 *
@@ -236,6 +235,14 @@ public class OreSavedData extends WorldSavedData {
 		return ret;
 	}
 
+	public Float getHardness(BlockPos pos) {
+		return getHardness(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public Float getHardness(int x, int y, int z) {
+		return hardnessData.get(x).get(y).get(z);
+	}
+
 	/**
 	 * returns an array of all Ores within a single block at position 'pos'
 	 *
@@ -328,10 +335,10 @@ public class OreSavedData extends WorldSavedData {
 	 */
 	public void setBase(int x, int y, int z, ResourceLocation base) {
 		if (!data.containsKey(x)) {
-			data.put(x, new HashMap());
+			data.put(x, new HashMap<>());
 		}
 		if (!data.get(x).containsKey(y)) {
-			data.get(x).put(y, new HashMap());
+			data.get(x).put(y, new HashMap<>());
 		}
 		if (data.get(x).get(y).containsKey(z)) {
 			data.get(x).get(y).get(z)[0] = base;
@@ -343,7 +350,7 @@ public class OreSavedData extends WorldSavedData {
 
 	public void setChunkGenerated(int chunkX, int chunkZ) {
 		if (!generated.containsKey(chunkX)) {
-			generated.put(chunkX, new ArrayList());
+			generated.put(chunkX, new ArrayList<>());
 		}
 		if (!generated.get(chunkX).contains(chunkZ)) {
 			generated.get(chunkX).add(chunkZ);
@@ -376,10 +383,10 @@ public class OreSavedData extends WorldSavedData {
 	 */
 	public void setData(int x, int y, int z, ResourceLocation[] dataList) {
 		if (!data.containsKey(x)) {
-			data.put(x, new HashMap());
+			data.put(x, new HashMap<>());
 		}
 		if (!data.get(x).containsKey(y)) {
-			data.get(x).put(y, new HashMap());
+			data.get(x).put(y, new HashMap<>());
 		}
 		ResourceLocation[] newData = new ResourceLocation[dataList.length];
 		for (int i = 0; i < dataList.length; i++) {
@@ -389,16 +396,36 @@ public class OreSavedData extends WorldSavedData {
 		markDirty();
 	}
 
+	public void setHardness(BlockPos pos, Float hardness) {
+		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
+	}
+
+	public void setHardness(int x, int y, int z, Float hardness) {
+		if (!hardnessData.containsKey(x)) {
+			hardnessData.put(x, new HashMap<>());
+		}
+		if (!hardnessData.get(x).containsKey(y)) {
+			hardnessData.get(x).put(y, new HashMap<>());
+		}
+		if (hardnessData.get(x).get(y).containsKey(z)) {
+			hardnessData.get(x).get(y).put(z, hardness);
+			return;
+		}
+		hardnessData.get(x).get(y).put(z, hardness);
+		markDirty();
+
+	}
+
 	public void setOres(BlockPos pos, ResourceLocation[] ores) {
 		setOres(pos.getX(), pos.getY(), pos.getZ(), ores);
 	}
 
 	public void setOres(int x, int y, int z, ResourceLocation[] ores) {
 		if (!data.containsKey(x)) {
-			data.put(x, new HashMap());
+			data.put(x, new HashMap<>());
 		}
 		if (!data.get(x).containsKey(y)) {
-			data.get(x).put(y, new HashMap());
+			data.get(x).put(y, new HashMap<>());
 		}
 		ResourceLocation[] newData = new ResourceLocation[ores.length + 1];
 

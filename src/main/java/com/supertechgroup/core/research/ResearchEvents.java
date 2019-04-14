@@ -8,6 +8,8 @@ import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
+import com.supertechgroup.core.network.CompleteResearchPacket;
+import com.supertechgroup.core.network.PacketHandler;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -41,7 +43,7 @@ public class ResearchEvents {
 			JEIMainPlugin.handleItemBlacklisting(new ItemStack(i), true);
 		}
 
-		//Unhide some basic stuff
+		// Unhide some basic stuff
 		Material wood = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":wood"));
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemShovel(), 1, MaterialTool.SHOVEL), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(wood.getItemPickaxe(), 1, MaterialTool.PICKAXE), false);
@@ -84,8 +86,15 @@ public class ResearchEvents {
 			if (!rsd.doesPlayerHaveTeam(uuid)) {
 				rsd.createNewTeam(player.getName() + "'s Team", uuid);
 				player.sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
+				rsd.teams.forEach((t) -> {
+					player.sendMessage(new TextComponentString(t.getTeamName()));
+				});
 			}
 
+			// send team's completed research
+			CompleteResearchPacket packet = new CompleteResearchPacket(rsd.findPlayersResearchTeam(player.getUniqueID())
+					.getCompletedResearch().toArray(new Research[] {}));
+			PacketHandler.INSTANCE.sendTo(packet, player);
 		}
 	}
 }

@@ -10,12 +10,14 @@ import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
 import com.supertechgroup.core.research.BlockResearchStation;
 import com.supertechgroup.core.research.Research;
+import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.ores.OreBlock;
+import com.supertechgroup.core.worldgen.ores.OreItem;
 import com.supertechgroup.core.worldgen.rocks.BlockRock;
 import com.supertechgroup.core.worldgen.rocks.RockManager;
 import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
@@ -385,19 +387,20 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerOres(RegistryEvent.Register<Ore> event) {
+		// actually register the ores
 		new Ore("Bauxite", 0x7CFC00).registerOre();// aluminium
-		new Ore("Bornite", 0x8B4513).registerOre();// copper, iron, sulfur
+		Ore bornite = new Ore("Bornite", 0x8B4513).registerOre();// copper, iron, sulfur
 		new Ore("Magnetite", 0x494d51).registerOre();// iron ore
 		new Ore("Limonite", 0xFFF44F).registerOre();// iron ore
-		new Ore("Chalcocite", 0x2F4F4F).registerOre();// copper, sulfur
-		new Ore("Cassiterite", 0x654321).registerOre();// tin
+		Ore chalcocite = new Ore("Chalcocite", 0x2F4F4F).registerOre();// copper, sulfur
+		Ore cassiterite = new Ore("Cassiterite", 0x654321).registerOre();// tin
 		new Ore("Chromite", 0xC0C0CC).registerOre();// iron, chromium. potential for magnesium
 		new Ore("Cinnabar", 0x8b0017).registerOre();// mercury, sulfur
-		new Ore("Cobaltite", 0xd2b48c).registerOre();// cobale, arsenic, sulfur; small percentage of iron and nickel
+		new Ore("Cobaltite", 0xd2b48c).registerOre();// cobalt, arsenic, sulfur; small percentage of iron and nickel
 		new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
 		new Ore("Hematite", 0x101c1f).registerOre();// iron ore
 		new Ore("Ilmenite", 0x323230).registerOre();// iron, titanium
-		new Ore("Sphalerite", 0x323230).registerOre();// zinc, sulfur, iron.
+		Ore sphalerite = new Ore("Sphalerite", 0x323230).registerOre();// zinc, sulfur, iron.
 		new Ore("Coal", 0x060607) {
 			@Override
 			public ItemStack getDrops(byte base) {
@@ -436,15 +439,20 @@ public class ModRegistry {
 			}
 		}.registerOre();
 
+		// advanced ore dictionary stuff
+		ResearchTasks.addTask(new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"));
+		ResearchTasks.addTask(new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
+		ResearchTasks.addTask(new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
+		ResearchTasks.addTask(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"));
+
+		// setup ore veins
 		CommonProxy.parsed.add(new WorldGeneratorPlate(
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:galena"))),
 				"galena", new int[] { 0 }, 10, 10, "extrusive", "metamorphic", "granite", "sandstone"));
-		/*
-		 * CommonProxy.parsed.add(new WorldGeneratorCluster( WorldGeneratorBase
-		 * .singleOre(Ore.REGISTRY.getValue(new
-		 * ResourceLocation("supertechcore:nativeAluminum"))), "nativeAluminum", new
-		 * int[] { 0 }, 15, 1, 1, 5, "extrusive"));
-		 */
 		CommonProxy.parsed
 				.add(new WorldGeneratorCluster(
 						WorldGeneratorBase.singleOre(
@@ -519,6 +527,8 @@ public class ModRegistry {
 	@SubscribeEvent
 	public static void registerResearch(RegistryEvent.Register<Research> event) {
 		Research bronze = new Research("bronze");
+		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "oreDustCopper"), 5);
+		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "oreDustTin"), 5);
 		bronze.registerResearch();
 
 	}

@@ -22,13 +22,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemResearchBook extends ItemBase {
 
-	public ItemResearchBook() {
-		super("researchBook");
-	}
-
-	public void registerModels() {
-		ModelLoader.setCustomModelResourceLocation(this, 0,
-				new ModelResourceLocation("supertechcore:researchbook", "inventory"));
+	public static ItemStack getEmptyBookStack() {
+		ItemStack emptyBook = new ItemStack(ModRegistry.itemResearchBook);
+		emptyBook.setTagCompound(getEmptyBookTag());
+		return emptyBook;
 	}
 
 	public static NBTTagCompound getEmptyBookTag() {
@@ -38,19 +35,19 @@ public class ItemResearchBook extends ItemBase {
 		return emptyResearchBook;
 	}
 
-	public static ItemStack getEmptyBookStack() {
-		ItemStack emptyBook = new ItemStack(ModRegistry.itemResearchBook);
-		emptyBook.setTagCompound(getEmptyBookTag());
-		return emptyBook;
+	public ItemResearchBook() {
+		super("researchBook");
 	}
 
 	/**
 	 * allows items to add custom lines of information to the mouseover description
 	 */
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		NBTTagCompound tag = stack.getTagCompound();
 		if (tag != null) {
+			tooltip.add("Hold in your offhand while crafting to research");
 			tooltip.add("Pages left: " + tag.getInteger("remaining"));
 			tooltip.add("Tasks Researched:");
 			NBTTagList taskList = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
@@ -66,5 +63,10 @@ public class ItemResearchBook extends ItemBase {
 			tooltip.add("Invalid NBT, did you cheat this in?");
 		}
 
+	}
+
+	public void registerModels() {
+		ModelLoader.setCustomModelResourceLocation(this, 0,
+				new ModelResourceLocation("supertechcore:researchbook", "inventory"));
 	}
 }

@@ -67,7 +67,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 		return name;
 	}
 
-	public void registerOre() {
+	public Ore registerOre() {
 		this.setRegistryName(getName());
 		GameRegistry.findRegistry(Item.class).register(itemOre);
 
@@ -81,6 +81,7 @@ public class Ore extends IForgeRegistryEntry.Impl<Ore> {
 								.setRegistryName(Reference.MODID, "crushed" + name));
 
 		Ore.REGISTRY.register(this);
+		return this;
 	}
 
 	private void registerOreDict() {

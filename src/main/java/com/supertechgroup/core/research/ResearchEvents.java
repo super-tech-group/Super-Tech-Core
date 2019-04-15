@@ -15,8 +15,12 @@ import com.supertechgroup.core.network.PacketHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -84,6 +88,19 @@ public class ResearchEvents {
 
 	@SubscribeEvent
 	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
+		ItemStack hand = event.player.getHeldItemOffhand();
+		if (hand.getItem().equals(ModRegistry.itemResearchBook) && hand.getTagCompound() != null
+				&& hand.getTagCompound().getInteger("remaining") > 0) {
+			NBTTagCompound tag = hand.getTagCompound();
+			NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
+			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(event.crafting);
+			if (!craftingResearch.toString().equals("null:void")) {
+				list.appendTag((new NBTTagString(craftingResearch.toString())));
+				tag.setInteger("remaining", tag.getInteger("remaining") - 1);
+				tag.setTag("tasks", list);
+				hand.setTagCompound(tag);
+			}
+		}
 	}
 
 	// Research Team stuff

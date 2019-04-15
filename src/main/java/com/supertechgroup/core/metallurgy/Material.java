@@ -31,6 +31,47 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class Material extends IForgeRegistryEntry.Impl<Material> {
 
+	public enum Property {
+		/**
+		 * density measured in g/cm3 at room temperature
+		 */
+		DENSITY,
+		/**
+		 * Electrical resistance measured in nΩ·m (at 20 °C)
+		 */
+		ELECTRICAL_RESISTANCE,
+		/**
+		 * thermal expansion measured in µm/(m·K) (at 25 °C)
+		 */
+		THERMAL_EXPANSION,
+		/**
+		 * Shear modulus measured in GPa
+		 */
+		SHEAR_MODULUS,
+		/**
+		 * thermal conductivity measured in W/(m·K)
+		 */
+		THERMAL_CONDUCTIVITY,
+		/**
+		 * Specific heat of the material measured in joule per kelvin
+		 */
+		SPECIFIC_HEAT,
+		/**
+		 * Young's modulus measured in GPa
+		 *
+		 * This is how much pressure applied outward this material can withstand.
+		 */
+		YOUNGS_MODULUS,
+		/**
+		 * Bulk Modulus measured in GPa.
+		 *
+		 * This is how much pressure applied inward this material can withstand.
+		 */
+		BULK_MODULUS
+	}
+
+	private HashMap<Property, Double> properties = new HashMap<>();
+
 	public static class MaterialBuilder {
 		Material building;
 
@@ -59,8 +100,8 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 *
 		 * This is how much pressure applied inward this material can withstand.
 		 */
-		public MaterialBuilder setBulkModulus(int mod) {
-			building.bulk = mod;
+		public MaterialBuilder setBulkModulus(double mod) {
+			building.properties.put(Property.BULK_MODULUS, mod);
 			return this;
 		}
 
@@ -81,7 +122,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 * density measured in g/cm3 at room temperature
 		 */
 		public MaterialBuilder setDensity(double density) {
-			building.density = density;
+			building.properties.put(Property.DENSITY, density);
 			return this;
 		}
 
@@ -89,7 +130,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 * Electrical resistance measured in nΩ·m (at 20 °C)
 		 */
 		public MaterialBuilder setElectricalResistance(double resistance) {
-			building.resistance = resistance;
+			building.properties.put(Property.ELECTRICAL_RESISTANCE, resistance);
 			return this;
 		}
 
@@ -106,13 +147,13 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 *
 		 * This is how much pressure applied sideways this material can withstand.
 		 */
-		public MaterialBuilder setShearModulus(int shear) {
-			building.shear = shear;
+		public MaterialBuilder setShearModulus(double shear) {
+			building.properties.put(Property.SHEAR_MODULUS, shear);
 			return this;
 		}
 
 		public MaterialBuilder setSpecificHeat(double heat) {
-			building.specificHeat = heat;
+			building.properties.put(Property.SPECIFIC_HEAT, heat);
 			return this;
 		}
 
@@ -120,7 +161,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 * thermal conductivity measured in W/(m·K)
 		 */
 		public MaterialBuilder setThermalConductivity(double conductivity) {
-			building.conductivity = conductivity;
+			building.properties.put(Property.THERMAL_CONDUCTIVITY, conductivity);
 			return this;
 		}
 
@@ -128,7 +169,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 * thermal expansion measured in µm/(m·K) (at 25 °C)
 		 */
 		public MaterialBuilder setThermalExpansion(double expansion) {
-			building.expansion = expansion;
+			building.properties.put(Property.THERMAL_EXPANSION, expansion);
 			return this;
 		}
 
@@ -145,8 +186,8 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		 *
 		 * This is how much pressure applied outward this material can withstand.
 		 */
-		public MaterialBuilder setYoungsModulus(int mod) {
-			building.young = mod;
+		public MaterialBuilder setYoungsModulus(double mod) {
+			building.properties.put(Property.YOUNGS_MODULUS, mod);
 			return this;
 		}
 	}
@@ -172,43 +213,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 	 * Level that a tool made of this can mine
 	 */
 	private int tool;
-	/**
-	 * density measured in g/cm3 at room temperature
-	 */
-	private double density;
-	/**
-	 * Electrical resistance measured in nΩ·m (at 20 °C)
-	 */
-	private double resistance;
-	/**
-	 * thermal expansion measured in µm/(m·K) (at 25 °C)
-	 */
-	private double expansion;
-	/**
-	 * Shear modulus measured in GPa
-	 */
-	private int shear;
-
-	/**
-	 * thermal conductivity measured in W/(m·K)
-	 */
-	private double conductivity;
-	/**
-	 * Specific heat of the material measured in joule per kelvin
-	 */
-	private double specificHeat;
-	/**
-	 * Young's modulus measured in GPa
-	 *
-	 * This is how much pressure applied outward this material can withstand.
-	 */
-	private int young;
-	/**
-	 * Bulk Modulus measured in GPa.
-	 *
-	 * This is how much pressure applied inward this material can withstand.
-	 */
-	private int bulk;
 
 	private BlockMaterial block;
 
@@ -225,18 +229,19 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 	private MaterialTool itemPickaxe;
 
 	private Material(String name, int color, int harvest, int mine, double density, double resistance, double expansion,
-			int shear, double conductivity, int young, int bulk) {
+			double shear, double conductivity, double young, double bulk) {
 		this.name = name;
 		this.color = color;
 		this.harvest = harvest;
 		tool = mine;
-		this.density = density;
-		this.resistance = resistance;
-		this.expansion = expansion;
-		this.shear = shear;
-		this.conductivity = conductivity;
-		this.young = young;
-		this.bulk = bulk;
+
+		properties.put(Property.BULK_MODULUS, bulk);
+		properties.put(Property.DENSITY, density);
+		properties.put(Property.ELECTRICAL_RESISTANCE, resistance);
+		properties.put(Property.THERMAL_EXPANSION, expansion);
+		properties.put(Property.SHEAR_MODULUS, shear);
+		properties.put(Property.THERMAL_CONDUCTIVITY, conductivity);
+		properties.put(Property.YOUNGS_MODULUS, young);
 	}
 
 	public void addBasicProcessing() {
@@ -262,32 +267,12 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return block;
 	}
 
-	public int getBulk() {
-		return bulk;
-	}
-
-	public int getColor() {
-		return color;
-	}
-
-	public double getConductivity() {
-		return conductivity;
-	}
-
-	public double getDensity() {
-		return density;
-	}
-
-	public double getExpansion() {
-		return expansion;
-	}
-
 	public int getFluidCapacity() {
-		return getYoungs() * 30;
+		return (int) (properties.get(Property.YOUNGS_MODULUS) * 30);
 	}
 
 	public int getFluidTransferRate() {
-		return getYoungs() * 3;
+		return (int) (properties.get(Property.YOUNGS_MODULUS) * 3);
 	}
 
 	public int getHarvest() {
@@ -326,37 +311,26 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return itemMaterial;
 	}
 
+	public double getProperty(Property prop) {
+		return this.properties.getOrDefault(prop, Double.NaN);
+	}
+
 	public int getMaxToolDamage(int type) {
 		switch (type) {
 		case MaterialTool.PLIERS:
-			return shear * 2;
+			return (int) (properties.get(Property.SHEAR_MODULUS) * 2);
 		case MaterialTool.DRAW_PLATE:
-			return shear + bulk;
+			return (int) (properties.get(Property.SHEAR_MODULUS) + properties.get(Property.BULK_MODULUS));
 		case MaterialTool.HAMMER:
-			return bulk * 3;
+			return (int) (properties.get(Property.BULK_MODULUS) * 3);
 		case MaterialTool.PICKAXE:
-			return bulk * 2;
+			return (int) (properties.get(Property.BULK_MODULUS) * 2);
 		}
-		return bulk;
+		return (int) (properties.get(Property.BULK_MODULUS) * 1);
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public double getResistance() {
-		return resistance;
-	}
-
-	public int getShear() {
-		return shear;
-	}
-
-	/**
-	 * @return the specificHeat
-	 */
-	public double getSpecificHeat() {
-		return specificHeat;
 	}
 
 	public int getToolLevel() {
@@ -364,11 +338,8 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 	}
 
 	public int getTransferRate() {
-		return (int) Math.floor((1 / getResistance()) * getConductivity() * 32);
-	}
-
-	public int getYoungs() {
-		return young;
+		return (int) Math.floor((1 / properties.get(Property.ELECTRICAL_RESISTANCE))
+				* properties.get(Property.THERMAL_CONDUCTIVITY) * 32);
 	}
 
 	public void registerMaterial() {
@@ -443,5 +414,9 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		OreDictionary.registerOre("drawplate" + getName(), subItemStack);
 		OreDictionary.registerOre("toolDrawPlate", subItemStack);
 
+	}
+
+	public int getColor() {
+		return this.color;
 	}
 }

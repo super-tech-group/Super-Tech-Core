@@ -64,7 +64,6 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 	}
 
 	public void registerResearch() {
-		System.out.println("Registering resh " + this.getRegistryName().toString());
 		Research.REGISTRY.register(this);
 	}
 }

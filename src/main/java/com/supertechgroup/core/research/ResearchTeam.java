@@ -3,11 +3,13 @@ package com.supertechgroup.core.research;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ResearchTeam {
 
@@ -26,11 +28,14 @@ public class ResearchTeam {
 	}
 
 	public void addCompletedResearch(Research r) {
+		System.out.println("Completing " + r + " for " + this.getTeamName());
 		completedResearch.add(r);
-		if (!this.getWorld().isRemote) {
+		ResearchSavedData.get(this.world).markDirty();
+		if (SuperTechCoreMod.proxy.getSide() == Side.SERVER) {
 			this.members.forEach((uuid) -> {
 				CompleteResearchPacket packet = new CompleteResearchPacket(this, r);
 				PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) this.world.getPlayerEntityByUUID(uuid));
+				System.out.println("Packet sent");
 			});
 		}
 	}

@@ -14,23 +14,22 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 public class ResearchSavedData extends WorldSavedData {
+	private static ResearchSavedData INSTANCE = null;
 
 	public static ResearchSavedData get(World world) {
-		MapStorage storage = world.getMapStorage();
-		ResearchSavedData instance = (ResearchSavedData) storage.getOrLoadData(ResearchSavedData.class,
-				Reference.RESEARCH_DATA_NAME);
-
-		if (instance == null) {
-			instance = new ResearchSavedData();
-			storage.setData(Reference.RESEARCH_DATA_NAME, instance);
-			instance.setWorld(world);
+		if (INSTANCE == null) {
+			INSTANCE = (ResearchSavedData) world.getMapStorage().getOrLoadData(ResearchSavedData.class,
+					Reference.RESEARCH_DATA_NAME);
+			if (INSTANCE == null) {
+				INSTANCE = new ResearchSavedData(Reference.RESEARCH_DATA_NAME);
+				world.getMapStorage().setData(Reference.RESEARCH_DATA_NAME, INSTANCE);
+			}
 		}
-		return instance;
+		return INSTANCE;
 	}
 
 	World world;
@@ -138,6 +137,7 @@ public class ResearchSavedData extends WorldSavedData {
 			ResearchTeam team = new ResearchTeam();
 
 			team.setTeamName(teamInfo.getString("name"));
+			team.setWorld(this.world);
 
 			teamInfo.getTagList("completedResearch", Constants.NBT.TAG_STRING).forEach((cr) -> {
 				NBTTagString stringTag = (NBTTagString) cr;
@@ -148,7 +148,6 @@ public class ResearchSavedData extends WorldSavedData {
 				NBTTagString stringTag = (NBTTagString) m;
 				team.addMember(UUID.fromString(stringTag.getString()));
 			});
-			team.setWorld(this.world);
 			teams.add(team);
 		});
 

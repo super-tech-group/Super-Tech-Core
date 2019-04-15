@@ -1,6 +1,10 @@
 package com.supertechgroup.core.research;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Random;
 
 import com.supertechgroup.core.network.CompleteResearchPacket;
 
@@ -15,6 +19,8 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 	private int researchProcceses;
 	public String researchName;
 	private HashMap<ResourceLocation, Integer> tasks = new HashMap<>();
+
+	ArrayList<IResearchRequirement> requirements = new ArrayList<>();
 
 	public Research(String name) {
 		this.setRegistryName(name);
@@ -35,6 +41,10 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 			}
 		}
 		return true;
+	}
+
+	public String toString() {
+		return this.getRegistryName().toString();
 	}
 
 	public String getResearchName() {
@@ -61,5 +71,41 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 
 	public void registerResearch() {
 		Research.REGISTRY.register(this);
+	}
+
+	public static Research getRandomMatch(ResearchTeam team, HashMap<ResourceLocation, Integer> taskMap) {
+		ArrayList<Research> possible = new ArrayList<>();
+		Research.REGISTRY.forEach((r) -> {
+			if (!team.isResearchCompleted(r) && r.getRequirementsFulfilled(team) && r.couldComplete(taskMap)) {
+				possible.add(r);
+			}
+		});
+		if (possible.isEmpty()) {
+			return null;
+		} else {
+			return possible.get((new Random()).nextInt(possible.size()));
+		}
+	}
+
+	private boolean couldComplete(HashMap<ResourceLocation, Integer> taskMap) {
+		Iterator<Entry<ResourceLocation, Integer>> iterator = tasks.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<ResourceLocation, Integer> pair = iterator.next();
+			if (!taskMap.containsKey(pair.getKey()) || taskMap.get(pair.getKey()) < pair.getValue()) {
+				System.out.println(this.getRegistryName() + " failed for " + pair.getKey() + ". " + pair.getValue()
+						+ " needed, " + taskMap.getOrDefault(pair.getKey(), 0) + " found.");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public HashMap<ResourceLocation, Integer> getTasks() {
+		return tasks;
+	}
+
+	@Override
+	public void addRequirement(IResearchRequirement rr) {
+		this.requirements.add(rr);
 	}
 }

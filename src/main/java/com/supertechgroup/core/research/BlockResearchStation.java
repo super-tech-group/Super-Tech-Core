@@ -1,8 +1,10 @@
 package com.supertechgroup.core.research;
 
+import java.util.HashMap;
+
 import javax.annotation.Nullable;
 
-import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.util.BlockTileEntity;
 
 import net.minecraft.block.material.Material;
@@ -11,6 +13,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -19,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStation> {
 
@@ -55,10 +61,33 @@ public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStat
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			TileEntityResearchStation tile = getTileEntity(world, pos);
-			player.sendMessage(new TextComponentString("Researches: " + Research.REGISTRY.getKeys().size()));
-			player.sendMessage(new TextComponentString("Researched Bronze for team: " + tile.getTeam().getTeamName()));
-			tile.getTeam()
-					.addCompletedResearch(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
+			ItemStack stack = player.getHeldItemMainhand();
+			if (stack.getItem().equals(ModRegistry.itemResearchBook)) {
+				NBTTagCompound tag = stack.getTagCompound();
+				if (tag != null) {
+					System.out.println(tag);
+					NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
+					list.forEach((task) -> {
+						NBTTagString t = (NBTTagString) task;
+						tile.addResearchProgress(new ResourceLocation(t.getString()));
+					});
+					tag.setTag("tasks", new NBTTagList());
+
+				}
+			} else {
+				HashMap<ResourceLocation, Integer> taskMap = tile.getTasks();
+				final StringBuilder message = new StringBuilder();
+				message.append("Currently studied:\n");
+				taskMap.forEach((k, v) -> {
+					message.append(v + "x " + k + "\n");
+				});
+				message.append("researched:\n");
+				tile.getTeam().getCompletedResearch().forEach((r) -> {
+					// todo
+					message.append(r.toString() + "\n");
+				});
+				player.sendMessage(new TextComponentString(message.toString()));
+			}
 		}
 		return true;
 	}

@@ -527,9 +527,8 @@ public class ModRegistry {
 	@SubscribeEvent
 	public static void registerResearch(RegistryEvent.Register<Research> event) {
 		Research bronze = new Research("bronze");
-		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "oreDustCopper"), 5);
-		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "oreDustTin"), 5);
+		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
+		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		bronze.registerResearch();
-
 	}
 }

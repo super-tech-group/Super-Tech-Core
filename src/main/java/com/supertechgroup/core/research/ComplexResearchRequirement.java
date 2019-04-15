@@ -1,7 +1,11 @@
 package com.supertechgroup.core.research;
 
+import java.util.ArrayList;
+
 public class ComplexResearchRequirement implements IResearchRequirement {
 	private int numberRequired;
+
+	ArrayList<IResearchRequirement> requirements = new ArrayList<>();
 
 	public ComplexResearchRequirement(int numRequired, IResearchRequirement... rr) {
 		this.numberRequired = numRequired;
@@ -39,6 +43,11 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 
 	public void setRequiredCount(int num) {
 		this.numberRequired = num;
+	}
+
+	@Override
+	public void addRequirement(IResearchRequirement rr) {
+		this.requirements.add(rr);
 	}
 
 }

@@ -31,47 +31,6 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class Material extends IForgeRegistryEntry.Impl<Material> {
 
-	public enum Property {
-		/**
-		 * density measured in g/cm3 at room temperature
-		 */
-		DENSITY,
-		/**
-		 * Electrical resistance measured in nΩ·m (at 20 °C)
-		 */
-		ELECTRICAL_RESISTANCE,
-		/**
-		 * thermal expansion measured in µm/(m·K) (at 25 °C)
-		 */
-		THERMAL_EXPANSION,
-		/**
-		 * Shear modulus measured in GPa
-		 */
-		SHEAR_MODULUS,
-		/**
-		 * thermal conductivity measured in W/(m·K)
-		 */
-		THERMAL_CONDUCTIVITY,
-		/**
-		 * Specific heat of the material measured in joule per kelvin
-		 */
-		SPECIFIC_HEAT,
-		/**
-		 * Young's modulus measured in GPa
-		 *
-		 * This is how much pressure applied outward this material can withstand.
-		 */
-		YOUNGS_MODULUS,
-		/**
-		 * Bulk Modulus measured in GPa.
-		 *
-		 * This is how much pressure applied inward this material can withstand.
-		 */
-		BULK_MODULUS
-	}
-
-	private HashMap<Property, Double> properties = new HashMap<>();
-
 	public static class MaterialBuilder {
 		Material building;
 
@@ -192,7 +151,48 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		}
 	}
 
+	public enum Property {
+		/**
+		 * density measured in g/cm3 at room temperature
+		 */
+		DENSITY,
+		/**
+		 * Electrical resistance measured in nΩ·m (at 20 °C)
+		 */
+		ELECTRICAL_RESISTANCE,
+		/**
+		 * thermal expansion measured in µm/(m·K) (at 25 °C)
+		 */
+		THERMAL_EXPANSION,
+		/**
+		 * Shear modulus measured in GPa
+		 */
+		SHEAR_MODULUS,
+		/**
+		 * thermal conductivity measured in W/(m·K)
+		 */
+		THERMAL_CONDUCTIVITY,
+		/**
+		 * Specific heat of the material measured in joule per kelvin
+		 */
+		SPECIFIC_HEAT,
+		/**
+		 * Young's modulus measured in GPa
+		 *
+		 * This is how much pressure applied outward this material can withstand.
+		 */
+		YOUNGS_MODULUS,
+		/**
+		 * Bulk Modulus measured in GPa.
+		 *
+		 * This is how much pressure applied inward this material can withstand.
+		 */
+		BULK_MODULUS
+	}
+
 	public static IForgeRegistry<Material> REGISTRY;
+
+	private HashMap<Property, Double> properties = new HashMap<>();
 
 	public ItemStack customDrops = null;
 
@@ -267,6 +267,10 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return block;
 	}
 
+	public int getColor() {
+		return this.color;
+	}
+
 	public int getFluidCapacity() {
 		return (int) (properties.get(Property.YOUNGS_MODULUS) * 30);
 	}
@@ -311,10 +315,6 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		return itemMaterial;
 	}
 
-	public double getProperty(Property prop) {
-		return this.properties.getOrDefault(prop, Double.NaN);
-	}
-
 	public int getMaxToolDamage(int type) {
 		switch (type) {
 		case MaterialTool.PLIERS:
@@ -331,6 +331,10 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 
 	public String getName() {
 		return name;
+	}
+
+	public double getProperty(Property prop) {
+		return this.properties.getOrDefault(prop, Double.NaN);
 	}
 
 	public int getToolLevel() {
@@ -414,9 +418,5 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		OreDictionary.registerOre("drawplate" + getName(), subItemStack);
 		OreDictionary.registerOre("toolDrawPlate", subItemStack);
 
-	}
-
-	public int getColor() {
-		return this.color;
 	}
 }

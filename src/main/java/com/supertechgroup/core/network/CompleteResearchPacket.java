@@ -7,7 +7,6 @@ import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.research.IUnlockable;
 import com.supertechgroup.core.research.Research;
-import com.supertechgroup.core.research.ResearchSavedData;
 import com.supertechgroup.core.research.ResearchTeam;
 
 import io.netty.buffer.ByteBuf;
@@ -24,8 +23,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CompleteResearchPacket implements IMessage {
-	public static ArrayList<Research> clientCompleted = new ArrayList<>();
-
 	public static class Handler implements IMessageHandler<CompleteResearchPacket, IMessage> {
 
 		@Override
@@ -51,6 +48,8 @@ public class CompleteResearchPacket implements IMessage {
 		}
 
 	}
+
+	public static ArrayList<Research> clientCompleted = new ArrayList<>();
 
 	private NBTTagCompound tag;
 

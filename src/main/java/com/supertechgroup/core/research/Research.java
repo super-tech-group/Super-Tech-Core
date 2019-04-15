@@ -1,11 +1,9 @@
 package com.supertechgroup.core.research;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.supertechgroup.core.network.CompleteResearchPacket;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -16,7 +14,6 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 	private double InspirationChance;
 	private int researchProcceses;
 	public String researchName;
-	private ArrayList<ItemStack> unlockedItems = new ArrayList<>();
 	private HashMap<ResourceLocation, Integer> tasks = new HashMap<>();
 
 	public Research(String name) {
@@ -25,10 +22,6 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 
 	public void addTask(ResourceLocation taskType, int taskCount) {
 		tasks.put(taskType, taskCount);
-	}
-
-	public void addUnlockedItem(ItemStack stack) {
-		unlockedItems.add(stack);
 	}
 
 	public double getInspirationChance() {
@@ -52,22 +45,18 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 		return researchProcceses;
 	}
 
-	public ArrayList<ItemStack> getUnlockedItems() {
-		return (ArrayList<ItemStack>) unlockedItems.clone();
-	}
-
 	public boolean hasTask(ResourceLocation task) {
 		return tasks.containsKey(task);
 	}
 
 	@Override
-	public boolean isFulfilled(ResearchTeam rt) {
-		return rt.isResearchCompleted(this);
+	public boolean isFulfilled() {
+		return CompleteResearchPacket.clientCompleted.contains(this);
 	}
 
 	@Override
-	public boolean isFulfilled() {
-		return CompleteResearchPacket.clientCompleted.contains(this);
+	public boolean isFulfilled(ResearchTeam rt) {
+		return rt.isResearchCompleted(this);
 	}
 
 	public void registerResearch() {

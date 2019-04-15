@@ -3,7 +3,6 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
-import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
@@ -517,9 +516,6 @@ public class ModRegistry {
 	@SubscribeEvent
 	public static void registerResearch(RegistryEvent.Register<Research> event) {
 		Research bronze = new Research("bronze");
-		bronze.addUnlockedItem(new ItemStack(
-				Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(), 1,
-				MaterialItem.INGOT));
 		bronze.registerResearch();
 
 	}

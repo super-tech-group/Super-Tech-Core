@@ -10,11 +10,9 @@ import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.proxy.ClientProxy;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -94,39 +92,6 @@ public class OreSavedData extends WorldSavedData {
 		} catch (Exception ex) {
 			return new ResourceLocation("minecraft:stone");
 		}
-	}
-
-	/**
-	 * Attempts to get the hardness of a block at Block position. If it is unable to
-	 * find a given hardness will return 1f.
-	 *
-	 * @param pos
-	 * @return
-	 */
-	public float getHardness(BlockPos pos) {
-		return getHardness(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	/**
-	 * Attempts to get the hardness of a block at Coords X, Y, Z. If it is unable to
-	 * find a given hardness will return 1f.
-	 *
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-	public float getHardness(int x, int y, int z) {
-		try {
-			return hardnessData.get(x).get(y).get(z);
-		} catch (Exception ex) {
-			System.out.println("Failed to find a block hardness at location: " + x + ", " + y + ", " + z);
-			return 1f;
-		}
-	}
-
-	public void setHardness(BlockPos pos, Float hardness) {
-		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
 	}
 
 	/**
@@ -223,6 +188,35 @@ public class OreSavedData extends WorldSavedData {
 			ret.setTag(pos.getX() + "h", xTag);
 		}
 		return ret;
+	}
+
+	/**
+	 * Attempts to get the hardness of a block at Block position. If it is unable to
+	 * find a given hardness will return 1f.
+	 *
+	 * @param pos
+	 * @return
+	 */
+	public float getHardness(BlockPos pos) {
+		return getHardness(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	/**
+	 * Attempts to get the hardness of a block at Coords X, Y, Z. If it is unable to
+	 * find a given hardness will return 1f.
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public float getHardness(int x, int y, int z) {
+		try {
+			return hardnessData.get(x).get(y).get(z);
+		} catch (Exception ex) {
+			System.out.println("Failed to find a block hardness at location: " + x + ", " + y + ", " + z);
+			return 1f;
+		}
 	}
 
 	/**
@@ -376,6 +370,10 @@ public class OreSavedData extends WorldSavedData {
 		}
 		data.get(x).get(y).put(z, newData);
 		markDirty();
+	}
+
+	public void setHardness(BlockPos pos, Float hardness) {
+		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
 	}
 
 	public void setHardness(int x, int y, int z, Float hardness) {

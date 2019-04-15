@@ -16,10 +16,10 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 	}
 
 	@Override
-	public boolean isFulfilled(ResearchTeam rt) {
+	public boolean isFulfilled() {
 		int count = 0;
 		for (IResearchRequirement rr : requirements) {
-			if (rr.isFulfilled(rt)) {
+			if (rr.isFulfilled()) {
 				count++;
 			}
 		}
@@ -27,10 +27,10 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 	}
 
 	@Override
-	public boolean isFulfilled() {
+	public boolean isFulfilled(ResearchTeam rt) {
 		int count = 0;
 		for (IResearchRequirement rr : requirements) {
-			if (rr.isFulfilled()) {
+			if (rr.isFulfilled(rt)) {
 				count++;
 			}
 		}

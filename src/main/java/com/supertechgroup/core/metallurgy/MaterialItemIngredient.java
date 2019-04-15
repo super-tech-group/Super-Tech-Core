@@ -25,7 +25,7 @@ public class MaterialItemIngredient extends Ingredient {
 
 	/**
 	 * An ingredient made of a material
-	 * 
+	 *
 	 * @param type     The type of Material Item. See the constants in #MaterialItem
 	 * @param criteria
 	 */
@@ -48,15 +48,34 @@ public class MaterialItemIngredient extends Ingredient {
 	}
 
 	@Override
+	public boolean apply(@Nullable ItemStack input) {
+		if (input == null) {
+			return false;
+		}
+
+		if (input.getItem() instanceof MaterialItem && input.getMetadata() == type) {
+			MaterialItem matItem = (MaterialItem) input.getItem();
+			for (MaterialIngredientCriteria c : this.criteria) {
+
+				if (!c.meetsCriteria(matItem.getMaterial())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
 	@Nonnull
 	public ItemStack[] getMatchingStacks() {
 		if (array == null || this.lastSizeA != matches.size()) {
 			NonNullList<ItemStack> lst = NonNullList.create();
 			for (ItemStack itemstack : this.matches) {
-				if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+				if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
 					itemstack.getItem().getSubItems(CreativeTabs.SEARCH, lst);
-				else
+				} else {
 					lst.add(itemstack);
+				}
 			}
 			this.array = lst.toArray(new ItemStack[lst.size()]);
 			this.lastSizeA = matches.size();
@@ -74,8 +93,9 @@ public class MaterialItemIngredient extends Ingredient {
 				if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
 					NonNullList<ItemStack> lst = NonNullList.create();
 					itemstack.getItem().getSubItems(CreativeTabs.SEARCH, lst);
-					for (ItemStack item : lst)
+					for (ItemStack item : lst) {
 						this.itemIds.add(RecipeItemHelper.pack(item));
+					}
 				} else {
 					this.itemIds.add(RecipeItemHelper.pack(itemstack));
 				}
@@ -86,23 +106,6 @@ public class MaterialItemIngredient extends Ingredient {
 		}
 
 		return this.itemIds;
-	}
-
-	@Override
-	public boolean apply(@Nullable ItemStack input) {
-		if (input == null)
-			return false;
-
-		if (input.getItem() instanceof MaterialItem && input.getMetadata() == type) {
-			MaterialItem matItem = (MaterialItem) input.getItem();
-			for (MaterialIngredientCriteria c : this.criteria) {
-
-				if (!c.meetsCriteria(matItem.getMaterial())) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	@Override

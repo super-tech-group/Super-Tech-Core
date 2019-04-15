@@ -10,5 +10,18 @@ public interface IResearchRequirement {
 		requirements.add(rr);
 	}
 
+	/**
+	 * Check if all requirements have been met on the server
+	 * 
+	 * @param rt the ResearchTeam to check for requirements
+	 * @return
+	 */
 	boolean isFulfilled(ResearchTeam rt);
+
+	/**
+	 * The check for use on client side.
+	 * 
+	 * @return
+	 */
+	boolean isFulfilled();
 }

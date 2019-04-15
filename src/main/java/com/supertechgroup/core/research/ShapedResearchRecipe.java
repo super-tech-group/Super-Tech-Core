@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class ShapedResearchRecipe extends ShapedOreRecipe {
+public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable {
 
 	private static final Field eventHandlerField = ObfuscationReflectionHelper.findField(InventoryCrafting.class,
 			"eventHandler");
@@ -43,22 +43,8 @@ public class ShapedResearchRecipe extends ShapedOreRecipe {
 		}
 	}
 
-	ComplexResearchRequirement req = new ComplexResearchRequirement(1);
-
 	public ShapedResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe) {
 		super(group, result, recipe);
-	}
-
-	/**
-	 * Add another researchRequirement for this recipe. Note, each call of this adds
-	 * an optional way to get this recipe. The player only needs to meet one of
-	 * these requirements, but you can use PartialREsearch to make a more complex
-	 * unlock
-	 *
-	 * @param rr
-	 */
-	public void addResearchUnlock(IResearchRequirement rr) {
-		req.addRequirement(rr);
 	}
 
 	/**
@@ -68,10 +54,6 @@ public class ShapedResearchRecipe extends ShapedOreRecipe {
 	public boolean matches(InventoryCrafting inv, World world) {
 		EntityPlayer p = findPlayer(inv);
 		ResearchTeam team = ResearchSavedData.get(world).findPlayersResearchTeam(p.getUniqueID());
-		return p != null && team != null && req.isFulfilled(team) && super.matches(inv, world);
-	}
-
-	public void setRequirementsNeeded(int num) {
-		req.setNeeded(num);
+		return p != null && team != null && required.isFulfilled(team) && super.matches(inv, world);
 	}
 }

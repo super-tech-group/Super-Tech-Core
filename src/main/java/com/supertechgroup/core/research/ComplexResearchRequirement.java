@@ -26,6 +26,17 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 		return count >= numberRequired;
 	}
 
+	@Override
+	public boolean isFulfilled() {
+		int count = 0;
+		for (IResearchRequirement rr : requirements) {
+			if (rr.isFulfilled()) {
+				count++;
+			}
+		}
+		return count >= numberRequired;
+	}
+
 	public void setRequiredCount(int num) {
 		this.numberRequired = num;
 	}

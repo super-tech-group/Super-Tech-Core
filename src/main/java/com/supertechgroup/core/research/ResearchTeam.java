@@ -27,10 +27,12 @@ public class ResearchTeam {
 
 	public void addCompletedResearch(Research r) {
 		completedResearch.add(r);
-		this.members.forEach((uuid) -> {
-			CompleteResearchPacket packet = new CompleteResearchPacket(r);
-			PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) this.world.getPlayerEntityByUUID(uuid));
-		});
+		if (!this.getWorld().isRemote) {
+			this.members.forEach((uuid) -> {
+				CompleteResearchPacket packet = new CompleteResearchPacket(this, r);
+				PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) this.world.getPlayerEntityByUUID(uuid));
+			});
+		}
 	}
 
 	public boolean addMember(UUID newMember) {

@@ -223,8 +223,12 @@ public abstract class CommonProxy {
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
 								new ItemStack(Blocks.CRAFTING_TABLE), 'b', new ItemStack(Items.BOOK) })
 										.setRegistryName(Reference.MODID, "basicResearchStation"));
-		ShapedResearchRecipe srr = new ShapedResearchRecipe(new ResourceLocation("asdf"), new ItemStack(Items.APPLE),
-				new Object[] { new String[] { "aaa" }, 'a', new OreIngredient("plankWood") });
+		ShapedResearchRecipe srr = new ShapedResearchRecipe(new ResourceLocation("asdf"),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(),
+						1, MaterialItem.INGOT),
+				new Object[] { new String[] { "ab" }, 'a', new OreIngredient("plankWood"), 'b',
+						new OreIngredient("ingotIron") });
 		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
 		GameRegistry.findRegistry(IRecipe.class).register(srr.setRegistryName("testing"));
 	}

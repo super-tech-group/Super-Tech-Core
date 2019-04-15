@@ -98,8 +98,9 @@ public class ResearchEvents {
 			}
 
 			// send team's completed research
-			CompleteResearchPacket packet = new CompleteResearchPacket(rsd.findPlayersResearchTeam(player.getUniqueID())
-					.getCompletedResearch().toArray(new Research[] {}));
+			CompleteResearchPacket packet = new CompleteResearchPacket(
+					rsd.findPlayersResearchTeam(player.getUniqueID()), rsd.findPlayersResearchTeam(player.getUniqueID())
+							.getCompletedResearch().toArray(new Research[] {}));
 			PacketHandler.INSTANCE.sendTo(packet, player);
 		}
 	}

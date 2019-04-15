@@ -10,9 +10,11 @@ import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.proxy.ClientProxy;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -127,18 +129,6 @@ public class OreSavedData extends WorldSavedData {
 		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
 	}
 
-	public void setHardness(int x, int y, int z, Float hardness) {
-		if (!hardnessData.containsKey(x)) {
-			hardnessData.put(x, new HashMap());
-		}
-		if (!hardnessData.get(x).containsKey(y)) {
-			hardnessData.get(x).put(y, new HashMap());
-		}
-		hardnessData.get(x).get(y).put(z, hardness);
-		// System.out.println("Set hardness at" + x + ":" + y + ":" + z);
-		markDirty();
-
-	
 	/**
 	 * Creates a tag of ore data in a chunk. Intended for use with #updateFromTag.
 	 *
@@ -233,14 +223,6 @@ public class OreSavedData extends WorldSavedData {
 			ret.setTag(pos.getX() + "h", xTag);
 		}
 		return ret;
-	}
-
-	public Float getHardness(BlockPos pos) {
-		return getHardness(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public Float getHardness(int x, int y, int z) {
-		return hardnessData.get(x).get(y).get(z);
 	}
 
 	/**
@@ -394,10 +376,6 @@ public class OreSavedData extends WorldSavedData {
 		}
 		data.get(x).get(y).put(z, newData);
 		markDirty();
-	}
-
-	public void setHardness(BlockPos pos, Float hardness) {
-		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
 	}
 
 	public void setHardness(int x, int y, int z, Float hardness) {

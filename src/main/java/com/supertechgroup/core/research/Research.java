@@ -3,6 +3,8 @@ package com.supertechgroup.core.research;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.supertechgroup.core.network.CompleteResearchPacket;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -61,6 +63,11 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 	@Override
 	public boolean isFulfilled(ResearchTeam rt) {
 		return rt.isResearchCompleted(this);
+	}
+
+	@Override
+	public boolean isFulfilled() {
+		return CompleteResearchPacket.clientCompleted.contains(this);
 	}
 
 	public void registerResearch() {

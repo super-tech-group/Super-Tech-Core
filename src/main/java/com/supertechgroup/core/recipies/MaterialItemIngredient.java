@@ -1,9 +1,10 @@
-package com.supertechgroup.core.metallurgy;
+package com.supertechgroup.core.recipies;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.supertechgroup.core.items.MaterialItem;
+import com.supertechgroup.core.metallurgy.Material;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;

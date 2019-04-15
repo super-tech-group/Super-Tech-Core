@@ -1,30 +1,28 @@
-package com.supertechgroup.core.research;
+package com.supertechgroup.core.research.teams;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.research.Research;
+import com.supertechgroup.core.research.ResearchSavedData;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class ResearchTeam {
-
-	private ArrayList<UUID> members;
 	private ArrayList<Research> completedResearch = new ArrayList<>();
 	private String TeamName;
 	private World world;
 
 	public ResearchTeam() {
-		members = new ArrayList<>();
 	}
 
 	public ResearchTeam(String name) {
 		TeamName = name;
-		members = new ArrayList<>();
 	}
 
 	public void addCompletedResearch(Research r) {
@@ -32,28 +30,20 @@ public class ResearchTeam {
 		completedResearch.add(r);
 		ResearchSavedData.get(this.world).markDirty();
 		if (SuperTechCoreMod.proxy.getSide() == Side.SERVER) {
-			this.members.forEach((uuid) -> {
-				CompleteResearchPacket packet = new CompleteResearchPacket(this, r);
-				PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) this.world.getPlayerEntityByUUID(uuid));
-				System.out.println("Packet sent");
+			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+			server.getPlayerList().getPlayers().forEach((player) -> {
+				ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+				if (cap.getTeam().equals(this.getTeamName())) {
+					CompleteResearchPacket packet = new CompleteResearchPacket(this, r);
+					PacketHandler.INSTANCE.sendTo(packet, player);
+					System.out.println("Packet sent");
+				}
 			});
 		}
 	}
 
-	public boolean addMember(UUID newMember) {
-		if (!members.contains(newMember)) {
-			members.add(newMember);
-			return true;
-		}
-		return false;
-	}
-
 	public ArrayList<Research> getCompletedResearch() {
 		return completedResearch;
-	}
-
-	public ArrayList<UUID> getMembers() {
-		return members;
 	}
 
 	public String getTeamName() {
@@ -64,20 +54,8 @@ public class ResearchTeam {
 		return world;
 	}
 
-	public boolean hasMember(UUID player) {
-		return members.contains(player);
-	}
-
 	public boolean isResearchCompleted(Research research) {
 		return completedResearch.contains(research);
-	}
-
-	public boolean removeMember(UUID toRemove) {
-		if (members.contains(toRemove)) {
-			members.remove(toRemove);
-			return true;
-		}
-		return false;
 	}
 
 	public void setTeamName(String newName) {

@@ -14,9 +14,12 @@ import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.recipies.ShapedResearchRecipe;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
-import com.supertechgroup.core.research.ShapedResearchRecipe;
+import com.supertechgroup.core.research.teams.ITeamCapability;
+import com.supertechgroup.core.research.teams.TeamCapability;
+import com.supertechgroup.core.research.teams.TeamCapabilityStorage;
 import com.supertechgroup.core.worldgen.WorldGenEvents;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -33,6 +36,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -289,6 +293,8 @@ public abstract class CommonProxy {
 
 		ResearchEvents re = new ResearchEvents();
 		MinecraftForge.EVENT_BUS.register(re);
+		
+		CapabilityManager.INSTANCE.register(ITeamCapability.class, new TeamCapabilityStorage(), TeamCapability.class);
 	}
 
 	public abstract void registerItemRenderer(Item item, int i, String name);

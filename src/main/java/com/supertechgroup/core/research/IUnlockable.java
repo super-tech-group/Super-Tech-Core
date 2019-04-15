@@ -1,5 +1,7 @@
 package com.supertechgroup.core.research;
 
+import com.supertechgroup.core.research.teams.ResearchTeam;
+
 public interface IUnlockable {
 	ComplexResearchRequirement required = new ComplexResearchRequirement(1);
 

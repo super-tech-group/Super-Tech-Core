@@ -2,6 +2,8 @@ package com.supertechgroup.core.research;
 
 import java.util.ArrayList;
 
+import com.supertechgroup.core.research.teams.ResearchTeam;
+
 public class ComplexResearchRequirement implements IResearchRequirement {
 	private int numberRequired;
 

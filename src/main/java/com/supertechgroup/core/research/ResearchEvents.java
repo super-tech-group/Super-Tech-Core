@@ -1,9 +1,8 @@
 package com.supertechgroup.core.research;
 
-import java.util.UUID;
-
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
@@ -11,7 +10,13 @@ import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.research.teams.ITeamCapability;
+import com.supertechgroup.core.research.teams.ResearchTeam;
+import com.supertechgroup.core.research.teams.TeamCapability;
+import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,10 +26,12 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ResearchEvents {
 
@@ -103,15 +110,14 @@ public class ResearchEvents {
 		}
 	}
 
-	// Research Team stuff
 	@SubscribeEvent
 	public void onPlayerLogin(EntityJoinWorldEvent e) {
-		if (e.getEntity() instanceof EntityPlayerMP) {
+		if (SuperTechCoreMod.proxy.getSide() == Side.SERVER && e.getEntity() instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) e.getEntity();
-			UUID uuid = player.getUniqueID();
 			ResearchSavedData rsd = ResearchSavedData.get(e.getWorld());
-			if (!rsd.doesPlayerHaveTeam(uuid)) {
-				rsd.createNewTeam(player.getName() + "'s Team", uuid);
+			ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+			if (cap.getTeam().equals(TeamCapability.NULL_TEAM)) {
+				rsd.createNewTeam(player.getName() + "'s Team", player);
 				player.sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
 				rsd.teams.forEach((t) -> {
 					player.sendMessage(new TextComponentString(t.getTeamName()));
@@ -119,10 +125,33 @@ public class ResearchEvents {
 			}
 
 			// send team's completed research
-			CompleteResearchPacket packet = new CompleteResearchPacket(
-					rsd.findPlayersResearchTeam(player.getUniqueID()), rsd.findPlayersResearchTeam(player.getUniqueID())
-							.getCompletedResearch().toArray(new Research[] {}));
+			ResearchTeam team = rsd
+					.getTeamByName(player.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
+			System.out.println(team);
+			CompleteResearchPacket packet = new CompleteResearchPacket(team,
+					team.getCompletedResearch().toArray(new Research[] {}));
 			PacketHandler.INSTANCE.sendTo(packet, player);
 		}
+	}
+
+	public static final ResourceLocation TEAM_CAP = new ResourceLocation(Reference.MODID, "researchTeam");
+
+	/**
+	 * Copy data from dead player to the new player
+	 */
+	@SubscribeEvent
+	public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
+		EntityPlayer player = event.getEntityPlayer();
+		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		team.setTeam(oldTeam.getTeam());
+	}
+
+	@SubscribeEvent
+	public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
+		if (!(event.getObject() instanceof EntityPlayer))
+			return;
+
+		event.addCapability(TEAM_CAP, new TeamCapabilityProvider());
 	}
 }

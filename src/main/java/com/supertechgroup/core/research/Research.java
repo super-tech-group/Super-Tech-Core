@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import com.supertechgroup.core.network.CompleteResearchPacket;
+import com.supertechgroup.core.research.teams.ResearchTeam;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.IForgeRegistry;

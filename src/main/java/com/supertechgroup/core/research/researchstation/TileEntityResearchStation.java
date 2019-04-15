@@ -1,6 +1,10 @@
-package com.supertechgroup.core.research;
+package com.supertechgroup.core.research.researchstation;
 
 import java.util.HashMap;
+
+import com.supertechgroup.core.research.Research;
+import com.supertechgroup.core.research.ResearchSavedData;
+import com.supertechgroup.core.research.teams.ResearchTeam;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

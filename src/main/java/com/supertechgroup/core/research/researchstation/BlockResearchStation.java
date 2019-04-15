@@ -1,10 +1,12 @@
-package com.supertechgroup.core.research;
+package com.supertechgroup.core.research.researchstation;
 
 import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
 import com.supertechgroup.core.ModRegistry;
+import com.supertechgroup.core.research.ResearchSavedData;
+import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
 import com.supertechgroup.core.util.BlockTileEntity;
 
 import net.minecraft.block.material.Material;
@@ -96,8 +98,9 @@ public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStat
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
 		if (!worldIn.isRemote) {
-			((TileEntityResearchStation) worldIn.getTileEntity(pos)).setTeam(
-					ResearchSavedData.get(worldIn).findPlayersResearchTeam(((EntityPlayerMP) placer).getUniqueID()));
+			((TileEntityResearchStation) worldIn.getTileEntity(pos))
+					.setTeam(ResearchSavedData.get(worldIn).getTeamByName(
+							((EntityPlayerMP) placer).getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam()));
 			worldIn.getTileEntity(pos).markDirty();
 		}
 	}

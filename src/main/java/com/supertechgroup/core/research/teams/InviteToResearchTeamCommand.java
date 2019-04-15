@@ -1,10 +1,11 @@
-package com.supertechgroup.core.research;
+package com.supertechgroup.core.research.teams;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.research.ResearchSavedData;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -37,16 +38,17 @@ public class InviteToResearchTeamCommand extends CommandBase {
 		if (sender instanceof EntityPlayer) {
 			EntityPlayerMP player = (EntityPlayerMP) sender;
 			ResearchSavedData rsd = ResearchSavedData.get(player.getServerWorld());
-			if (rsd.doesPlayerHaveTeam(player.getUniqueID())) {
+			ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+			if (!cap.getTeam().equals(TeamCapability.NULL_TEAM)) {
 				if (Arrays.asList(server.getPlayerList().getOnlinePlayerNames()).contains(s)) {
 					EntityPlayer otherPlayer = sender.getEntityWorld().getPlayerEntityByName(s);
 					if (!s.equals(player.getName())) {
 						otherPlayer.sendMessage(
 								new TextComponentString(TextFormatting.GREEN + "You have been invited to join "
-										+ rsd.findPlayersResearchTeam(player.getUniqueID()).getTeamName()
-										+ ". Type /join to join their team!"));
+										+ cap.getTeam() + ". Type /join to join their team!"));
 						player.sendMessage(
 								new TextComponentString(TextFormatting.GREEN + "Your invite has been sent!"));
+						rsd.addInvite(otherPlayer.getUniqueID(), rsd.getTeamByName(cap.getTeam()));
 					} else {
 						player.sendMessage(
 								new TextComponentString(TextFormatting.RED + "Sorry, you can't invite yourself."));

@@ -1,9 +1,10 @@
-package com.supertechgroup.core.research;
+package com.supertechgroup.core.research.teams;
 
 import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.research.ResearchSavedData;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

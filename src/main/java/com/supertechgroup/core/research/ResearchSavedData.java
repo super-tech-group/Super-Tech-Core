@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.research.teams.ITeamCapability;
+import com.supertechgroup.core.research.teams.ResearchTeam;
+import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,10 +52,13 @@ public class ResearchSavedData extends WorldSavedData {
 		teamInvites.put(uuid, researchTeam);
 	}
 
-	public ResearchTeam createNewTeam(String teamName, UUID newMember) {
+	public ResearchTeam createNewTeam(String teamName, EntityPlayer newMember) {
 		ResearchTeam r = new ResearchTeam(teamName);
 		r.setWorld(this.world);
-		r.addMember(newMember);
+
+		ITeamCapability cap = newMember.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		cap.setTeam(r);
+
 		teams.add(r);
 		this.markDirty();
 		return r;
@@ -63,28 +69,6 @@ public class ResearchSavedData extends WorldSavedData {
 			return true;
 		}
 		return false;
-	}
-
-	public boolean doesPlayerHaveTeam(UUID player) {
-		if (teams.size() > 0) {
-			for (ResearchTeam rt : teams) {
-				if (rt.hasMember(player)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public ResearchTeam findPlayersResearchTeam(UUID player) {
-		if (teams.size() > 0) {
-			for (ResearchTeam rt : teams) {
-				if (rt.hasMember(player)) {
-					return rt;
-				}
-			}
-		}
-		return null;
 	}
 
 	public ResearchTeam getTeamByName(String name) {
@@ -105,25 +89,14 @@ public class ResearchSavedData extends WorldSavedData {
 	public boolean joinTeam(EntityPlayer player) {
 		UUID uuid = player.getUniqueID();
 		if (doesPlayerHaveInvite(uuid)) {
+			ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
 			ResearchTeam newTeam = getTeamInvite(uuid);
-			ResearchTeam oldTeam = findPlayersResearchTeam(uuid);
-			if (oldTeam != null) {
-				newTeam.addMember(uuid);
-				player.getServer().getPlayerList().getPlayerByUUID(uuid).sendMessage(new TextComponentString(
-						TextFormatting.GREEN + "You have joined " + newTeam.getTeamName() + "."));
-				oldTeam.removeMember(uuid);
-				if (oldTeam.getMembers().size() == 0) {
-					teams.remove(oldTeam);
-				}
-				this.markDirty();
-				return true;
-			} else {
-				newTeam.addMember(uuid);
-				player.getServer().getPlayerList().getPlayerByUUID(uuid).sendMessage(new TextComponentString(
-						TextFormatting.GREEN + "You have joined " + newTeam.getTeamName() + "."));
-				this.markDirty();
-				return true;
-			}
+			cap.setTeam(newTeam);
+			player.getServer().getPlayerList().getPlayerByUUID(uuid).sendMessage(
+					new TextComponentString(TextFormatting.GREEN + "You have joined " + newTeam.getTeamName() + "."));
+			this.markDirty();
+			return true;
+
 		}
 		return false;
 	}
@@ -131,6 +104,7 @@ public class ResearchSavedData extends WorldSavedData {
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		NBTTagList teamList = nbt.getTagList("TeamList", Constants.NBT.TAG_COMPOUND);
+		System.out.println("Loading " + teamList.tagCount() + " Team(s)");
 		teamList.forEach((tag) -> {
 			NBTTagCompound teamInfo = (NBTTagCompound) tag;
 
@@ -143,11 +117,7 @@ public class ResearchSavedData extends WorldSavedData {
 				NBTTagString stringTag = (NBTTagString) cr;
 				team.addCompletedResearch(Research.REGISTRY.getValue(new ResourceLocation(stringTag.toString())));
 			});
-
-			teamInfo.getTagList("members", Constants.NBT.TAG_STRING).forEach((m) -> {
-				NBTTagString stringTag = (NBTTagString) m;
-				team.addMember(UUID.fromString(stringTag.getString()));
-			});
+			System.out.println("Loaded team " + team.getTeamName());
 			teams.add(team);
 		});
 
@@ -164,10 +134,6 @@ public class ResearchSavedData extends WorldSavedData {
 		return true;
 	}
 
-	private void setWorld(World world2) {
-		world = world2;
-	}
-
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		NBTTagList teamList = new NBTTagList();
@@ -181,12 +147,6 @@ public class ResearchSavedData extends WorldSavedData {
 				compResearch.appendTag(new NBTTagString(r.getRegistryName().toString()));
 			}
 			teamInfo.setTag("completedResearch", compResearch);
-
-			NBTTagList members = new NBTTagList();
-			team.getMembers().forEach((uuid) -> {
-				members.appendTag(new NBTTagString(uuid.toString()));
-			});
-			teamInfo.setTag("members", members);
 
 			teamList.appendTag(teamInfo);
 		}

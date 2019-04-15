@@ -1,5 +1,7 @@
 package com.supertechgroup.core.research;
 
+import com.supertechgroup.core.research.teams.ResearchTeam;
+
 public interface IResearchRequirement {
 
 	void addRequirement(IResearchRequirement rr);

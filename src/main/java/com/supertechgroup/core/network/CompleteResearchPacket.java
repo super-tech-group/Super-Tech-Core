@@ -7,7 +7,7 @@ import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.research.IUnlockable;
 import com.supertechgroup.core.research.Research;
-import com.supertechgroup.core.research.ResearchTeam;
+import com.supertechgroup.core.research.teams.ResearchTeam;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.crafting.IRecipe;
@@ -30,6 +30,7 @@ public class CompleteResearchPacket implements IMessage {
 			if (SuperTechCoreMod.proxy.getWorld(null) != null) {
 				NBTTagList list = message.tag.getTagList("complete", Constants.NBT.TAG_STRING);
 				list.forEach((cr) -> {
+					System.out.println("Completing client-side: " + cr);
 					Research r = Research.REGISTRY.getValue(new ResourceLocation(((NBTTagString) cr).getString()));
 					clientCompleted.add(r);
 				});

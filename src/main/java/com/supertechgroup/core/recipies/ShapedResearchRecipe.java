@@ -1,8 +1,12 @@
-package com.supertechgroup.core.research;
+package com.supertechgroup.core.recipies;
 
 import java.lang.reflect.Field;
 
 import com.google.common.base.Throwables;
+import com.supertechgroup.core.research.IUnlockable;
+import com.supertechgroup.core.research.ResearchSavedData;
+import com.supertechgroup.core.research.teams.ResearchTeam;
+import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -53,7 +57,8 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 	@Override
 	public boolean matches(InventoryCrafting inv, World world) {
 		EntityPlayer p = findPlayer(inv);
-		ResearchTeam team = ResearchSavedData.get(world).findPlayersResearchTeam(p.getUniqueID());
+		ResearchTeam team = ResearchSavedData.get(world)
+				.getTeamByName(p.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
 		return p != null && team != null && required.isFulfilled(team) && super.matches(inv, world);
 	}
 }

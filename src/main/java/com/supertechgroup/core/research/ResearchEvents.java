@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
+import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
@@ -75,11 +76,14 @@ public class ResearchEvents {
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.NUGGET), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.INGOT), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.PLATE), false);
+
+		// fix some issues that would be caused
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(ModRegistry.itemResearchBook), true);
+		JEIMainPlugin.handleItemBlacklisting(ItemResearchBook.getEmptyBookStack(), false);
 	}
 
 	@SubscribeEvent
 	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
-		event.player.sendMessage(new TextComponentString(event.crafting.getDisplayName()));
 	}
 
 	// Research Team stuff

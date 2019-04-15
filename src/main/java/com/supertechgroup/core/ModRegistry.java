@@ -3,6 +3,7 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
@@ -65,6 +66,7 @@ public class ModRegistry {
 	public static BlockResearchStation researchStation;
 
 	public static SuperTechItem itemTech;
+	public static ItemResearchBook itemResearchBook;
 
 	/**
 	 *
@@ -133,7 +135,7 @@ public class ModRegistry {
 	@SideOnly(Side.CLIENT)
 	public static void initModels() {
 		itemTech.registerModels();
-
+		itemResearchBook.registerModels();
 	}
 
 	@SubscribeEvent
@@ -195,8 +197,9 @@ public class ModRegistry {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
 		itemTech = new SuperTechItem();
+		itemResearchBook = new ItemResearchBook();
 
-		event.getRegistry().registerAll(itemTech);
+		event.getRegistry().registerAll(itemTech, itemResearchBook);
 
 		itemTech.setupDictionary();
 	}

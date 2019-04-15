@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
@@ -28,6 +29,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -223,6 +225,11 @@ public abstract class CommonProxy {
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
 								new ItemStack(Blocks.CRAFTING_TABLE), 'b', new ItemStack(Items.BOOK) })
 										.setRegistryName(Reference.MODID, "basicResearchStation"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapelessOreRecipe(new ResourceLocation("research"), ItemResearchBook.getEmptyBookStack(),
+						new Object[] { new ItemStack(Items.WRITABLE_BOOK) }).setRegistryName(Reference.MODID,
+								"emptyResearchBook"));
+
 		ShapedResearchRecipe srr = new ShapedResearchRecipe(new ResourceLocation("asdf"),
 				new ItemStack(
 						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(),
@@ -231,6 +238,7 @@ public abstract class CommonProxy {
 						new OreIngredient("ingotIron") });
 		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
 		GameRegistry.findRegistry(IRecipe.class).register(srr.setRegistryName("testing"));
+
 	}
 
 	public abstract Side getSide();

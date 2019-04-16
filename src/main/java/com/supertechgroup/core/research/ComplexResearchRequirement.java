@@ -1,8 +1,7 @@
 package com.supertechgroup.core.research;
 
 import java.util.ArrayList;
-
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import java.util.UUID;
 
 public class ComplexResearchRequirement implements IResearchRequirement {
 	private int numberRequired;
@@ -33,7 +32,7 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 	}
 
 	@Override
-	public boolean isFulfilled(ResearchTeam rt) {
+	public boolean isFulfilled(UUID rt) {
 		int count = 0;
 		for (IResearchRequirement rr : requirements) {
 			if (rr.isFulfilled(rt)) {

@@ -366,7 +366,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 
 		Material.REGISTRY.register(this);
 
-		if (SuperTechCoreMod.proxy.getSide() == Side.CLIENT) {
+		if (SuperTechCoreMod.proxy instanceof ClientProxy) {
 			clientPrep();
 		}
 	}

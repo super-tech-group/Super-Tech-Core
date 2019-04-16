@@ -1,6 +1,6 @@
 package com.supertechgroup.core.research;
 
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import java.util.UUID;
 
 public interface IResearchRequirement {
 
@@ -16,8 +16,8 @@ public interface IResearchRequirement {
 	/**
 	 * Check if all requirements have been met on the server
 	 *
-	 * @param rt the ResearchTeam to check for requirements
+	 * @param teamID the ResearchTeam to check for requirements
 	 * @return
 	 */
-	boolean isFulfilled(ResearchTeam rt);
+	boolean isFulfilled(UUID teamID);
 }

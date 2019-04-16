@@ -17,6 +17,9 @@ import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.recipies.ShapedResearchRecipe;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityStorage;
 import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
 import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
 import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityStorage;
@@ -58,7 +61,9 @@ public abstract class CommonProxy {
 	public static ArrayList<WorldGeneratorBase> parsed = new ArrayList<>();
 
 	private File configFolder;
-
+	public World getWorld() {
+		return getWorld(null);
+	}
 	private void addBasicRecipies() {
 		// add basic tool recipies
 
@@ -244,12 +249,6 @@ public abstract class CommonProxy {
 
 	}
 
-	public abstract Side getSide();
-
-	public World getWorld() {
-		return getWorld(null);
-	}
-
 	public abstract World getWorld(IBlockAccess world);
 
 	public void init(FMLInitializationEvent event) {
@@ -293,8 +292,9 @@ public abstract class CommonProxy {
 
 		ResearchEvents re = new ResearchEvents();
 		MinecraftForge.EVENT_BUS.register(re);
-		
+
 		CapabilityManager.INSTANCE.register(ITeamCapability.class, new TeamCapabilityStorage(), TeamCapability.class);
+		CapabilityManager.INSTANCE.register(IListCapability.class, new ListCapabilityStorage(), ListCapability.class);
 	}
 
 	public abstract void registerItemRenderer(Item item, int i, String name);

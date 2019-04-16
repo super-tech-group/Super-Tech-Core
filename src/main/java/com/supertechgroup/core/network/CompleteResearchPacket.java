@@ -2,12 +2,12 @@ package com.supertechgroup.core.network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.research.IUnlockable;
 import com.supertechgroup.core.research.Research;
-import com.supertechgroup.core.research.teams.ResearchTeam;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.crafting.IRecipe;
@@ -57,7 +57,7 @@ public class CompleteResearchPacket implements IMessage {
 	public CompleteResearchPacket() {
 	}
 
-	public CompleteResearchPacket(ResearchTeam team, Research... cr) {
+	public CompleteResearchPacket(UUID team, Research... cr) {
 		tag = new NBTTagCompound();
 		NBTTagList list = new NBTTagList();
 		System.out.println("Completing researches " + Arrays.toString(cr));
@@ -65,7 +65,7 @@ public class CompleteResearchPacket implements IMessage {
 			list.appendTag(new NBTTagString(r.getRegistryName().toString()));
 		}
 		tag.setTag("complete", list);
-		tag.setString("team", team.getTeamName());
+		tag.setString("team", team.toString());
 	}
 
 	@Override

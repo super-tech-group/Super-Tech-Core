@@ -1,24 +1,19 @@
 package com.supertechgroup.core.research.teams.teamcapability;
 
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import java.util.UUID;
 
 public class TeamCapability implements ITeamCapability {
-	public static final String NULL_TEAM = "NULL";
-	private String team = NULL_TEAM;
+	public static final UUID NULL_TEAM = new UUID(0L, 0L);
+	private UUID team = NULL_TEAM;
 
 	@Override
-	public void setTeam(ResearchTeam rt) {
-		this.team = rt.getTeamName();
+	public void setTeam(UUID teamID) {
+		team = teamID;
 	}
 
 	@Override
-	public String getTeam() {
+	public UUID getTeam() {
 		return team;
-	}
-
-	@Override
-	public void setTeam(String string) {
-		this.team = string;
 	}
 
 }

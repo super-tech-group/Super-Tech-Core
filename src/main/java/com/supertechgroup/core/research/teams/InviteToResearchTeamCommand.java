@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.research.ResearchSavedData;
+import com.supertechgroup.core.SuperTechCoreMod;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
 import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
 import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
 import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
@@ -18,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.common.DimensionManager;
 
 public class InviteToResearchTeamCommand extends CommandBase {
 
@@ -40,9 +43,8 @@ public class InviteToResearchTeamCommand extends CommandBase {
 		String s = args[0];
 		if (sender instanceof EntityPlayer) {
 			EntityPlayerMP player = (EntityPlayerMP) sender;
-			ResearchSavedData rsd = ResearchSavedData.get(player.getServerWorld());
 			ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-			if (!cap.getTeam().equals(TeamCapability.NULL_TEAM)) {
+			if (cap.getTeam() != TeamCapability.NULL_TEAM) {
 				if (Arrays.asList(server.getPlayerList().getOnlinePlayerNames()).contains(s)) {
 					EntityPlayer otherPlayer = sender.getEntityWorld().getPlayerEntityByName(s);
 					if (!s.equals(player.getName())) {
@@ -51,7 +53,9 @@ public class InviteToResearchTeamCommand extends CommandBase {
 										+ cap.getTeam() + ". Type /join to join their team!"));
 						player.sendMessage(
 								new TextComponentString(TextFormatting.GREEN + "Your invite has been sent!"));
-						rsd.addInvite(otherPlayer.getUniqueID(), rsd.getTeamByName(cap.getTeam()));
+						IListCapability listCap = DimensionManager.getWorld(0)
+								.getCapability(ListCapabilityProvider.TEAM_LIST_CAP, null);
+						listCap.addInvite(otherPlayer,cap.getTeam());
 					} else {
 						player.sendMessage(
 								new TextComponentString(TextFormatting.RED + "Sorry, you can't invite yourself."));

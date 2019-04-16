@@ -5,7 +5,8 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import com.supertechgroup.core.ModRegistry;
-import com.supertechgroup.core.research.ResearchSavedData;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
 import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 import com.supertechgroup.core.util.BlockTileEntity;
 
@@ -26,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 
 public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStation> {
@@ -78,13 +80,16 @@ public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStat
 				}
 			} else {
 				HashMap<ResourceLocation, Integer> taskMap = tile.getTasks();
+				IListCapability listCap = DimensionManager.getWorld(0)
+						.getCapability(ListCapabilityProvider.TEAM_LIST_CAP, null);
 				final StringBuilder message = new StringBuilder();
+				message.append("Research Station for " + listCap.getTeamName(tile.getTeam()) + "\n");
 				message.append("Currently studied:\n");
 				taskMap.forEach((k, v) -> {
 					message.append(v + "x " + k + "\n");
 				});
 				message.append("researched:\n");
-				tile.getTeam().getCompletedResearch().forEach((r) -> {
+				listCap.getCompletedForTeam(tile.getTeam()).forEach((r) -> {
 					// todo
 					message.append(r.toString() + "\n");
 				});
@@ -99,8 +104,9 @@ public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStat
 			ItemStack stack) {
 		if (!worldIn.isRemote) {
 			((TileEntityResearchStation) worldIn.getTileEntity(pos))
-					.setTeam(ResearchSavedData.get(worldIn).getTeamByName(
-							((EntityPlayerMP) placer).getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam()));
+					.setTeam(((EntityPlayerMP) placer).getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
+			System.out.println("Setting team to " + placer.getName() + "'s team: "
+					+ placer.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
 			worldIn.getTileEntity(pos).markDirty();
 		}
 	}

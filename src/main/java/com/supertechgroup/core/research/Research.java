@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.UUID;
 
+import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.network.CompleteResearchPacket;
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -35,7 +39,7 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 		return InspirationChance;
 	}
 
-	public boolean getRequirementsFulfilled(ResearchTeam rt) {
+	public boolean getRequirementsFulfilled(UUID rt) {
 		for (IResearchRequirement rr : requirements) {
 			if (!rr.isFulfilled(rt)) {
 				return false;
@@ -66,18 +70,22 @@ public class Research extends IForgeRegistryEntry.Impl<Research> implements IRes
 	}
 
 	@Override
-	public boolean isFulfilled(ResearchTeam rt) {
-		return rt.isResearchCompleted(this);
+	public boolean isFulfilled(UUID rt) {
+		IListCapability listCap = DimensionManager.getWorld(0).getCapability(ListCapabilityProvider.TEAM_LIST_CAP,
+				null);
+		return listCap.isCompletedForTeam(this, rt);
 	}
 
 	public void registerResearch() {
 		Research.REGISTRY.register(this);
 	}
 
-	public static Research getRandomMatch(ResearchTeam team, HashMap<ResourceLocation, Integer> taskMap) {
+	public static Research getRandomMatch(UUID team, HashMap<ResourceLocation, Integer> taskMap) {
+		IListCapability listCap = DimensionManager.getWorld(0).getCapability(ListCapabilityProvider.TEAM_LIST_CAP,
+				null);
 		ArrayList<Research> possible = new ArrayList<>();
 		Research.REGISTRY.forEach((r) -> {
-			if (!team.isResearchCompleted(r) && r.getRequirementsFulfilled(team) && r.couldComplete(taskMap)) {
+			if (!listCap.isCompletedForTeam(r, team) && r.getRequirementsFulfilled(team) && r.couldComplete(taskMap)) {
 				possible.add(r);
 			}
 		});

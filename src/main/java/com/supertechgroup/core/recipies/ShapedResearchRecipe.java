@@ -1,11 +1,13 @@
 package com.supertechgroup.core.recipies;
 
 import java.lang.reflect.Field;
+import java.util.UUID;
 
 import com.google.common.base.Throwables;
+import com.supertechgroup.core.research.ComplexResearchRequirement;
+import com.supertechgroup.core.research.IResearchRequirement;
 import com.supertechgroup.core.research.IUnlockable;
-import com.supertechgroup.core.research.ResearchSavedData;
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
 import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +26,6 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 
 	private static final Field eventHandlerField = ObfuscationReflectionHelper.findField(InventoryCrafting.class,
 			"eventHandler");
-
 	private static final Field containerPlayerPlayerField = ObfuscationReflectionHelper.findField(ContainerPlayer.class,
 			"player");
 
@@ -47,8 +48,25 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 		}
 	}
 
+	ComplexResearchRequirement required = new ComplexResearchRequirement(1);
+
 	public ShapedResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe) {
 		super(group, result, recipe);
+	}
+
+	@Override
+	public void addResearchUnlock(IResearchRequirement rr) {
+		required.addRequirement(rr);
+	}
+
+	@Override
+	public boolean isUnlocked() {
+		return required.isFulfilled();
+	}
+
+	@Override
+	public boolean isUnlocked(UUID team) {
+		return required.isFulfilled(team);
 	}
 
 	/**
@@ -57,8 +75,12 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 	@Override
 	public boolean matches(InventoryCrafting inv, World world) {
 		EntityPlayer p = findPlayer(inv);
-		ResearchTeam team = ResearchSavedData.get(world)
-				.getTeamByName(p.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
-		return p != null && team != null && required.isFulfilled(team) && super.matches(inv, world);
+		UUID teamID = p.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam();
+		return p != null && teamID != TeamCapability.NULL_TEAM && required.isFulfilled(teamID) && super.matches(inv, world);
+	}
+
+	@Override
+	public void setRequirementsNeeded(int num) {
+		required.setRequiredCount(num);
 	}
 }

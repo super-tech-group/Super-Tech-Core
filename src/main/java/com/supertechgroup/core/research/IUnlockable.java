@@ -1,9 +1,8 @@
 package com.supertechgroup.core.research;
 
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import java.util.UUID;
 
 public interface IUnlockable {
-	ComplexResearchRequirement required = new ComplexResearchRequirement(1);
 
 	/**
 	 * Add another researchRequirement for this recipe. Note, each call of this adds
@@ -13,18 +12,14 @@ public interface IUnlockable {
 	 *
 	 * @param rr
 	 */
-	default void addResearchUnlock(IResearchRequirement rr) {
-		required.addRequirement(rr);
-	}
+	void addResearchUnlock(IResearchRequirement rr);
 
 	/**
 	 * Check for unlocks on the client
 	 *
 	 * @return
 	 */
-	default boolean isUnlocked() {
-		return required.isFulfilled();
-	}
+	boolean isUnlocked();
 
 	/**
 	 * check if the requirements have been met on the server
@@ -32,11 +27,7 @@ public interface IUnlockable {
 	 * @param team
 	 * @return
 	 */
-	public default boolean isUnlocked(ResearchTeam team) {
-		return required.isFulfilled(team);
-	}
+	public boolean isUnlocked(UUID team);
 
-	default void setRequirementsNeeded(int num) {
-		required.setRequiredCount(num);
-	}
+	void setRequirementsNeeded(int num);
 }

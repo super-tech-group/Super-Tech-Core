@@ -1,18 +1,21 @@
 package com.supertechgroup.core.research.researchstation;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import com.supertechgroup.core.research.Research;
-import com.supertechgroup.core.research.ResearchSavedData;
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.DimensionManager;
 
 public class TileEntityResearchStation extends TileEntity {
 
-	private String team;
+	private UUID team = TeamCapability.NULL_TEAM;
 
 	HashMap<ResourceLocation, Integer> researchProgress = new HashMap<>();
 
@@ -33,21 +36,22 @@ public class TileEntityResearchStation extends TileEntity {
 				}
 			});
 			System.out.println("Complete " + r.toString());
-			this.getTeam().addCompletedResearch(r);
+
+			IListCapability listCap = DimensionManager.getWorld(0).getCapability(ListCapabilityProvider.TEAM_LIST_CAP,
+					null);
+			listCap.completeResearchForTeam(team, r);
 		}
 	}
 
-	public ResearchTeam getTeam() {
-		// We've got to do it this way, the ResearchSavedData isn't ready to be read
-		// from when tile entities are created.
-		ResearchTeam t = ResearchSavedData.get(world).getTeamByName(team);
-		return t;
+	public UUID getTeam() {
+		return team;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		team = compound.getString("team");
+		System.out.println("Trying read of " + compound.getString("team"));
+		team = UUID.fromString(compound.getString("team"));
 		NBTTagCompound tasks = compound.getCompoundTag("tasks");
 		researchProgress.clear();
 		tasks.getKeySet().forEach((k) -> {
@@ -55,14 +59,14 @@ public class TileEntityResearchStation extends TileEntity {
 		});
 	}
 
-	public void setTeam(ResearchTeam nTeam) {
-		team = nTeam.getTeamName();
+	public void setTeam(UUID nTeam) {
+		team = nTeam;
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		compound.setString("team", team);
+		compound.setString("team", team.toString());
 		NBTTagCompound tasks = new NBTTagCompound();
 		researchProgress.forEach((k, v) -> {
 			tasks.setInteger(k.toString(), v);

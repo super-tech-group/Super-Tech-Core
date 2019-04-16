@@ -1,6 +1,6 @@
 package com.supertechgroup.core.research.teams.teamcapability;
 
-import com.supertechgroup.core.research.teams.ResearchTeam;
+import java.util.UUID;
 
 /**
  * Used to track individual team membership. Mainly attached to players
@@ -9,9 +9,7 @@ import com.supertechgroup.core.research.teams.ResearchTeam;
  *
  */
 public interface ITeamCapability {
-	public void setTeam(ResearchTeam rt);
+	public void setTeam(UUID teamID);
 
-	public String getTeam();
-
-	public void setTeam(String string);
+	public UUID getTeam();
 }

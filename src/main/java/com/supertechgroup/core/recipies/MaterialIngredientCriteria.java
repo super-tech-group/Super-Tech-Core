@@ -1,7 +1,6 @@
 package com.supertechgroup.core.recipies;
 
 import com.supertechgroup.core.metallurgy.Material;
-import com.supertechgroup.core.metallurgy.Material.Property;
 
 public class MaterialIngredientCriteria {
 	public enum Type {

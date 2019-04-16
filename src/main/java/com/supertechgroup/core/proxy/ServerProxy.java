@@ -1,6 +1,7 @@
 package com.supertechgroup.core.proxy;
 
 import net.minecraft.item.Item;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
  *
  */
 public class ServerProxy extends CommonProxy {
+	MinecraftServer server;
 
 	@Override
 	public Side getSide() {
@@ -27,7 +29,7 @@ public class ServerProxy extends CommonProxy {
 		if (world instanceof World) {
 			return (World) world;
 		}
-		return null;
+		return server.getEntityWorld();
 	}
 
 	@Override

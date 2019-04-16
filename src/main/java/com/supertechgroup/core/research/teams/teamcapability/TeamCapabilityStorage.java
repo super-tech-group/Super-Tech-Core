@@ -1,4 +1,4 @@
-package com.supertechgroup.core.research.teams;
+package com.supertechgroup.core.research.teams.teamcapability;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagString;

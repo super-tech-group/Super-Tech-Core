@@ -1,4 +1,6 @@
-package com.supertechgroup.core.research.teams;
+package com.supertechgroup.core.research.teams.teamcapability;
+
+import com.supertechgroup.core.research.teams.ResearchTeam;
 
 public class TeamCapability implements ITeamCapability {
 	public static final String NULL_TEAM = "NULL";

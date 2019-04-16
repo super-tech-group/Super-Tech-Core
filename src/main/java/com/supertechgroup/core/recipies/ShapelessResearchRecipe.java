@@ -6,7 +6,7 @@ import com.google.common.base.Throwables;
 import com.supertechgroup.core.research.IUnlockable;
 import com.supertechgroup.core.research.ResearchSavedData;
 import com.supertechgroup.core.research.teams.ResearchTeam;
-import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

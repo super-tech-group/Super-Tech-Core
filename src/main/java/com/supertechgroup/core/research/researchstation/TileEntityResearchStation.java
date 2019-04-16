@@ -41,9 +41,6 @@ public class TileEntityResearchStation extends TileEntity {
 		// We've got to do it this way, the ResearchSavedData isn't ready to be read
 		// from when tile entities are created.
 		ResearchTeam t = ResearchSavedData.get(world).getTeamByName(team);
-		if (t.getWorld() == null) {
-			t.setWorld(world);
-		}
 		return t;
 	}
 

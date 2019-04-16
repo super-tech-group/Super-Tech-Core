@@ -10,10 +10,10 @@ import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
-import com.supertechgroup.core.research.teams.ITeamCapability;
 import com.supertechgroup.core.research.teams.ResearchTeam;
-import com.supertechgroup.core.research.teams.TeamCapability;
-import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
+import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -111,27 +112,25 @@ public class ResearchEvents {
 	}
 
 	@SubscribeEvent
-	public void onPlayerLogin(EntityJoinWorldEvent e) {
-		if (SuperTechCoreMod.proxy.getSide() == Side.SERVER && e.getEntity() instanceof EntityPlayerMP) {
-			EntityPlayerMP player = (EntityPlayerMP) e.getEntity();
-			ResearchSavedData rsd = ResearchSavedData.get(e.getWorld());
-			ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-			if (cap.getTeam().equals(TeamCapability.NULL_TEAM)) {
-				rsd.createNewTeam(player.getName() + "'s Team", player);
-				player.sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
-				rsd.teams.forEach((t) -> {
-					player.sendMessage(new TextComponentString(t.getTeamName()));
-				});
-			}
-
-			// send team's completed research
-			ResearchTeam team = rsd
-					.getTeamByName(player.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
-			System.out.println(team);
-			CompleteResearchPacket packet = new CompleteResearchPacket(team,
-					team.getCompletedResearch().toArray(new Research[] {}));
-			PacketHandler.INSTANCE.sendTo(packet, player);
+	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent e) {
+		System.out.println("Entity joined world " + e.player.getEntityWorld().getMapStorage());
+		ResearchSavedData rsd = ResearchSavedData.get(e.player.getEntityWorld());
+		System.out.println("created/loaded rsd " + rsd.mapName);
+		ITeamCapability cap = e.player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		if (cap.getTeam().equals(TeamCapability.NULL_TEAM)) {
+			rsd.createNewTeam(e.player.getName() + "'s Team", e.player);
+			e.player.sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
+			rsd.teams.forEach((t) -> {
+				e.player.sendMessage(new TextComponentString(t.getTeamName()));
+			});
 		}
+
+		// send team's completed research
+		ResearchTeam team = rsd.getTeamByName(e.player.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
+		System.out.println(team);
+		CompleteResearchPacket packet = new CompleteResearchPacket(team,
+				team.getCompletedResearch().toArray(new Research[] {}));
+		PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) e.player);
 	}
 
 	public static final ResourceLocation TEAM_CAP = new ResourceLocation(Reference.MODID, "researchTeam");
@@ -151,7 +150,14 @@ public class ResearchEvents {
 	public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
 		if (!(event.getObject() instanceof EntityPlayer))
 			return;
-
 		event.addCapability(TEAM_CAP, new TeamCapabilityProvider());
 	}
+
+	@SubscribeEvent
+	public void attachCapabilityWorld(AttachCapabilitiesEvent<World> event) {
+		if (!(event.getObject() instanceof World))
+			return;
+		ResearchSavedData.get(event.getObject());
+	}
+
 }

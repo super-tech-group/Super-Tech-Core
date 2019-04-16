@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.research.teams.ITeamCapability;
 import com.supertechgroup.core.research.teams.ResearchTeam;
-import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
+import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,17 +25,14 @@ public class ResearchSavedData extends WorldSavedData {
 
 	public static ResearchSavedData get(World world) {
 		if (INSTANCE == null) {
-			INSTANCE = (ResearchSavedData) world.getMapStorage().getOrLoadData(ResearchSavedData.class,
-					Reference.RESEARCH_DATA_NAME);
+			INSTANCE = (ResearchSavedData) world.loadData(ResearchSavedData.class, Reference.RESEARCH_DATA_NAME);
 			if (INSTANCE == null) {
-				INSTANCE = new ResearchSavedData(Reference.RESEARCH_DATA_NAME);
-				world.getMapStorage().setData(Reference.RESEARCH_DATA_NAME, INSTANCE);
+				INSTANCE = new ResearchSavedData();
+				world.setData(Reference.RESEARCH_DATA_NAME, INSTANCE);
 			}
 		}
 		return INSTANCE;
 	}
-
-	World world;
 
 	public ArrayList<ResearchTeam> teams = new ArrayList<>();
 	private HashMap<UUID, ResearchTeam> teamInvites = new HashMap<>();
@@ -50,11 +47,11 @@ public class ResearchSavedData extends WorldSavedData {
 
 	public void addInvite(UUID uuid, ResearchTeam researchTeam) {
 		teamInvites.put(uuid, researchTeam);
+		this.markDirty();
 	}
 
 	public ResearchTeam createNewTeam(String teamName, EntityPlayer newMember) {
 		ResearchTeam r = new ResearchTeam(teamName);
-		r.setWorld(this.world);
 
 		ITeamCapability cap = newMember.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
 		cap.setTeam(r);
@@ -72,8 +69,10 @@ public class ResearchSavedData extends WorldSavedData {
 	}
 
 	public ResearchTeam getTeamByName(String name) {
+		System.out.println("Looking for team " + name);
 		if (teams.size() > 0) {
 			for (ResearchTeam rt : teams) {
+				System.out.println("checking against " + rt.getTeamName());
 				if (rt.getTeamName().equals(name)) {
 					return rt;
 				}
@@ -111,11 +110,11 @@ public class ResearchSavedData extends WorldSavedData {
 			ResearchTeam team = new ResearchTeam();
 
 			team.setTeamName(teamInfo.getString("name"));
-			team.setWorld(this.world);
 
 			teamInfo.getTagList("completedResearch", Constants.NBT.TAG_STRING).forEach((cr) -> {
 				NBTTagString stringTag = (NBTTagString) cr;
-				team.addCompletedResearch(Research.REGISTRY.getValue(new ResourceLocation(stringTag.toString())));
+				team.addCompletedResearch(Research.REGISTRY.getValue(new ResourceLocation(stringTag.getString())),
+						false);
 			});
 			System.out.println("Loaded team " + team.getTeamName());
 			teams.add(team);

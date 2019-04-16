@@ -7,6 +7,8 @@ import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchSavedData;
+import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
@@ -16,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public class ResearchTeam {
 	private ArrayList<Research> completedResearch = new ArrayList<>();
 	private String TeamName;
-	private World world;
 
 	public ResearchTeam() {
 	}
@@ -26,20 +27,7 @@ public class ResearchTeam {
 	}
 
 	public void addCompletedResearch(Research r) {
-		System.out.println("Completing " + r + " for " + this.getTeamName());
-		completedResearch.add(r);
-		ResearchSavedData.get(this.world).markDirty();
-		if (SuperTechCoreMod.proxy.getSide() == Side.SERVER) {
-			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-			server.getPlayerList().getPlayers().forEach((player) -> {
-				ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-				if (cap.getTeam().equals(this.getTeamName())) {
-					CompleteResearchPacket packet = new CompleteResearchPacket(this, r);
-					PacketHandler.INSTANCE.sendTo(packet, player);
-					System.out.println("Packet sent");
-				}
-			});
-		}
+		addCompletedResearch(r, true);
 	}
 
 	public ArrayList<Research> getCompletedResearch() {
@@ -50,10 +38,6 @@ public class ResearchTeam {
 		return TeamName;
 	}
 
-	public World getWorld() {
-		return world;
-	}
-
 	public boolean isResearchCompleted(Research research) {
 		return completedResearch.contains(research);
 	}
@@ -62,7 +46,20 @@ public class ResearchTeam {
 		TeamName = newName;
 	}
 
-	public void setWorld(World world2) {
-		world = world2;
+	public void addCompletedResearch(Research r, boolean sendPacket) {
+		System.out.println("Completing " + r + " for " + this.getTeamName());
+		completedResearch.add(r);
+		ResearchSavedData.get(SuperTechCoreMod.proxy.getWorld()).markDirty();
+		if (sendPacket && SuperTechCoreMod.proxy.getSide() == Side.SERVER) {
+			MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+			server.getPlayerList().getPlayers().forEach((player) -> {
+				ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+				if (cap.getTeam().equals(this.getTeamName())) {
+					CompleteResearchPacket packet = new CompleteResearchPacket(this, r);
+					PacketHandler.INSTANCE.sendTo(packet, player);
+					System.out.println("Packet sent");
+				}
+			});
+		}
 	}
 }

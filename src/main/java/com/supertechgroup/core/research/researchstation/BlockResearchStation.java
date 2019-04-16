@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
 
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.research.ResearchSavedData;
-import com.supertechgroup.core.research.teams.TeamCapabilityProvider;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 import com.supertechgroup.core.util.BlockTileEntity;
 
 import net.minecraft.block.material.Material;

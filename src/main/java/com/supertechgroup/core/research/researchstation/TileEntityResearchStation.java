@@ -43,6 +43,10 @@ public class TileEntityResearchStation extends TileEntity {
 		}
 	}
 
+	public HashMap<ResourceLocation, Integer> getTasks() {
+		return researchProgress;
+	}
+
 	public UUID getTeam() {
 		return team;
 	}
@@ -50,7 +54,6 @@ public class TileEntityResearchStation extends TileEntity {
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		System.out.println("Trying read of " + compound.getString("team"));
 		team = UUID.fromString(compound.getString("team"));
 		NBTTagCompound tasks = compound.getCompoundTag("tasks");
 		researchProgress.clear();
@@ -73,9 +76,5 @@ public class TileEntityResearchStation extends TileEntity {
 		});
 		compound.setTag("tasks", tasks);
 		return compound;
-	}
-
-	public HashMap<ResourceLocation, Integer> getTasks() {
-		return researchProgress;
 	}
 }

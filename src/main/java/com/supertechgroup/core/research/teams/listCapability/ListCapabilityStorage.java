@@ -19,26 +19,6 @@ import net.minecraftforge.common.util.Constants;
 public class ListCapabilityStorage implements IStorage<IListCapability> {
 
 	@Override
-	public NBTBase writeNBT(Capability<IListCapability> capability, IListCapability instance, EnumFacing side) {
-		NBTTagList teamList = new NBTTagList();
-		for (UUID teamID : instance.getTeamIDs()) {
-			NBTTagCompound teamInfo = new NBTTagCompound();
-
-			teamInfo.setString("id", teamID.toString());
-			teamInfo.setString("name", instance.getTeamName(teamID));
-
-			NBTTagList compResearch = new NBTTagList();
-			for (Research r : instance.getCompletedForTeam(teamID)) {
-				compResearch.appendTag(new NBTTagString(r.getRegistryName().toString()));
-			}
-			teamInfo.setTag("completedResearch", compResearch);
-
-			teamList.appendTag(teamInfo);
-		}
-		return teamList;
-	}
-
-	@Override
 	public void readNBT(Capability<IListCapability> capability, IListCapability instance, EnumFacing side,
 			NBTBase nbt) {
 		NBTTagList teamList = (NBTTagList) nbt;
@@ -65,6 +45,26 @@ public class ListCapabilityStorage implements IStorage<IListCapability> {
 
 		instance.setData(teams, unlockedResearch);
 
+	}
+
+	@Override
+	public NBTBase writeNBT(Capability<IListCapability> capability, IListCapability instance, EnumFacing side) {
+		NBTTagList teamList = new NBTTagList();
+		for (UUID teamID : instance.getTeamIDs()) {
+			NBTTagCompound teamInfo = new NBTTagCompound();
+
+			teamInfo.setString("id", teamID.toString());
+			teamInfo.setString("name", instance.getTeamName(teamID));
+
+			NBTTagList compResearch = new NBTTagList();
+			for (Research r : instance.getCompletedForTeam(teamID)) {
+				compResearch.appendTag(new NBTTagString(r.getRegistryName().toString()));
+			}
+			teamInfo.setTag("completedResearch", compResearch);
+
+			teamList.appendTag(teamInfo);
+		}
+		return teamList;
 	}
 
 }

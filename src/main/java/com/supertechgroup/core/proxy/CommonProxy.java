@@ -48,7 +48,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -61,9 +60,7 @@ public abstract class CommonProxy {
 	public static ArrayList<WorldGeneratorBase> parsed = new ArrayList<>();
 
 	private File configFolder;
-	public World getWorld() {
-		return getWorld(null);
-	}
+
 	private void addBasicRecipies() {
 		// add basic tool recipies
 
@@ -247,6 +244,10 @@ public abstract class CommonProxy {
 		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
 		GameRegistry.findRegistry(IRecipe.class).register(srr.setRegistryName("testing"));
 
+	}
+
+	public World getWorld() {
+		return getWorld(null);
 	}
 
 	public abstract World getWorld(IBlockAccess world);

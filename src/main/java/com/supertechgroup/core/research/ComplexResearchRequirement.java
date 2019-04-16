@@ -16,6 +16,11 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 
 	}
 
+	@Override
+	public void addRequirement(IResearchRequirement rr) {
+		this.requirements.add(rr);
+	}
+
 	public int getRequiredCount() {
 		return this.numberRequired;
 	}
@@ -44,11 +49,6 @@ public class ComplexResearchRequirement implements IResearchRequirement {
 
 	public void setRequiredCount(int num) {
 		this.numberRequired = num;
-	}
-
-	@Override
-	public void addRequirement(IResearchRequirement rr) {
-		this.requirements.add(rr);
 	}
 
 }

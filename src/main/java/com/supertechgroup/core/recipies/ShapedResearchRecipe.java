@@ -76,7 +76,8 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 	public boolean matches(InventoryCrafting inv, World world) {
 		EntityPlayer p = findPlayer(inv);
 		UUID teamID = p.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam();
-		return p != null && teamID != TeamCapability.NULL_TEAM && required.isFulfilled(teamID) && super.matches(inv, world);
+		return p != null && teamID != TeamCapability.NULL_TEAM && required.isFulfilled(teamID)
+				&& super.matches(inv, world);
 	}
 
 	@Override

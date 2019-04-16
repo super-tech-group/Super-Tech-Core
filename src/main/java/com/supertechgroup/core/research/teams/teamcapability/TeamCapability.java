@@ -7,13 +7,13 @@ public class TeamCapability implements ITeamCapability {
 	private UUID team = NULL_TEAM;
 
 	@Override
-	public void setTeam(UUID teamID) {
-		team = teamID;
+	public UUID getTeam() {
+		return team;
 	}
 
 	@Override
-	public UUID getTeam() {
-		return team;
+	public void setTeam(UUID teamID) {
+		team = teamID;
 	}
 
 }

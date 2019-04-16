@@ -13,8 +13,8 @@ public class TeamCapabilityProvider implements ICapabilitySerializable<NBTBase> 
 	private ITeamCapability instance = TEAM_CAP.getDefaultInstance();
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		return capability == TEAM_CAP;
+	public void deserializeNBT(NBTBase nbt) {
+		TEAM_CAP.getStorage().readNBT(TEAM_CAP, this.instance, null, nbt);
 	}
 
 	@Override
@@ -23,12 +23,12 @@ public class TeamCapabilityProvider implements ICapabilitySerializable<NBTBase> 
 	}
 
 	@Override
-	public NBTBase serializeNBT() {
-		return TEAM_CAP.getStorage().writeNBT(TEAM_CAP, this.instance, null);
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		return capability == TEAM_CAP;
 	}
 
 	@Override
-	public void deserializeNBT(NBTBase nbt) {
-		TEAM_CAP.getStorage().readNBT(TEAM_CAP, this.instance, null, nbt);
+	public NBTBase serializeNBT() {
+		return TEAM_CAP.getStorage().writeNBT(TEAM_CAP, this.instance, null);
 	}
 }

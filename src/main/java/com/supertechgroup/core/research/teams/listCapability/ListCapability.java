@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.research.Research;
@@ -17,7 +16,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class ListCapability implements IListCapability {
 	/**
@@ -34,23 +32,8 @@ public class ListCapability implements IListCapability {
 	private HashMap<UUID, UUID> teamInvites = new HashMap<>();
 
 	@Override
-	public void createTeam(EntityPlayer player) {
-		UUID teamID = UUID.randomUUID();
-		teams.put(teamID, player.getDisplayNameString() + "'s Team");
-		ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-		cap.setTeam(teamID);
-		System.out.println("Creating new team for " + player + ", id: " + teamID);
-	}
-
-	@Override
-	public ArrayList<Research> getCompletedForTeam(UUID team) {
-
-		return unlockedResearch.getOrDefault(team, new ArrayList<>());
-	}
-
-	@Override
-	public boolean isCompletedForTeam(Research research, UUID team) {
-		return unlockedResearch.getOrDefault(team, new ArrayList<>()).contains(research);
+	public void addInvite(EntityPlayer otherPlayer, UUID team) {
+		teamInvites.put(otherPlayer.getUniqueID(), team);
 	}
 
 	@Override
@@ -73,13 +56,33 @@ public class ListCapability implements IListCapability {
 	}
 
 	@Override
+	public void createTeam(EntityPlayer player) {
+		UUID teamID = UUID.randomUUID();
+		teams.put(teamID, player.getDisplayNameString() + "'s Team");
+		ITeamCapability cap = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		cap.setTeam(teamID);
+		System.out.println("Creating new team for " + player + ", id: " + teamID);
+	}
+
+	@Override
+	public ArrayList<Research> getCompletedForTeam(UUID team) {
+
+		return unlockedResearch.getOrDefault(team, new ArrayList<>());
+	}
+
+	@Override
+	public UUID[] getTeamIDs() {
+		return this.teams.keySet().toArray(new UUID[] {});
+	}
+
+	@Override
 	public String getTeamName(UUID team) {
 		return teams.getOrDefault(team, "NO TEAM");
 	}
 
 	@Override
-	public void addInvite(EntityPlayer otherPlayer, UUID team) {
-		teamInvites.put(otherPlayer.getUniqueID(), team);
+	public boolean isCompletedForTeam(Research research, UUID team) {
+		return unlockedResearch.getOrDefault(team, new ArrayList<>()).contains(research);
 	}
 
 	@Override
@@ -95,11 +98,6 @@ public class ListCapability implements IListCapability {
 
 		}
 		return false;
-	}
-
-	@Override
-	public UUID[] getTeamIDs() {
-		return this.teams.keySet().toArray(new UUID[] {});
 	}
 
 	@Override

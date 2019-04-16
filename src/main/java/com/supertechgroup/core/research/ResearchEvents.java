@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
@@ -38,6 +37,26 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 public class ResearchEvents {
+
+	public static final ResourceLocation TEAM_CAP = new ResourceLocation(Reference.MODID, "researchTeam");
+
+	public static final ResourceLocation TEAM_LIST_CAP = new ResourceLocation(Reference.MODID, "researchTeamList");
+
+	@SubscribeEvent
+	public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
+		if (!(event.getObject() instanceof EntityPlayer)) {
+			return;
+		}
+		event.addCapability(TEAM_CAP, new TeamCapabilityProvider());
+	}
+
+	@SubscribeEvent
+	public void attachCapabilityWorld(AttachCapabilitiesEvent<World> event) {
+		if (!(event.getObject() instanceof World)) {
+			return;
+		}
+		event.addCapability(TEAM_LIST_CAP, new ListCapabilityProvider());
+	}
 
 	@SubscribeEvent
 	public void onClientConnected(FMLNetworkEvent.ClientConnectedToServerEvent event) {
@@ -97,6 +116,17 @@ public class ResearchEvents {
 		JEIMainPlugin.handleItemBlacklisting(ItemResearchBook.getEmptyBookStack(), false);
 	}
 
+	/**
+	 * Copy data from dead player to the new player
+	 */
+	@SubscribeEvent
+	public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
+		EntityPlayer player = event.getEntityPlayer();
+		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		team.setTeam(oldTeam.getTeam());
+	}
+
 	@SubscribeEvent
 	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
 		ItemStack hand = event.player.getHeldItemOffhand();
@@ -114,7 +144,7 @@ public class ResearchEvents {
 		}
 	}
 
-	 @SubscribeEvent
+	@SubscribeEvent
 	public void onPlayerLogin(EntityJoinWorldEvent e) {
 		if (e.getEntity() instanceof EntityPlayerMP) {
 			ITeamCapability teamCap = e.getEntity().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
@@ -135,34 +165,6 @@ public class ResearchEvents {
 					listCap.getCompletedForTeam(teamCap.getTeam()).toArray(new Research[] {}));
 			PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) e.getEntity());
 		}
-	}
-
-	public static final ResourceLocation TEAM_CAP = new ResourceLocation(Reference.MODID, "researchTeam");
-	public static final ResourceLocation TEAM_LIST_CAP = new ResourceLocation(Reference.MODID, "researchTeamList");
-
-	/**
-	 * Copy data from dead player to the new player
-	 */
-	@SubscribeEvent
-	public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
-		EntityPlayer player = event.getEntityPlayer();
-		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-		team.setTeam(oldTeam.getTeam());
-	}
-
-	@SubscribeEvent
-	public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-		if (!(event.getObject() instanceof EntityPlayer))
-			return;
-		event.addCapability(TEAM_CAP, new TeamCapabilityProvider());
-	}
-
-	@SubscribeEvent
-	public void attachCapabilityWorld(AttachCapabilitiesEvent<World> event) {
-		if (!(event.getObject() instanceof World))
-			return;
-		event.addCapability(TEAM_LIST_CAP, new ListCapabilityProvider());
 	}
 
 }

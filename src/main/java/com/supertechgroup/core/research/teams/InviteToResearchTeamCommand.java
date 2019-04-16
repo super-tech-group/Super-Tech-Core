@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.research.teams.listCapability.IListCapability;
 import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
 import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
@@ -55,7 +54,7 @@ public class InviteToResearchTeamCommand extends CommandBase {
 								new TextComponentString(TextFormatting.GREEN + "Your invite has been sent!"));
 						IListCapability listCap = DimensionManager.getWorld(0)
 								.getCapability(ListCapabilityProvider.TEAM_LIST_CAP, null);
-						listCap.addInvite(otherPlayer,cap.getTeam());
+						listCap.addInvite(otherPlayer, cap.getTeam());
 					} else {
 						player.sendMessage(
 								new TextComponentString(TextFormatting.RED + "Sorry, you can't invite yourself."));

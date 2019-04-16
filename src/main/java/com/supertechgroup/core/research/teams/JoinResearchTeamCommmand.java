@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.research.teams.listCapability.IListCapability;
 import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
 
@@ -33,8 +32,8 @@ public class JoinResearchTeamCommmand extends CommandBase {
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
 		if (sender instanceof EntityPlayer) {
 			EntityPlayerMP player = (EntityPlayerMP) sender;
-			IListCapability listCap = DimensionManager.getWorld(0)
-					.getCapability(ListCapabilityProvider.TEAM_LIST_CAP, null);
+			IListCapability listCap = DimensionManager.getWorld(0).getCapability(ListCapabilityProvider.TEAM_LIST_CAP,
+					null);
 			listCap.joinTeam(player);
 		}
 	}

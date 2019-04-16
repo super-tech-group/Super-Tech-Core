@@ -449,6 +449,11 @@ public class ModRegistry {
 		ResearchTasks.addTask(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"));
 
+		OreDictionary.registerOre("crushedTinOre", new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedCopperOre", new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedCopperOre", new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedCopperOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+
 		// setup ore veins
 		CommonProxy.parsed.add(new WorldGeneratorPlate(
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:galena"))),

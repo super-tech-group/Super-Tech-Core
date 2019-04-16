@@ -14,7 +14,7 @@ import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
-import com.supertechgroup.core.recipies.ShapedResearchRecipe;
+import com.supertechgroup.core.recipies.ShapelessResearchRecipe;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
 import com.supertechgroup.core.research.teams.listCapability.IListCapability;
@@ -52,6 +52,7 @@ import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public abstract class CommonProxy {
 	public static Configuration config;
@@ -223,26 +224,26 @@ public abstract class CommonProxy {
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 0.5f);
 
 		// other recipies
-
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapedOreRecipe(new ResourceLocation("research"),
-						new ItemStack(ModRegistry.researchStation),
+		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);
+		recipeRegistry.register(
+				new ShapedOreRecipe(new ResourceLocation("research"), new ItemStack(ModRegistry.researchStation),
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
 								new ItemStack(Blocks.CRAFTING_TABLE), 'b', new ItemStack(Items.BOOK) })
 										.setRegistryName(Reference.MODID, "basicResearchStation"));
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapelessOreRecipe(new ResourceLocation("research"), ItemResearchBook.getEmptyBookStack(),
-						new Object[] { new ItemStack(Items.WRITABLE_BOOK) }).setRegistryName(Reference.MODID,
-								"emptyResearchBook"));
+		recipeRegistry.register(new ShapelessOreRecipe(new ResourceLocation("research"),
+				ItemResearchBook.getEmptyBookStack(), new Object[] { new ItemStack(Items.WRITABLE_BOOK) })
+						.setRegistryName(Reference.MODID, "emptyResearchBook"));
 
-		ShapedResearchRecipe srr = new ShapedResearchRecipe(new ResourceLocation("asdf"),
+		ShapelessResearchRecipe dirtyBronzeDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
 				new ItemStack(
 						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(),
-						1, MaterialItem.INGOT),
-				new Object[] { new String[] { "ab" }, 'a', new OreIngredient("plankWood"), 'b',
-						new OreIngredient("ingotIron") });
-		srr.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
-		GameRegistry.findRegistry(IRecipe.class).register(srr.setRegistryName("testing"));
+						5, MaterialItem.DIRTY),
+				new Object[] { new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedTinOre") });
+		dirtyBronzeDust.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
+		recipeRegistry.register(dirtyBronzeDust.setRegistryName(Reference.MODID, "oreDirtyBronzeDust"));
 
 	}
 

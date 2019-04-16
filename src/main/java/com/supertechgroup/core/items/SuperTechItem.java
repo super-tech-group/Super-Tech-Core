@@ -1,6 +1,7 @@
 package com.supertechgroup.core.items;
 
 import com.supertechgroup.core.util.ItemBase;
+
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class SuperTechItem extends ItemBase {
+
+	public final static int BASIC_CIRCUIT = 0;
+
+	public final static int ADVANCED_CIRCUIT = 1;
+
+	public final static int ELITE_CIRCUIT = 2;
+
+	public final static int ULTIMATE_CIRCUIT = 3;
+	public final static int BASIC_CASING = 4;
+	public final static int SMALL_POWER_UNIT = 5;
+	public final static int HEATING_UNIT = 6;
 
 	public SuperTechItem() {
 		super("itemTechComponent");
@@ -32,14 +44,6 @@ public class SuperTechItem extends ItemBase {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
-
-	public final static int BASIC_CIRCUIT = 0;
-	public final static int ADVANCED_CIRCUIT = 1;
-	public final static int ELITE_CIRCUIT = 2;
-	public final static int ULTIMATE_CIRCUIT = 3;
-	public final static int BASIC_CASING = 4;
-	public final static int SMALL_POWER_UNIT = 5;
-	public final static int HEATING_UNIT = 6;
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {

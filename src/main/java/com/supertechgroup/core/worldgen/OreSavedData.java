@@ -95,50 +95,6 @@ public class OreSavedData extends WorldSavedData {
 	}
 
 	/**
-	 * Attempts to get the hardness of a block at Block position. If it is unable to
-	 * find a given hardness will return 1f.
-	 *
-	 * @param pos
-	 * @return
-	 */
-	public float getHardness(BlockPos pos) {
-		return getHardness(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	/**
-	 * Attempts to get the hardness of a block at Coords X, Y, Z. If it is unable to
-	 * find a given hardness will return 1f.
-	 *
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-	public float getHardness(int x, int y, int z) {
-		try {
-			return hardnessData.get(x).get(y).get(z);
-		} catch (Exception ex) {
-			System.out.println("Failed to find a block hardness at location: " + x + ", " + y + ", " + z);
-			return 1f;
-		}
-	}
-
-	public void setHardness(BlockPos pos, Float hardness) {
-		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
-	}
-
-	public void setHardness(int x, int y, int z, Float hardness) {
-		if (!hardnessData.containsKey(x)) {
-			hardnessData.put(x, new HashMap());
-		}
-		if (!hardnessData.get(x).containsKey(y)) {
-			hardnessData.get(x).put(y, new HashMap());
-		}
-		hardnessData.get(x).get(y).put(z, hardness);
-		markDirty();
-	}
-
-	/**
 	 * Creates a tag of ore data in a chunk. Intended for use with #updateFromTag.
 	 *
 	 * @param chunkX
@@ -232,6 +188,35 @@ public class OreSavedData extends WorldSavedData {
 			ret.setTag(pos.getX() + "h", xTag);
 		}
 		return ret;
+	}
+
+	/**
+	 * Attempts to get the hardness of a block at Block position. If it is unable to
+	 * find a given hardness will return 1f.
+	 *
+	 * @param pos
+	 * @return
+	 */
+	public float getHardness(BlockPos pos) {
+		return getHardness(pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	/**
+	 * Attempts to get the hardness of a block at Coords X, Y, Z. If it is unable to
+	 * find a given hardness will return 1f.
+	 *
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public float getHardness(int x, int y, int z) {
+		try {
+			return hardnessData.get(x).get(y).get(z);
+		} catch (Exception ex) {
+			System.out.println("Failed to find a block hardness at location: " + x + ", " + y + ", " + z);
+			return 1f;
+		}
 	}
 
 	/**
@@ -384,6 +369,21 @@ public class OreSavedData extends WorldSavedData {
 			newData[i] = dataList[i];
 		}
 		data.get(x).get(y).put(z, newData);
+		markDirty();
+	}
+
+	public void setHardness(BlockPos pos, Float hardness) {
+		setHardness(pos.getX(), pos.getY(), pos.getZ(), hardness);
+	}
+
+	public void setHardness(int x, int y, int z, Float hardness) {
+		if (!hardnessData.containsKey(x)) {
+			hardnessData.put(x, new HashMap());
+		}
+		if (!hardnessData.get(x).containsKey(y)) {
+			hardnessData.get(x).put(y, new HashMap());
+		}
+		hardnessData.get(x).get(y).put(z, hardness);
 		markDirty();
 	}
 

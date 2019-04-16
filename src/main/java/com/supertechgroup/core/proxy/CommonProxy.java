@@ -9,11 +9,20 @@ import com.google.common.collect.Lists;
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.recipies.ShapelessResearchRecipe;
+import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityStorage;
+import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityStorage;
 import com.supertechgroup.core.worldgen.WorldGenEvents;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -30,6 +39,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -38,11 +48,11 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public abstract class CommonProxy {
 	public static Configuration config;
@@ -214,16 +224,28 @@ public abstract class CommonProxy {
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 0.5f);
 
 		// other recipies
-
-		GameRegistry.findRegistry(IRecipe.class)
-				.register(new ShapedOreRecipe(new ResourceLocation("research"),
-						new ItemStack(ModRegistry.researchStation),
+		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);
+		recipeRegistry.register(
+				new ShapedOreRecipe(new ResourceLocation("research"), new ItemStack(ModRegistry.researchStation),
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
 								new ItemStack(Blocks.CRAFTING_TABLE), 'b', new ItemStack(Items.BOOK) })
 										.setRegistryName(Reference.MODID, "basicResearchStation"));
-	}
+		recipeRegistry.register(new ShapelessOreRecipe(new ResourceLocation("research"),
+				ItemResearchBook.getEmptyBookStack(), new Object[] { new ItemStack(Items.WRITABLE_BOOK) })
+						.setRegistryName(Reference.MODID, "emptyResearchBook"));
 
-	public abstract Side getSide();
+		ShapelessResearchRecipe dirtyBronzeDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(),
+						5, MaterialItem.DIRTY),
+				new Object[] { new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedTinOre") });
+		dirtyBronzeDust.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
+		recipeRegistry.register(dirtyBronzeDust.setRegistryName(Reference.MODID, "oreDirtyBronzeDust"));
+
+	}
 
 	public World getWorld() {
 		return getWorld(null);
@@ -272,6 +294,9 @@ public abstract class CommonProxy {
 
 		ResearchEvents re = new ResearchEvents();
 		MinecraftForge.EVENT_BUS.register(re);
+
+		CapabilityManager.INSTANCE.register(ITeamCapability.class, new TeamCapabilityStorage(), TeamCapability.class);
+		CapabilityManager.INSTANCE.register(IListCapability.class, new ListCapabilityStorage(), ListCapability.class);
 	}
 
 	public abstract void registerItemRenderer(Item item, int i, String name);

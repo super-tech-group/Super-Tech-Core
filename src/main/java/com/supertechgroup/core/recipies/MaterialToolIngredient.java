@@ -1,9 +1,10 @@
-package com.supertechgroup.core.metallurgy;
+package com.supertechgroup.core.recipies;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.supertechgroup.core.items.MaterialItem;
+import com.supertechgroup.core.items.MaterialTool;
+import com.supertechgroup.core.metallurgy.Material;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
@@ -15,7 +16,7 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class MaterialItemIngredient extends Ingredient {
+public class MaterialToolIngredient extends Ingredient {
 	MaterialIngredientCriteria[] criteria;
 	private NonNullList<ItemStack> matches;
 	int type;
@@ -25,11 +26,11 @@ public class MaterialItemIngredient extends Ingredient {
 
 	/**
 	 * An ingredient made of a material
-	 * 
-	 * @param type     The type of Material Item. See the constants in #MaterialItem
+	 *
+	 * @param type     The type of Material Item. See the constants in #MaterialTool
 	 * @param criteria
 	 */
-	public MaterialItemIngredient(int type, MaterialIngredientCriteria... criteria) {
+	public MaterialToolIngredient(int type, MaterialIngredientCriteria... criteria) {
 		this.type = type;
 		this.criteria = criteria;
 		this.matches = NonNullList.create();
@@ -42,9 +43,27 @@ public class MaterialItemIngredient extends Ingredient {
 				}
 			}
 			if (pass) {
-				matches.add(new ItemStack(mat.getMaterialItem(), 1, type));
+				matches.add(new ItemStack(new MaterialTool(mat, type), 1, type));
 			}
 		});
+	}
+
+	@Override
+	public boolean apply(@Nullable ItemStack input) {
+		if (input == null) {
+			return false;
+		}
+
+		if (input.getItem() instanceof MaterialTool && input.getMetadata() == type) {
+			MaterialTool matItem = (MaterialTool) input.getItem();
+			for (MaterialIngredientCriteria c : this.criteria) {
+
+				if (!c.meetsCriteria(matItem.getMaterial())) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -53,10 +72,11 @@ public class MaterialItemIngredient extends Ingredient {
 		if (array == null || this.lastSizeA != matches.size()) {
 			NonNullList<ItemStack> lst = NonNullList.create();
 			for (ItemStack itemstack : this.matches) {
-				if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE)
+				if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
 					itemstack.getItem().getSubItems(CreativeTabs.SEARCH, lst);
-				else
+				} else {
 					lst.add(itemstack);
+				}
 			}
 			this.array = lst.toArray(new ItemStack[lst.size()]);
 			this.lastSizeA = matches.size();
@@ -74,8 +94,9 @@ public class MaterialItemIngredient extends Ingredient {
 				if (itemstack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
 					NonNullList<ItemStack> lst = NonNullList.create();
 					itemstack.getItem().getSubItems(CreativeTabs.SEARCH, lst);
-					for (ItemStack item : lst)
+					for (ItemStack item : lst) {
 						this.itemIds.add(RecipeItemHelper.pack(item));
+					}
 				} else {
 					this.itemIds.add(RecipeItemHelper.pack(itemstack));
 				}
@@ -86,23 +107,6 @@ public class MaterialItemIngredient extends Ingredient {
 		}
 
 		return this.itemIds;
-	}
-
-	@Override
-	public boolean apply(@Nullable ItemStack input) {
-		if (input == null)
-			return false;
-
-		if (input.getItem() instanceof MaterialItem && input.getMetadata() == type) {
-			MaterialItem matItem = (MaterialItem) input.getItem();
-			for (MaterialIngredientCriteria c : this.criteria) {
-
-				if (!c.meetsCriteria(matItem.getMaterial())) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	@Override

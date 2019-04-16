@@ -89,11 +89,6 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	@Override
-	public Side getSide() {
-		return Side.CLIENT;
-	}
-
-	@Override
 	public World getWorld(IBlockAccess world) {
 		if (world != null && world instanceof World) {
 			return (World) world;

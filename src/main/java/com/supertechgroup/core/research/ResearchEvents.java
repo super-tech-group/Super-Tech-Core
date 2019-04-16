@@ -5,22 +5,58 @@ import java.util.UUID;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
+import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.research.teams.listCapability.IListCapability;
+import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
+import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
+import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 public class ResearchEvents {
+
+	public static final ResourceLocation TEAM_CAP = new ResourceLocation(Reference.MODID, "researchTeam");
+
+	public static final ResourceLocation TEAM_LIST_CAP = new ResourceLocation(Reference.MODID, "researchTeamList");
+
+	@SubscribeEvent
+	public void attachCapability(AttachCapabilitiesEvent<Entity> event) {
+		if (!(event.getObject() instanceof EntityPlayer)) {
+			return;
+		}
+		event.addCapability(TEAM_CAP, new TeamCapabilityProvider());
+	}
+
+	@SubscribeEvent
+	public void attachCapabilityWorld(AttachCapabilitiesEvent<World> event) {
+		if (!(event.getObject() instanceof World)) {
+			return;
+		}
+		event.addCapability(TEAM_LIST_CAP, new ListCapabilityProvider());
+	}
 
 	@SubscribeEvent
 	public void onClientConnected(FMLNetworkEvent.ClientConnectedToServerEvent event) {
@@ -74,27 +110,61 @@ public class ResearchEvents {
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.NUGGET), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.INGOT), false);
 		JEIMainPlugin.handleItemBlacklisting(new ItemStack(zinc.getMaterialItem(), 1, MaterialItem.PLATE), false);
+
+		// fix some issues that would be caused
+		JEIMainPlugin.handleItemBlacklisting(new ItemStack(ModRegistry.itemResearchBook), true);
+		JEIMainPlugin.handleItemBlacklisting(ItemResearchBook.getEmptyBookStack(), false);
 	}
 
-	// Research Team stuff
+	/**
+	 * Copy data from dead player to the new player
+	 */
+	@SubscribeEvent
+	public void onPlayerClone(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
+		EntityPlayer player = event.getEntityPlayer();
+		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+		team.setTeam(oldTeam.getTeam());
+	}
+
+	@SubscribeEvent
+	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
+		ItemStack hand = event.player.getHeldItemOffhand();
+		if (hand.getItem().equals(ModRegistry.itemResearchBook) && hand.getTagCompound() != null
+				&& hand.getTagCompound().getInteger("remaining") > 0) {
+			NBTTagCompound tag = hand.getTagCompound();
+			NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
+			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(event.crafting);
+			if (!craftingResearch.toString().equals("null:void")) {
+				list.appendTag((new NBTTagString(craftingResearch.toString())));
+				tag.setInteger("remaining", tag.getInteger("remaining") - 1);
+				tag.setTag("tasks", list);
+				hand.setTagCompound(tag);
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public void onPlayerLogin(EntityJoinWorldEvent e) {
 		if (e.getEntity() instanceof EntityPlayerMP) {
-			EntityPlayerMP player = (EntityPlayerMP) e.getEntity();
-			UUID uuid = player.getUniqueID();
-			ResearchSavedData rsd = ResearchSavedData.get(e.getWorld());
-			if (!rsd.doesPlayerHaveTeam(uuid)) {
-				rsd.createNewTeam(player.getName() + "'s Team", uuid);
-				player.sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
-				rsd.teams.forEach((t) -> {
-					player.sendMessage(new TextComponentString(t.getTeamName()));
-				});
-			}
+			ITeamCapability teamCap = e.getEntity().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
+			System.out.println(DimensionManager.getWorld(0));
+			IListCapability listCap = DimensionManager.getWorld(0).getCapability(ListCapabilityProvider.TEAM_LIST_CAP,
+					null);
+			if (teamCap.getTeam() == TeamCapability.NULL_TEAM) {
+				listCap.createTeam((EntityPlayerMP) e.getEntity());
+				e.getEntity().sendMessage(new TextComponentString("Welcome, you've joined a new research team!"));
+				teamCap = e.getEntity().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
 
+			}
+			for (UUID id : listCap.getTeamIDs()) {
+				e.getEntity().sendMessage(new TextComponentString(id.toString() + " " + listCap.getTeamName(id)));
+			}
 			// send team's completed research
-			CompleteResearchPacket packet = new CompleteResearchPacket(rsd.findPlayersResearchTeam(player.getUniqueID())
-					.getCompletedResearch().toArray(new Research[] {}));
-			PacketHandler.INSTANCE.sendTo(packet, player);
+			CompleteResearchPacket packet = new CompleteResearchPacket(teamCap.getTeam(),
+					listCap.getCompletedForTeam(teamCap.getTeam()).toArray(new Research[] {}));
+			PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) e.getEntity());
 		}
 	}
+
 }

@@ -4,8 +4,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.proxy.CommonProxy;
-import com.supertechgroup.core.research.InviteToResearchTeamCommand;
-import com.supertechgroup.core.research.JoinResearchTeamCommmand;
+import com.supertechgroup.core.research.teams.InviteToResearchTeamCommand;
+import com.supertechgroup.core.research.teams.JoinResearchTeamCommmand;
 
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;

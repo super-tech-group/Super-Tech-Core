@@ -1,33 +1,30 @@
 package com.supertechgroup.core.proxy;
 
 import net.minecraft.item.Item;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 /**
- * Serverside only functions
+ * Proxy for PHYSICAL SERVERS ONLY. Singleplayer worlds only use ClientProxy
  *
  * @author oa10712
  *
  */
 public class ServerProxy extends CommonProxy {
-
-	@Override
-	public Side getSide() {
-		return Side.SERVER;
-	}
+	MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
 	@Override
 	public World getWorld(IBlockAccess world) {
 		if (world instanceof World) {
 			return (World) world;
 		}
-		return null;
+		return server.getEntityWorld();
 	}
 
 	@Override

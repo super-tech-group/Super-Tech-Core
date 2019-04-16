@@ -378,18 +378,13 @@ public class OreSavedData extends WorldSavedData {
 
 	public void setHardness(int x, int y, int z, Float hardness) {
 		if (!hardnessData.containsKey(x)) {
-			hardnessData.put(x, new HashMap<>());
+			hardnessData.put(x, new HashMap());
 		}
 		if (!hardnessData.get(x).containsKey(y)) {
-			hardnessData.get(x).put(y, new HashMap<>());
-		}
-		if (hardnessData.get(x).get(y).containsKey(z)) {
-			hardnessData.get(x).get(y).put(z, hardness);
-			return;
+			hardnessData.get(x).put(y, new HashMap());
 		}
 		hardnessData.get(x).get(y).put(z, hardness);
 		markDirty();
-
 	}
 
 	public void setOres(BlockPos pos, ResourceLocation[] ores) {

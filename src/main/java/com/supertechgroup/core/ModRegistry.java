@@ -3,8 +3,12 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
+import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
+import com.supertechgroup.core.machinery.multiblock.BlockMultiWall;
+import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -69,6 +73,8 @@ public class ModRegistry {
 
 	public static SuperTechItem itemTech;
 	public static ItemResearchBook itemResearchBook;
+	public static ItemConstructor itemConstructor;
+	public static BlockMultiWall wall;
 
 	/**
 	 *
@@ -142,6 +148,14 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
+		wall = new BlockMultiWall();
+		event.getRegistry().register(wall);
+		ForgeRegistries.ITEMS.register(new ItemBlock(wall).setRegistryName(wall.getRegistryName()));
+		GameRegistry.registerTileEntity(TileMultiBlock.class, wall.getRegistryName());
+		GameRegistry.registerTileEntity(TileEntityBasicSmelter.class,
+				new ResourceLocation(Reference.MODID, "basicSmelter"));
+
+		OreDictionary.registerOre("multiWall", wall);
 		superore = new OreBlock();
 		event.getRegistry().register(superore);
 
@@ -198,10 +212,12 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
+		itemConstructor = new ItemConstructor();
+
 		itemTech = new SuperTechItem();
 		itemResearchBook = new ItemResearchBook();
 
-		event.getRegistry().registerAll(itemTech, itemResearchBook);
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor);
 
 		itemTech.setupDictionary();
 	}

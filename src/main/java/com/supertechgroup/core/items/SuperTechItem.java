@@ -23,6 +23,8 @@ public class SuperTechItem extends ItemBase {
 	public final static int BASIC_CASING = 4;
 	public final static int SMALL_POWER_UNIT = 5;
 	public final static int HEATING_UNIT = 6;
+	public final static int SLAG = 7;
+	public final static int FLUX = 8;
 
 	public SuperTechItem() {
 		super("itemTechComponent");
@@ -40,7 +42,7 @@ public class SuperTechItem extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 9; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -63,6 +65,10 @@ public class SuperTechItem extends ItemBase {
 			return super.getUnlocalizedName() + ".powerUnitSmall";
 		case HEATING_UNIT:
 			return super.getUnlocalizedName() + ".heatingElement";
+		case SLAG:
+			return super.getUnlocalizedName() + ".slag";
+		case FLUX:
+			return super.getUnlocalizedName() + ".flux";
 		default:
 			return super.getUnlocalizedName();
 		}
@@ -83,6 +89,10 @@ public class SuperTechItem extends ItemBase {
 				new ModelResourceLocation("supertechcore:itemPowerUnitSmall", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(this, HEATING_UNIT,
 				new ModelResourceLocation("supertechcore:itemHeatingElement", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, SLAG,
+				new ModelResourceLocation("supertechcore:itemSlag", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, FLUX,
+				new ModelResourceLocation("supertechcore:itemFlux", "inventory"));
 	}
 
 	public void setupDictionary() {
@@ -93,5 +103,7 @@ public class SuperTechItem extends ItemBase {
 		OreDictionary.registerOre("casingBasic", new ItemStack(this, 1, BASIC_CASING));
 		OreDictionary.registerOre("powerUnitSmall", new ItemStack(this, 1, SMALL_POWER_UNIT));
 		OreDictionary.registerOre("heatingElement", new ItemStack(this, 1, HEATING_UNIT));
+		OreDictionary.registerOre("slag", new ItemStack(this, 1, SLAG));
+		OreDictionary.registerOre("flux", new ItemStack(this, 1, FLUX));
 	}
 }

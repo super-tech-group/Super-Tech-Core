@@ -12,4 +12,5 @@ public class Reference {
 	public static final String RESEARCH_CRAFTING = "crafting";
 	public static final String RESEARCH_SMELTING = "smelting";
 	public static final String RESEARCH_TOOL_USE = "toolUsage";
+	public static final int BASIC_SMELTER_ID = 0;
 }

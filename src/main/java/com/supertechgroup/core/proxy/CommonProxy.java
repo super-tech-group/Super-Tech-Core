@@ -9,9 +9,12 @@ import com.google.common.collect.Lists;
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
+import com.supertechgroup.core.machinery.basicsmelter.MultiblockBasicSmelter;
+import com.supertechgroup.core.machinery.multiblock.MultiblockHandler;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.recipies.ShapelessResearchRecipe;
@@ -254,6 +257,8 @@ public abstract class CommonProxy {
 	public abstract World getWorld(IBlockAccess world);
 
 	public void init(FMLInitializationEvent event) {
+		NetworkRegistry.INSTANCE.registerGuiHandler(SuperTechCoreMod.instance, new GuiProxy());
+
 		// remove unwanted vanilla items
 		ForgeRegistry<IRecipe> recipeRegistry = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
 		List<Item> disabledItems = Arrays.asList(ModRegistry.disabledVanillaItems);
@@ -277,7 +282,7 @@ public abstract class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 		Config.parseTypes();
-
+		MultiblockHandler.registerMultiblock(new MultiblockBasicSmelter());
 	}
 
 	public void preInit(FMLPreInitializationEvent e) {

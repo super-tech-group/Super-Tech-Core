@@ -1,5 +1,6 @@
 package com.supertechgroup.core.machinery.basicsmelter;
 
+import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler.IMultiblock;
 import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
@@ -20,10 +21,11 @@ import net.minecraft.world.World;
 
 public class MultiblockBasicSmelter implements IMultiblock {
 	static BlockMatcher[][][] structure = new BlockMatcher[][][] {
-			{ { new DictBlockMatcher("crudeHeater") }, { new DictBlockMatcher("crudeWall") },
-					{ new DictBlockMatcher("crudeIO") } },
-			{ { new DictBlockMatcher("crudeIO") }, { new DictBlockMatcher("crudeIO") },
-					{ new DirectBlockMatcher(Blocks.AIR) } } };
+			{ { new DirectBlockMatcher(ModRegistry.crudeHeaterBlock) },
+					{ new DirectBlockMatcher(ModRegistry.crudeWallBlock) },
+					{ new DirectBlockMatcher(ModRegistry.crudeIOBlock) } },
+			{ { new DirectBlockMatcher(ModRegistry.crudeIOBlock) },
+					{ new DirectBlockMatcher(ModRegistry.crudeIOBlock) }, { new DirectBlockMatcher(Blocks.AIR) } } };
 
 	@Override
 	public boolean canRenderFormedStructure() {
@@ -84,6 +86,12 @@ public class MultiblockBasicSmelter implements IMultiblock {
 	public void renderFormedStructure() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public BlockMatcher getTrigger() {
+		Vec3i offset = getTriggerOffset();
+		return structure[offset.getX() * -1][offset.getY() * -1][offset.getZ() * -1];
 	}
 
 }

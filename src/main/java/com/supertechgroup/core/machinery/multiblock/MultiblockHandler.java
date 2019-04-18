@@ -46,17 +46,17 @@ public class MultiblockHandler {
 		 * @return if the structure was valid.
 		 */
 		default boolean checkStructure(World world, BlockPos pos, EnumFacing side, EntityPlayer player) {
-			BlockPos fll = pos.add(getTriggerOffset());
+			BlockPos fll = pos.add(getTriggerOffset().getX(), getTriggerOffset().getY(), getTriggerOffset().getZ());
 			System.out.println("checking master at " + fll);
 			for (int x = 0; x < getStructureManual().length; x++) {
 				for (int y = 0; y < getStructureManual()[0].length; y++) {
 					for (int z = 0; z < getStructureManual()[0][0].length; z++) {
 						BlockPos np = fll.offset(EnumFacing.UP, y).offset(player.getHorizontalFacing(), x)
 								.offset(player.getHorizontalFacing().rotateY(), z);
-						if (!getStructureManual()[x][y][z].apply(world, pos)) {
-							player.sendMessage(new TextComponentString(
+						if (!getStructureManual()[x][y][z].apply(world, np)) {
+							System.out.println(
 									"Check failed at " + np + "; Expected " + getStructureManual()[x][y][z].toString()
-											+ " found " + world.getBlockState(np).getBlock()));
+											+ " found " + world.getBlockState(np).getBlock());
 							return false;
 						} else {
 							TileEntity tileAtPos = world.getTileEntity(np);
@@ -95,6 +95,8 @@ public class MultiblockHandler {
 		 */
 		BlockMatcher[][][] getStructureManual();
 
+		public BlockMatcher getTrigger();
+
 		/**
 		 * Returns the blockpos offset
 		 */
@@ -113,8 +115,9 @@ public class MultiblockHandler {
 		 * every structure.
 		 */
 		public default boolean isBlockTrigger(World world, BlockPos pos) {
-			Vec3i offset = getTriggerOffset();
-			return getStructureManual()[offset.getX()][-offset.getY()][offset.getZ()].apply(world, pos);
+			System.out.println("Checking trigger " + getTrigger().toString() + " against block "
+					+ world.getBlockState(pos).getBlock() + " at pos " + pos);
+			return getTrigger().apply(world, pos);
 		}
 
 		/**

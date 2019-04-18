@@ -15,7 +15,9 @@ public class DirectBlockMatcher extends BlockMatcher {
 
 	@Override
 	public boolean apply(World world, BlockPos pos) {
-		System.out.println(check.getRegistryName().equals(world.getBlockState(pos).getBlock().getRegistryName()));
+		System.out.println(check.toString() + " " + world.getBlockState(pos).getBlock());
+		System.out.println(toString() + " "
+				+ check.getRegistryName().equals(world.getBlockState(pos).getBlock().getRegistryName()));
 		return check.getRegistryName().equals(world.getBlockState(pos).getBlock().getRegistryName());
 	}
 

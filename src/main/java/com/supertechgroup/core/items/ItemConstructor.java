@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class ItemConstructor extends ItemBase {
@@ -28,8 +29,10 @@ public class ItemConstructor extends ItemBase {
 			ItemStack stack = player.getHeldItem(hand);
 			side = player.getHorizontalFacing();
 			for (MultiblockHandler.IMultiblock mb : MultiblockHandler.getMultiblocks()) {
-				System.out.println("Checking for " + mb.getUniqueName());
-				if (mb.isBlockTrigger(world, pos)) {
+				Vec3i s = mb.getTriggerOffset();
+				System.out.println(
+						"Checking for " + mb.getUniqueName() + ", trigger is " + mb.getTrigger() + " at pos " + pos);
+				if (mb.isBlockTrigger(world, new BlockPos(pos))) {
 					if (MultiblockHandler.postMultiblockFormationEvent(player, mb, pos, stack).isCanceled()) {
 						System.out.println("was cancelled");
 						continue;

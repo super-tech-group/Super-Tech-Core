@@ -10,9 +10,15 @@ import net.minecraftforge.oredict.OreIngredient;
 public class DictBlockMatcher extends BlockMatcher {
 
 	private OreIngredient check;
+	String c;
 
 	public DictBlockMatcher(String string) {
 		this.check = new OreIngredient(string);
+		c = string;
+	}
+
+	public String toString() {
+		return c;
 	}
 
 	@Override

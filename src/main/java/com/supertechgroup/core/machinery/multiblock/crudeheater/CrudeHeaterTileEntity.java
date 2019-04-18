@@ -90,7 +90,7 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 	@Override
 	public IHeatCapability getAdjacent(EnumFacing side) {
 		TileEntity adj = world.getTileEntity(getPos().offset(side));
-		if (adj.hasCapability(HeatCapabilityProvider.HEAT_CAP, side.getOpposite())) {
+		if (adj != null && adj.hasCapability(HeatCapabilityProvider.HEAT_CAP, side.getOpposite())) {
 			return adj.getCapability(HeatCapabilityProvider.HEAT_CAP, side.getOpposite());
 		}
 		return null;

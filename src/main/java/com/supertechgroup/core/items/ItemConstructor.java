@@ -24,7 +24,6 @@ public class ItemConstructor extends ItemBase {
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX,
 			float hitY, float hitZ, EnumHand hand) {
-		System.out.println(world.isRemote);
 		if (!world.isRemote) {
 			ItemStack stack = player.getHeldItem(hand);
 			side = player.getHorizontalFacing();
@@ -40,6 +39,7 @@ public class ItemConstructor extends ItemBase {
 					} else {
 						side = side.getOpposite();
 					}
+					System.out.println("Side adjusted");
 					if (!mb.checkStructure(world, pos, side, player)) {
 						continue;
 					}

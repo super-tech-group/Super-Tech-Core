@@ -1,23 +1,21 @@
-package com.supertechgroup.core.machinery.multiblock;
+package com.supertechgroup.core.machinery.multiblock.crudeio;
 
 import javax.annotation.Nullable;
 
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
+import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class CrudeInputTileEntity extends TileMultiBlock {
+public class CrudeIOTileEntity extends TileMultiBlock {
 	static public int getSlotCount() {
 		return 9;
 	}
@@ -27,7 +25,7 @@ public class CrudeInputTileEntity extends TileMultiBlock {
 		protected void onContentsChanged(int slot) {
 			// We need to tell the tile entity that something has changed so
 			// that the chest contents is persisted
-			CrudeInputTileEntity.this.markDirty();
+			CrudeIOTileEntity.this.markDirty();
 		}
 	};
 
@@ -37,7 +35,7 @@ public class CrudeInputTileEntity extends TileMultiBlock {
 			return;
 		}
 
-		player.openGui(SuperTechCoreMod.instance, Reference.GUI_CRUDE_INPUT, world, pos.getX(), pos.getY(), pos.getZ());
+		player.openGui(SuperTechCoreMod.instance, Reference.GUI_CRUDE_IO, world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	@Override
@@ -56,13 +54,12 @@ public class CrudeInputTileEntity extends TileMultiBlock {
 	@Override
 	@Nullable
 	public ITextComponent getDisplayName() {
-		return new TextComponentString("Crude Input");
+		return new TextComponentString("Crude I/O");
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		System.out.println("reading te " + compound);
 		itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
 	}
 
@@ -70,7 +67,6 @@ public class CrudeInputTileEntity extends TileMultiBlock {
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setTag("items", itemStackHandler.serializeNBT());
-		System.out.println("Writing te " + compound);
 		return compound;
 	}
 }

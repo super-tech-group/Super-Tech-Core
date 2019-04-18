@@ -1,4 +1,4 @@
-package com.supertechgroup.core.machinery.multiblock;
+package com.supertechgroup.core.machinery.multiblock.crudeio;
 
 import java.awt.Color;
 
@@ -9,14 +9,13 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public class CrudeInputGui extends GuiContainer {
+public class CrudeIOGui extends GuiContainer {
 
 	// This is the resource location for the background image for the GUI
-	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID,
-			"textures/gui/crude_input.png");
-	private CrudeInputTileEntity tile;
+	private static final ResourceLocation texture = new ResourceLocation(Reference.MODID, "textures/gui/crude_io.png");
+	private CrudeIOTileEntity tile;
 
-	public CrudeInputGui(CrudeInputTileEntity tile, CrudeInputContainer crudeInputContainer) {
+	public CrudeIOGui(CrudeIOTileEntity tile, CrudeIOContainer crudeInputContainer) {
 		super(crudeInputContainer);
 		this.tile = tile;
 		// Set the width and height of the gui. Should match the size of the texture!

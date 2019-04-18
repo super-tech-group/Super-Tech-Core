@@ -6,8 +6,8 @@ import java.util.List;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
-import com.supertechgroup.core.machinery.multiblock.CrudeInputBlock;
-import com.supertechgroup.core.machinery.multiblock.CrudeInputTileEntity;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOBlock;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOTileEntity;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -73,7 +73,7 @@ public class ModRegistry {
 	public static SuperTechItem itemTech;
 	public static ItemResearchBook itemResearchBook;
 	public static ItemConstructor itemConstructor;
-	public static CrudeInputBlock crudeInputBlock;
+	public static CrudeIOBlock crudeIOBlock;
 
 	/**
 	 *
@@ -147,14 +147,13 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		crudeInputBlock = new CrudeInputBlock();
-		event.getRegistry().register(crudeInputBlock);
-		ForgeRegistries.ITEMS
-				.register(new ItemBlock(crudeInputBlock).setRegistryName(crudeInputBlock.getRegistryName()));
-		GameRegistry.registerTileEntity(CrudeInputTileEntity.class, crudeInputBlock.getRegistryName());
-		GameRegistry.registerTileEntity(CrudeInputTileEntity.class, crudeInputBlock.getRegistryName());
-		OreDictionary.registerOre("crudeInput", crudeInputBlock);
-		
+		crudeIOBlock = new CrudeIOBlock();
+		event.getRegistry().register(crudeIOBlock);
+		ForgeRegistries.ITEMS.register(new ItemBlock(crudeIOBlock).setRegistryName(crudeIOBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
+		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
+		OreDictionary.registerOre("crudeInput", crudeIOBlock);
+
 		superore = new OreBlock();
 		event.getRegistry().register(superore);
 

@@ -1,9 +1,9 @@
 package com.supertechgroup.core.proxy;
 
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.machinery.multiblock.CrudeInputContainer;
-import com.supertechgroup.core.machinery.multiblock.CrudeInputGui;
-import com.supertechgroup.core.machinery.multiblock.CrudeInputTileEntity;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOContainer;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOGui;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -18,9 +18,9 @@ public class GuiProxy implements IGuiHandler {
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity te = world.getTileEntity(pos);
 		switch (ID) {
-		case Reference.GUI_CRUDE_INPUT:
-			CrudeInputTileEntity tile = (CrudeInputTileEntity) te;
-			return new CrudeInputGui(tile, new CrudeInputContainer(player.inventory, tile));
+		case Reference.GUI_CRUDE_IO:
+			CrudeIOTileEntity tile = (CrudeIOTileEntity) te;
+			return new CrudeIOGui(tile, new CrudeIOContainer(player.inventory, tile));
 		}
 		return null;
 	}
@@ -30,8 +30,8 @@ public class GuiProxy implements IGuiHandler {
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity tile = world.getTileEntity(pos);
 		switch (ID) {
-		case Reference.GUI_CRUDE_INPUT:
-			return new CrudeInputContainer(player.inventory, (CrudeInputTileEntity) tile);
+		case Reference.GUI_CRUDE_IO:
+			return new CrudeIOContainer(player.inventory, (CrudeIOTileEntity) tile);
 		}
 		return null;
 	}

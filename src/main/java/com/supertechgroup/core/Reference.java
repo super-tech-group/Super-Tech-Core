@@ -13,5 +13,5 @@ public class Reference {
 	public static final String RESEARCH_SMELTING = "smelting";
 	public static final String RESEARCH_TOOL_USE = "toolUsage";
 
-	public static final int GUI_CRUDE_INPUT = 0;
+	public static final int GUI_CRUDE_IO = 0;
 }

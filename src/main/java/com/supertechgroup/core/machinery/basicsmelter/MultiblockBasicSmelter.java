@@ -33,9 +33,9 @@ public class MultiblockBasicSmelter implements IMultiblock {
 	}
 
 	@Override
-	public String getUniqueName() {
+	public boolean canRenderFormedStructure() {
 		// TODO Auto-generated method stub
-		return Reference.MODID + ":BasicSmelter";
+		return false;
 	}
 
 	@Override
@@ -76,13 +76,13 @@ public class MultiblockBasicSmelter implements IMultiblock {
 	}
 
 	@Override
-	public boolean overwriteBlockRender(ItemStack stack, int iterator) {
+	public String getUniqueName() {
 		// TODO Auto-generated method stub
-		return false;
+		return Reference.MODID + ":BasicSmelter";
 	}
 
 	@Override
-	public boolean canRenderFormedStructure() {
+	public boolean overwriteBlockRender(ItemStack stack, int iterator) {
 		// TODO Auto-generated method stub
 		return false;
 	}

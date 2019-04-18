@@ -1,4 +1,6 @@
-package com.supertechgroup.core.machinery.multiblock;
+package com.supertechgroup.core.machinery.multiblock.crudeio;
+
+import com.supertechgroup.core.machinery.multiblock.BlockMultiWall;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -9,9 +11,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class CrudeInputBlock extends BlockMultiWall implements ITileEntityProvider {
-	public CrudeInputBlock() {
-		super("crudeInput");
+public class CrudeIOBlock extends BlockMultiWall implements ITileEntityProvider {
+	public CrudeIOBlock() {
+		super("crudeIO");
 	}
 
 	@Override
@@ -49,6 +51,6 @@ public class CrudeInputBlock extends BlockMultiWall implements ITileEntityProvid
 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
-		return new CrudeInputTileEntity();
+		return new CrudeIOTileEntity();
 	}
 }

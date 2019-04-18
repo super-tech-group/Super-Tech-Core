@@ -39,6 +39,15 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 	private static final int[] SLOTS_BOTTOM = new int[] { 2, 1 };
 	private static final int[] SLOTS_SIDES = new int[] { 1, 4 };
 
+	public static int getSlotsNumber() {
+		return 5;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static boolean isBurning(IInventory inventory) {
+		return inventory.getField(0) > 0;
+	}
+
 	/** The ItemStacks that hold the items currently being used in the furnace */
 	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.<ItemStack>withSize(5, ItemStack.EMPTY);
 
@@ -52,13 +61,13 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 	private int currentItemBurnTime;
 
 	private int cookTime;
-
 	private int totalCookTime;
-
 	IItemHandler handlerTop = new SidedInvWrapper(this, EnumFacing.UP);
 	IItemHandler handlerBottom = new SidedInvWrapper(this, EnumFacing.DOWN);
 	IItemHandler handlerSide = new SidedInvWrapper(this, EnumFacing.WEST);
+
 	ItemStackHandler stackHandler = new ItemStackHandler(furnaceItemStacks);
+
 	private String customName;
 
 	/**
@@ -77,6 +86,41 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 	@Override
 	public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
 		return this.isItemValidForSlot(index, itemStackIn);
+	}
+
+	/**
+	 * Returns true if the furnace can smelt an item, i.e. has a source item,
+	 * destination stack isn't full, etc.
+	 */
+	private boolean canSmelt() {
+		if (this.furnaceItemStacks.get(0).isEmpty() || this.furnaceItemStacks.get(3).isEmpty()) {
+			// if we are out of input or flux
+			return false;
+		} else {
+			ItemStack result = RecipiesBasicSmelter.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
+
+			if (result.isEmpty()) {
+				// if there is no valid recipe
+				return false;
+			} else {
+				ItemStack output = this.furnaceItemStacks.get(2);
+				ItemStack slag = this.furnaceItemStacks.get(4);
+				if (slag.getCount() >= slag.getItem().getItemStackLimit(slag)) {
+					// if the slag slot is full
+					return false;
+				}
+				if (output.isEmpty()) {
+					return true;
+				} else if (!output.isItemEqual(result)) {
+					return false;
+				} else if (output.getCount() + result.getCount() <= this.getInventoryStackLimit()
+						&& output.getCount() + result.getCount() <= output.getMaxStackSize()) {
+					return true;
+				} else {
+					return output.getCount() + result.getCount() <= result.getMaxStackSize();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -113,10 +157,6 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 			}
 		}
 		return super.getCapability(capability, facing);
-	}
-
-	public boolean hasGUI() {
-		return true;
 	}
 
 	/**
@@ -203,6 +243,18 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 	@Override
 	public boolean hasCustomName() {
 		return this.customName != null && !this.customName.isEmpty();
+	}
+
+	@Override
+	public boolean hasGUI() {
+		return true;
+	}
+
+	/**
+	 * Furnace isBurning
+	 */
+	public boolean isBurning() {
+		return this.furnaceBurnTime > 0;
 	}
 
 	@Override
@@ -317,31 +369,33 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 		}
 	}
 
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		compound.setInteger("BurnTime", (short) this.furnaceBurnTime);
-		compound.setInteger("CookTime", (short) this.cookTime);
-		compound.setInteger("CookTimeTotal", (short) this.totalCookTime);
-		ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
-
-		if (this.hasCustomName()) {
-			compound.setString("CustomName", this.customName);
-		}
-
-		return compound;
-	}
-
 	/**
-	 * Furnace isBurning
+	 * Turn one item from the furnace source stack into the appropriate smelted item
+	 * in the furnace result stack
 	 */
-	public boolean isBurning() {
-		return this.furnaceBurnTime > 0;
-	}
+	public void smeltItem() {
+		if (this.canSmelt()) {
+			ItemStack input = this.furnaceItemStacks.get(0);
+			ItemStack flux = this.furnaceItemStacks.get(3);
+			ItemStack result = RecipiesBasicSmelter.instance().getSmeltingResult(input);
+			ItemStack primaryOutput = this.furnaceItemStacks.get(2);
+			ItemStack slagOutput = this.furnaceItemStacks.get(4);
 
-	@SideOnly(Side.CLIENT)
-	public static boolean isBurning(IInventory inventory) {
-		return inventory.getField(0) > 0;
+			if (primaryOutput.isEmpty()) {
+				this.furnaceItemStacks.set(2, result.copy());
+			} else if (primaryOutput.getItem() == result.getItem()) {
+				primaryOutput.grow(result.getCount());
+			}
+
+			if (slagOutput.isEmpty()) {
+				this.furnaceItemStacks.set(4, new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG));
+			} else {
+				slagOutput.grow(1);
+			}
+
+			input.shrink(1);
+			flux.shrink(1);
+		}
 	}
 
 	@Override
@@ -356,7 +410,7 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 		if (!this.world.isRemote) {
 			ItemStack itemstack = this.furnaceItemStacks.get(1);
 
-			if (this.isBurning() || !itemstack.isEmpty() && !((ItemStack) this.furnaceItemStacks.get(0)).isEmpty()) {
+			if (this.isBurning() || !itemstack.isEmpty() && !this.furnaceItemStacks.get(0).isEmpty()) {
 				if (!this.isBurning() && this.canSmelt()) {
 					this.furnaceBurnTime = ForgeEventFactory.getItemBurnTime(itemstack);
 					this.currentItemBurnTime = this.furnaceBurnTime;
@@ -403,71 +457,18 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ISidedInve
 		}
 	}
 
-	/**
-	 * Returns true if the furnace can smelt an item, i.e. has a source item,
-	 * destination stack isn't full, etc.
-	 */
-	private boolean canSmelt() {
-		if (this.furnaceItemStacks.get(0).isEmpty() || this.furnaceItemStacks.get(3).isEmpty()) {
-			// if we are out of input or flux
-			return false;
-		} else {
-			ItemStack result = RecipiesBasicSmelter.instance().getSmeltingResult(this.furnaceItemStacks.get(0));
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		compound.setInteger("BurnTime", (short) this.furnaceBurnTime);
+		compound.setInteger("CookTime", (short) this.cookTime);
+		compound.setInteger("CookTimeTotal", (short) this.totalCookTime);
+		ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
 
-			if (result.isEmpty()) {
-				// if there is no valid recipe
-				return false;
-			} else {
-				ItemStack output = this.furnaceItemStacks.get(2);
-				ItemStack slag = this.furnaceItemStacks.get(4);
-				if (slag.getCount() >= slag.getItem().getItemStackLimit(slag)) {
-					// if the slag slot is full
-					return false;
-				}
-				if (output.isEmpty()) {
-					return true;
-				} else if (!output.isItemEqual(result)) {
-					return false;
-				} else if (output.getCount() + result.getCount() <= this.getInventoryStackLimit()
-						&& output.getCount() + result.getCount() <= output.getMaxStackSize()) {
-					return true;
-				} else {
-					return output.getCount() + result.getCount() <= result.getMaxStackSize();
-				}
-			}
+		if (this.hasCustomName()) {
+			compound.setString("CustomName", this.customName);
 		}
-	}
 
-	/**
-	 * Turn one item from the furnace source stack into the appropriate smelted item
-	 * in the furnace result stack
-	 */
-	public void smeltItem() {
-		if (this.canSmelt()) {
-			ItemStack input = this.furnaceItemStacks.get(0);
-			ItemStack flux = this.furnaceItemStacks.get(3);
-			ItemStack result = RecipiesBasicSmelter.instance().getSmeltingResult(input);
-			ItemStack primaryOutput = this.furnaceItemStacks.get(2);
-			ItemStack slagOutput = this.furnaceItemStacks.get(4);
-
-			if (primaryOutput.isEmpty()) {
-				this.furnaceItemStacks.set(2, result.copy());
-			} else if (primaryOutput.getItem() == result.getItem()) {
-				primaryOutput.grow(result.getCount());
-			}
-
-			if (slagOutput.isEmpty()) {
-				this.furnaceItemStacks.set(4, new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG));
-			} else {
-				slagOutput.grow(1);
-			}
-
-			input.shrink(1);
-			flux.shrink(1);
-		}
-	}
-
-	public static int getSlotsNumber() {
-		return 5;
+		return compound;
 	}
 }

@@ -1,4 +1,4 @@
-package com.supertechgroup.core.machinery.multiblock;
+package com.supertechgroup.core.machinery.multiblock.crudeio;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -9,10 +9,10 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class CrudeInputContainer extends Container {
-	private CrudeInputTileEntity tile;
+public class CrudeIOContainer extends Container {
+	private CrudeIOTileEntity tile;
 
-	public CrudeInputContainer(IInventory playerInventory, CrudeInputTileEntity te) {
+	public CrudeIOContainer(IInventory playerInventory, CrudeIOTileEntity te) {
 		this.tile = te;
 		// This container references items out of our own inventory as well as the slots
 		// from the player inventory so that the user can transfer items between both
@@ -28,7 +28,7 @@ public class CrudeInputContainer extends Container {
 		final int TILE_INVENTORY_YPOS = 20;
 		IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		// Add the tile inventory container to the gui
-		for (int x = 0; x < CrudeInputTileEntity.getSlotCount(); x++) {
+		for (int x = 0; x < CrudeIOTileEntity.getSlotCount(); x++) {
 			addSlotToContainer(
 					new SlotItemHandler(itemHandler, x, TILE_INVENTORY_XPOS + SLOT_X_SPACING * x, TILE_INVENTORY_YPOS));
 		}
@@ -81,10 +81,10 @@ public class CrudeInputContainer extends Container {
 		// Check if the slot clicked is one of the vanilla container slots
 		if (sourceSlotIndex >= 0 && sourceSlotIndex < 36) {
 			// This is a vanilla container slot so merge the stack into the tile inventory
-			if (!mergeItemStack(sourceStack, 37, 37 + CrudeInputTileEntity.getSlotCount(), false)) {
+			if (!mergeItemStack(sourceStack, 37, 37 + CrudeIOTileEntity.getSlotCount(), false)) {
 				return ItemStack.EMPTY; // EMPTY_ITEM
 			}
-		} else if (sourceSlotIndex >= 37 && sourceSlotIndex < 37 + CrudeInputTileEntity.getSlotCount()) {
+		} else if (sourceSlotIndex >= 37 && sourceSlotIndex < 37 + CrudeIOTileEntity.getSlotCount()) {
 			// This is a TE slot so merge the stack into the players inventory
 			if (!mergeItemStack(sourceStack, 0, 36, false)) {
 				return ItemStack.EMPTY; // EMPTY_ITEM

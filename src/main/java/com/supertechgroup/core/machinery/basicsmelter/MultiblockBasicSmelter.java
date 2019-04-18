@@ -4,7 +4,6 @@ import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler.IMultiblock;
 import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
 import com.supertechgroup.core.machinery.multiblock.matcher.BlockMatcher;
-import com.supertechgroup.core.machinery.multiblock.matcher.CapabilityBlockMatcher;
 import com.supertechgroup.core.machinery.multiblock.matcher.DictBlockMatcher;
 import com.supertechgroup.core.machinery.multiblock.matcher.DirectBlockMatcher;
 
@@ -18,14 +17,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class MultiblockBasicSmelter implements IMultiblock {
 	static BlockMatcher[][][] structure = new BlockMatcher[][][] {
-			{ { new CapabilityBlockMatcher(IItemHandler.class, EnumFacing.UP), new DictBlockMatcher("multiblockIO") },
-					{ new DictBlockMatcher("crudeWall"), new DictBlockMatcher("multiblockIO") },
-					{ new DictBlockMatcher("crudeIO"), new DirectBlockMatcher(Blocks.AIR) } } };
+			{ { new DictBlockMatcher("crudeHeater") }, { new DictBlockMatcher("crudeWall") },
+					{ new DictBlockMatcher("crudeIO") } },
+			{ { new DictBlockMatcher("crudeIO") }, { new DictBlockMatcher("crudeIO") },
+					{ new DirectBlockMatcher(Blocks.AIR) } } };
 
 	@Override
 	public boolean canRenderFormedStructure() {
@@ -67,7 +65,7 @@ public class MultiblockBasicSmelter implements IMultiblock {
 
 	@Override
 	public Vec3i getTriggerOffset() {
-		return new Vec3i(0, 0, 0);
+		return new Vec3i(0, -1, 0);
 	}
 
 	@Override

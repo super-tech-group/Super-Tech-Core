@@ -6,6 +6,8 @@ import java.util.List;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOBlock;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallBlock;
@@ -77,6 +79,7 @@ public class ModRegistry {
 	public static ItemConstructor itemConstructor;
 	public static CrudeIOBlock crudeIOBlock;
 	public static CrudeWallBlock crudeWallBlock;
+	public static CrudeHeaterBlock crudeHeaterBlock;
 
 	/**
 	 *
@@ -154,14 +157,17 @@ public class ModRegistry {
 		event.getRegistry().register(crudeIOBlock);
 		ForgeRegistries.ITEMS.register(new ItemBlock(crudeIOBlock).setRegistryName(crudeIOBlock.getRegistryName()));
 		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
-		OreDictionary.registerOre("crudeIO", crudeIOBlock);
-		OreDictionary.registerOre("multiblockIO", crudeIOBlock);
+
+		crudeHeaterBlock = new CrudeHeaterBlock();
+		event.getRegistry().register(crudeHeaterBlock);
+		ForgeRegistries.ITEMS
+				.register(new ItemBlock(crudeHeaterBlock).setRegistryName(crudeHeaterBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeHeaterTileEntity.class, crudeHeaterBlock.getRegistryName());
 
 		crudeWallBlock = new CrudeWallBlock();
 		event.getRegistry().register(crudeWallBlock);
 		ForgeRegistries.ITEMS.register(new ItemBlock(crudeWallBlock).setRegistryName(crudeWallBlock.getRegistryName()));
 		GameRegistry.registerTileEntity(CrudeWallTileEntity.class, crudeWallBlock.getRegistryName());
-		OreDictionary.registerOre("crudeWall", crudeWallBlock);
 
 		superore = new OreBlock();
 		event.getRegistry().register(superore);

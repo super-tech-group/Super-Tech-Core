@@ -8,8 +8,9 @@ import net.minecraft.util.EnumFacing;
 public class CrudeWallTileEntity extends TileMultiBlock {
 
 	@Override
-	protected void blockActivated(EntityPlayer player, EnumFacing side) {
+	protected boolean blockActivated(EntityPlayer player, EnumFacing side) {
 //nothing to see here, this block doesn't really do anything but add structure
+		return false;
 	}
 
 }

@@ -1,6 +1,9 @@
 package com.supertechgroup.core.proxy;
 
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterContainer;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterGui;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOContainer;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOGui;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOTileEntity;
@@ -19,8 +22,11 @@ public class GuiProxy implements IGuiHandler {
 		TileEntity te = world.getTileEntity(pos);
 		switch (ID) {
 		case Reference.GUI_CRUDE_IO:
-			CrudeIOTileEntity tile = (CrudeIOTileEntity) te;
-			return new CrudeIOGui(tile, new CrudeIOContainer(player.inventory, tile));
+			CrudeIOTileEntity io = (CrudeIOTileEntity) te;
+			return new CrudeIOGui(io, new CrudeIOContainer(player.inventory, io));
+		case Reference.GUI_CRUDE_HEATER:
+			CrudeHeaterTileEntity heater = (CrudeHeaterTileEntity) te;
+			return new CrudeHeaterGui(heater, new CrudeHeaterContainer(player.inventory, heater));
 		}
 		return null;
 	}
@@ -32,6 +38,8 @@ public class GuiProxy implements IGuiHandler {
 		switch (ID) {
 		case Reference.GUI_CRUDE_IO:
 			return new CrudeIOContainer(player.inventory, (CrudeIOTileEntity) tile);
+		case Reference.GUI_CRUDE_HEATER:
+			return new CrudeHeaterContainer(player.inventory, (CrudeHeaterTileEntity) tile);
 		}
 		return null;
 	}

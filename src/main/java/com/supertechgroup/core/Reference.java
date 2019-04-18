@@ -14,4 +14,5 @@ public class Reference {
 	public static final String RESEARCH_TOOL_USE = "toolUsage";
 
 	public static final int GUI_CRUDE_IO = 0;
+	public static final int GUI_CRUDE_HEATER = 1;
 }

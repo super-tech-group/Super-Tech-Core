@@ -24,23 +24,28 @@ public class ItemConstructor extends ItemBase {
 	@Override
 	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX,
 			float hitY, float hitZ, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
-		side = player.getHorizontalFacing();
-		for (MultiblockHandler.IMultiblock mb : MultiblockHandler.getMultiblocks()) {
-			if (mb.isBlockTrigger(world, pos)) {
-				if (MultiblockHandler.postMultiblockFormationEvent(player, mb, pos, stack).isCanceled()) {
-					continue;
-				}
-				if (side.getAxis() == Axis.Y) {
-					side = EnumFacing.fromAngle(player.rotationYaw);
-				} else {
-					side = side.getOpposite();
-				}
-				if (!mb.checkStructure(world, pos, side, player)) {
-					continue;
-				}
-				if (mb.createStructure(world, pos, side, player)) {
-					return EnumActionResult.SUCCESS;
+		System.out.println(world.isRemote);
+		if (!world.isRemote) {
+			ItemStack stack = player.getHeldItem(hand);
+			side = player.getHorizontalFacing();
+			for (MultiblockHandler.IMultiblock mb : MultiblockHandler.getMultiblocks()) {
+				System.out.println("Checking for " + mb.getUniqueName());
+				if (mb.isBlockTrigger(world, pos)) {
+					if (MultiblockHandler.postMultiblockFormationEvent(player, mb, pos, stack).isCanceled()) {
+						System.out.println("was cancelled");
+						continue;
+					}
+					if (side.getAxis() == Axis.Y) {
+						side = EnumFacing.fromAngle(player.rotationYaw);
+					} else {
+						side = side.getOpposite();
+					}
+					if (!mb.checkStructure(world, pos, side, player)) {
+						continue;
+					}
+					if (mb.createStructure(world, pos, side, player)) {
+						return EnumActionResult.SUCCESS;
+					}
 				}
 			}
 		}

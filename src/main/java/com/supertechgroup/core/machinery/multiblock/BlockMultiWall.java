@@ -22,7 +22,7 @@ public abstract class BlockMultiWall extends BlockBase implements ITileEntityPro
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			TileMultiBlock te = (TileMultiBlock) world.getTileEntity(pos);
-			te.onActivate(player, side);
+			return te.onActivate(player, side);
 		}
 		return true;
 	}

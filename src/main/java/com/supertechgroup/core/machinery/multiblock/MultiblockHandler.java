@@ -14,7 +14,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -48,14 +47,16 @@ public class MultiblockHandler {
 		 */
 		default boolean checkStructure(World world, BlockPos pos, EnumFacing side, EntityPlayer player) {
 			BlockPos fll = pos.add(getTriggerOffset());
+			System.out.println("checking master at " + fll);
 			for (int x = 0; x < getStructureManual().length; x++) {
 				for (int y = 0; y < getStructureManual()[0].length; y++) {
 					for (int z = 0; z < getStructureManual()[0][0].length; z++) {
 						BlockPos np = fll.offset(EnumFacing.UP, y).offset(player.getHorizontalFacing(), x)
 								.offset(player.getHorizontalFacing().rotateY(), z);
 						if (!getStructureManual()[x][y][z].apply(world, pos)) {
-							player.sendMessage(new TextComponentString("Check failed at " + np + "; Expected "
-									+ getStructureManual()[x][y][z] + " found " + world.getBlockState(np).getBlock()));
+							player.sendMessage(new TextComponentString(
+									"Check failed at " + np + "; Expected " + getStructureManual()[x][y][z].toString()
+											+ " found " + world.getBlockState(np).getBlock()));
 							return false;
 						} else {
 							TileEntity tileAtPos = world.getTileEntity(np);
@@ -71,7 +72,7 @@ public class MultiblockHandler {
 					}
 				}
 			}
-
+			System.out.println("Formed Structure");
 			return true;
 		}
 
@@ -113,7 +114,7 @@ public class MultiblockHandler {
 		 */
 		public default boolean isBlockTrigger(World world, BlockPos pos) {
 			Vec3i offset = getTriggerOffset();
-			return getStructureManual()[offset.getX()][offset.getY()][offset.getZ()].apply(world, pos);
+			return getStructureManual()[offset.getX()][-offset.getY()][offset.getZ()].apply(world, pos);
 		}
 
 		/**

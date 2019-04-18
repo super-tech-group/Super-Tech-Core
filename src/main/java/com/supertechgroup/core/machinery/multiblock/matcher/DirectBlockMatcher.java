@@ -1,6 +1,7 @@
 package com.supertechgroup.core.machinery.multiblock.matcher;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -13,8 +14,18 @@ public class DirectBlockMatcher extends BlockMatcher {
 	}
 
 	@Override
-	protected boolean apply(World world, BlockPos pos) {
-		return check.equals(world.getBlockState(pos).getBlock());
+	public boolean apply(World world, BlockPos pos) {
+		System.out.println(check.getRegistryName().equals(world.getBlockState(pos).getBlock().getRegistryName()));
+		return check.getRegistryName().equals(world.getBlockState(pos).getBlock().getRegistryName());
 	}
 
+	@Override
+	public IBlockState getExample() {
+		return check.getDefaultState();
+	}
+
+	@Override
+	public String toString() {
+		return check.toString();
+	}
 }

@@ -30,12 +30,13 @@ public class CrudeIOTileEntity extends TileMultiBlock {
 	};
 
 	@Override
-	protected void blockActivated(EntityPlayer player, EnumFacing side) {
+	protected boolean blockActivated(EntityPlayer player, EnumFacing side) {
 		if (world.isRemote) {
-			return;
+			return true;
 		}
 
 		player.openGui(SuperTechCoreMod.instance, Reference.GUI_CRUDE_IO, world, pos.getX(), pos.getY(), pos.getZ());
+		return true;
 	}
 
 	@Override
@@ -55,6 +56,12 @@ public class CrudeIOTileEntity extends TileMultiBlock {
 	@Nullable
 	public ITextComponent getDisplayName() {
 		return new TextComponentString("Crude I/O");
+	}
+
+	@Override
+	public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability,
+			@Nullable net.minecraft.util.EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
 	}
 
 	@Override

@@ -10,30 +10,23 @@ import net.minecraft.util.text.TextComponentString;
 public abstract class TileMultiBlock extends TileEntity {
 	BlockPos masterPos = new BlockPos(-1, -1, -1);
 
-	protected abstract void blockActivated(EntityPlayer player, EnumFacing side);
+	protected abstract boolean blockActivated(EntityPlayer player, EnumFacing side);
 
 	public boolean canInteractWith(EntityPlayer playerIn) {
 		// If we are too far away from this tile entity you cannot use it
 		return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
 	}
 
-	public int getGuiID() {
-		return -1;
-	}
-
 	public BlockPos getMasterPos() {
 		return new BlockPos(masterPos);
 	}
 
-	public boolean hasGUI() {
-		return false;
-	}
-
-	public void onActivate(EntityPlayer player, EnumFacing side) {
+	public boolean onActivate(EntityPlayer player, EnumFacing side) {
 		if (getMasterPos().equals(new BlockPos(-1, -1, -1))) {
 			player.sendMessage(new TextComponentString("Not part of a valid MultiBlock Structure"));
+			return false;
 		} else {
-			this.blockActivated(player, side);
+			return this.blockActivated(player, side);
 		}
 	}
 

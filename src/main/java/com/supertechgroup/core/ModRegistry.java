@@ -6,9 +6,8 @@ import java.util.List;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
-import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
-import com.supertechgroup.core.machinery.multiblock.BlockMultiWall;
-import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
+import com.supertechgroup.core.machinery.multiblock.CrudeInputBlock;
+import com.supertechgroup.core.machinery.multiblock.CrudeInputTileEntity;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -74,7 +73,7 @@ public class ModRegistry {
 	public static SuperTechItem itemTech;
 	public static ItemResearchBook itemResearchBook;
 	public static ItemConstructor itemConstructor;
-	public static BlockMultiWall wall;
+	public static CrudeInputBlock crudeInputBlock;
 
 	/**
 	 *
@@ -148,14 +147,14 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
-		wall = new BlockMultiWall();
-		event.getRegistry().register(wall);
-		ForgeRegistries.ITEMS.register(new ItemBlock(wall).setRegistryName(wall.getRegistryName()));
-		GameRegistry.registerTileEntity(TileMultiBlock.class, wall.getRegistryName());
-		GameRegistry.registerTileEntity(TileEntityBasicSmelter.class,
-				new ResourceLocation(Reference.MODID, "basicSmelter"));
-
-		OreDictionary.registerOre("multiWall", wall);
+		crudeInputBlock = new CrudeInputBlock();
+		event.getRegistry().register(crudeInputBlock);
+		ForgeRegistries.ITEMS
+				.register(new ItemBlock(crudeInputBlock).setRegistryName(crudeInputBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeInputTileEntity.class, crudeInputBlock.getRegistryName());
+		GameRegistry.registerTileEntity(CrudeInputTileEntity.class, crudeInputBlock.getRegistryName());
+		OreDictionary.registerOre("crudeInput", crudeInputBlock);
+		
 		superore = new OreBlock();
 		event.getRegistry().register(superore);
 

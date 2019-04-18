@@ -1,12 +1,11 @@
 package com.supertechgroup.core.proxy;
 
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.machinery.basicsmelter.ContainerBasicSmelter;
-import com.supertechgroup.core.machinery.basicsmelter.GuiBasicSmelter;
-import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
+import com.supertechgroup.core.machinery.multiblock.CrudeInputContainer;
+import com.supertechgroup.core.machinery.multiblock.CrudeInputGui;
+import com.supertechgroup.core.machinery.multiblock.CrudeInputTileEntity;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,12 +17,10 @@ public class GuiProxy implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
 		TileEntity te = world.getTileEntity(pos);
-		System.out.println("attempting to open gui for " + te.writeToNBT(new NBTTagCompound()));
 		switch (ID) {
-		case Reference.BASIC_SMELTER_ID:
-			TileEntityBasicSmelter tile = (TileEntityBasicSmelter) te;
-			System.out.println("Opening basic smelter");
-			return new GuiBasicSmelter(tile, new ContainerBasicSmelter(player.inventory, tile));
+		case Reference.GUI_CRUDE_INPUT:
+			CrudeInputTileEntity tile = (CrudeInputTileEntity) te;
+			return new CrudeInputGui(tile, new CrudeInputContainer(player.inventory, tile));
 		}
 		return null;
 	}
@@ -31,9 +28,10 @@ public class GuiProxy implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		BlockPos pos = new BlockPos(x, y, z);
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityBasicSmelter) {
-			return new ContainerBasicSmelter(player.inventory, (TileEntityBasicSmelter) te);
+		TileEntity tile = world.getTileEntity(pos);
+		switch (ID) {
+		case Reference.GUI_CRUDE_INPUT:
+			return new CrudeInputContainer(player.inventory, (CrudeInputTileEntity) tile);
 		}
 		return null;
 	}

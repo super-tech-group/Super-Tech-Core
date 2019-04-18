@@ -31,34 +31,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *         class implementing IMultiblock and register it
  */
 public class MultiblockHandler {
-	private static ArrayList<IMultiblock> multiblocks = new ArrayList<IMultiblock>();
-
-	public static void registerMultiblock(IMultiblock multiblock) {
-		multiblocks.add(multiblock);
-	}
-
-	public static ArrayList<IMultiblock> getMultiblocks() {
-		return multiblocks;
-	}
-
 	public interface IMultiblock {
 		/**
-		 * returns name of the Multiblock. This is used for the interdiction NBT system
-		 * on the hammer, so this name /must/ be unique.
+		 * returns true to add a button that will switch between the assembly of
+		 * multiblocks and the finished render
 		 */
-		String getUniqueName();
-
-		/**
-		 * Check whether the given block can be used to trigger the structure creation
-		 * of the multiblock.<br>
-		 * Basically, a less resource-intensive preliminary check to avoid checking
-		 * every structure.
-		 */
-		public default boolean isBlockTrigger(IBlockState state) {
-			Vec3i offset = getTriggerOffset();
-			return getStructureManual()[offset.getX()][offset.getY()][offset.getZ()]
-					.apply(new ItemStack(state.getBlock()));
-		}
+		@SideOnly(Side.CLIENT)
+		boolean canRenderFormedStructure();
 
 		/**
 		 * This method checks the structure .
@@ -101,6 +80,13 @@ public class MultiblockHandler {
 		 */
 		boolean createStructure(World world, BlockPos pos, EnumFacing side, EntityPlayer player);
 
+		default IBlockState getBlockstateFromStack(int index, ItemStack stack) {
+			if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
+				return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getItemDamage());
+			}
+			return null;
+		}
+
 		/**
 		 * A three-dimensional array (height, width, length) of the structure
 		 */
@@ -111,10 +97,22 @@ public class MultiblockHandler {
 		 */
 		Vec3i getTriggerOffset();
 
-		default IBlockState getBlockstateFromStack(int index, ItemStack stack) {
-			if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock)
-				return ((ItemBlock) stack.getItem()).getBlock().getStateFromMeta(stack.getItemDamage());
-			return null;
+		/**
+		 * returns name of the Multiblock. This is used for the interdiction NBT system
+		 * on the hammer, so this name /must/ be unique.
+		 */
+		String getUniqueName();
+
+		/**
+		 * Check whether the given block can be used to trigger the structure creation
+		 * of the multiblock.<br>
+		 * Basically, a less resource-intensive preliminary check to avoid checking
+		 * every structure.
+		 */
+		public default boolean isBlockTrigger(IBlockState state) {
+			Vec3i offset = getTriggerOffset();
+			return getStructureManual()[offset.getX()][offset.getY()][offset.getZ()]
+					.apply(new ItemStack(state.getBlock()));
 		}
 
 		/**
@@ -124,24 +122,10 @@ public class MultiblockHandler {
 		boolean overwriteBlockRender(ItemStack stack, int iterator);
 
 		/**
-		 * returns true to add a button that will switch between the assembly of
-		 * multiblocks and the finished render
-		 */
-		@SideOnly(Side.CLIENT)
-		boolean canRenderFormedStructure();
-
-		/**
 		 * use this function to render the complete multiblock
 		 */
 		@SideOnly(Side.CLIENT)
 		void renderFormedStructure();
-	}
-
-	public static MultiblockFormEvent postMultiblockFormationEvent(EntityPlayer player, IMultiblock multiblock,
-			BlockPos clickedBlock, ItemStack hammer) {
-		MultiblockFormEvent event = new MultiblockFormEvent(player, multiblock, clickedBlock, hammer);
-		MinecraftForge.EVENT_BUS.post(event);
-		return event;
 	}
 
 	/**
@@ -163,10 +147,6 @@ public class MultiblockHandler {
 			this.hammer = hammer;
 		}
 
-		public IMultiblock getMultiblock() {
-			return multiblock;
-		}
-
 		public BlockPos getClickedBlock() {
 			return clickedBlock;
 		}
@@ -174,5 +154,26 @@ public class MultiblockHandler {
 		public ItemStack getHammer() {
 			return hammer;
 		}
+
+		public IMultiblock getMultiblock() {
+			return multiblock;
+		}
+	}
+
+	private static ArrayList<IMultiblock> multiblocks = new ArrayList<>();
+
+	public static ArrayList<IMultiblock> getMultiblocks() {
+		return multiblocks;
+	}
+
+	public static MultiblockFormEvent postMultiblockFormationEvent(EntityPlayer player, IMultiblock multiblock,
+			BlockPos clickedBlock, ItemStack hammer) {
+		MultiblockFormEvent event = new MultiblockFormEvent(player, multiblock, clickedBlock, hammer);
+		MinecraftForge.EVENT_BUS.post(event);
+		return event;
+	}
+
+	public static void registerMultiblock(IMultiblock multiblock) {
+		multiblocks.add(multiblock);
 	}
 }

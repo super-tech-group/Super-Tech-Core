@@ -8,6 +8,8 @@ package com.supertechgroup.core.machinery.multiblock;
 
 import java.util.ArrayList;
 
+import com.supertechgroup.core.machinery.multiblock.matcher.BlockMatcher;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -51,7 +53,7 @@ public class MultiblockHandler {
 					for (int z = 0; z < getStructureManual()[0][0].length; z++) {
 						BlockPos np = fll.offset(EnumFacing.UP, y).offset(player.getHorizontalFacing(), x)
 								.offset(player.getHorizontalFacing().rotateY(), z);
-						if (!getStructureManual()[x][y][z].apply(new ItemStack(world.getBlockState(np).getBlock()))) {
+						if (!getStructureManual()[x][y][z].apply(world, pos)) {
 							player.sendMessage(new TextComponentString("Check failed at " + np + "; Expected "
 									+ getStructureManual()[x][y][z] + " found " + world.getBlockState(np).getBlock()));
 							return false;
@@ -90,7 +92,7 @@ public class MultiblockHandler {
 		/**
 		 * A three-dimensional array (height, width, length) of the structure
 		 */
-		Ingredient[][][] getStructureManual();
+		BlockMatcher[][][] getStructureManual();
 
 		/**
 		 * Returns the blockpos offset
@@ -109,10 +111,9 @@ public class MultiblockHandler {
 		 * Basically, a less resource-intensive preliminary check to avoid checking
 		 * every structure.
 		 */
-		public default boolean isBlockTrigger(IBlockState state) {
+		public default boolean isBlockTrigger(World world, BlockPos pos) {
 			Vec3i offset = getTriggerOffset();
-			return getStructureManual()[offset.getX()][offset.getY()][offset.getZ()]
-					.apply(new ItemStack(state.getBlock()));
+			return getStructureManual()[offset.getX()][offset.getY()][offset.getZ()].apply(world, pos);
 		}
 
 		/**

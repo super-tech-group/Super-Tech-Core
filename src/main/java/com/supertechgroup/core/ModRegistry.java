@@ -8,6 +8,8 @@ import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOBlock;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOTileEntity;
+import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallBlock;
+import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallTileEntity;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -74,6 +76,7 @@ public class ModRegistry {
 	public static ItemResearchBook itemResearchBook;
 	public static ItemConstructor itemConstructor;
 	public static CrudeIOBlock crudeIOBlock;
+	public static CrudeWallBlock crudeWallBlock;
 
 	/**
 	 *
@@ -151,8 +154,14 @@ public class ModRegistry {
 		event.getRegistry().register(crudeIOBlock);
 		ForgeRegistries.ITEMS.register(new ItemBlock(crudeIOBlock).setRegistryName(crudeIOBlock.getRegistryName()));
 		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
-		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
-		OreDictionary.registerOre("crudeInput", crudeIOBlock);
+		OreDictionary.registerOre("crudeIO", crudeIOBlock);
+		OreDictionary.registerOre("multiblockIO", crudeIOBlock);
+
+		crudeWallBlock = new CrudeWallBlock();
+		event.getRegistry().register(crudeWallBlock);
+		ForgeRegistries.ITEMS.register(new ItemBlock(crudeWallBlock).setRegistryName(crudeWallBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeWallTileEntity.class, crudeWallBlock.getRegistryName());
+		OreDictionary.registerOre("crudeWall", crudeWallBlock);
 
 		superore = new OreBlock();
 		event.getRegistry().register(superore);

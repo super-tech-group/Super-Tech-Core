@@ -27,7 +27,7 @@ public class ItemConstructor extends ItemBase {
 		ItemStack stack = player.getHeldItem(hand);
 		side = player.getHorizontalFacing();
 		for (MultiblockHandler.IMultiblock mb : MultiblockHandler.getMultiblocks()) {
-			if (mb.isBlockTrigger(world.getBlockState(pos))) {
+			if (mb.isBlockTrigger(world, pos)) {
 				if (MultiblockHandler.postMultiblockFormationEvent(player, mb, pos, stack).isCanceled()) {
 					continue;
 				}

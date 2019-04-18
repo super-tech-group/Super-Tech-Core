@@ -32,7 +32,6 @@ public abstract class TileMultiBlock extends TileEntity {
 	public void onActivate(EntityPlayer player, EnumFacing side) {
 		if (getMasterPos().equals(new BlockPos(-1, -1, -1))) {
 			player.sendMessage(new TextComponentString("Not part of a valid MultiBlock Structure"));
-			this.blockActivated(player, side);
 		} else {
 			this.blockActivated(player, side);
 		}

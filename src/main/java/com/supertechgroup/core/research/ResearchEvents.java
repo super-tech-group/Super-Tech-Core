@@ -4,6 +4,11 @@ import java.util.UUID;
 
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.capabilities.team.ITeamCapability;
+import com.supertechgroup.core.capabilities.team.TeamCapability;
+import com.supertechgroup.core.capabilities.team.TeamCapabilityProvider;
+import com.supertechgroup.core.capabilities.teamlist.IListCapability;
+import com.supertechgroup.core.capabilities.teamlist.ListCapabilityProvider;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
@@ -11,11 +16,6 @@ import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
-import com.supertechgroup.core.research.teams.listCapability.IListCapability;
-import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
-import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

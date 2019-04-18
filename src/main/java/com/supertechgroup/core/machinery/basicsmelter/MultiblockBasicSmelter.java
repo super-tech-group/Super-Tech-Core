@@ -3,10 +3,14 @@ package com.supertechgroup.core.machinery.basicsmelter;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler.IMultiblock;
 import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
+import com.supertechgroup.core.machinery.multiblock.matcher.BlockMatcher;
+import com.supertechgroup.core.machinery.multiblock.matcher.CapabilityBlockMatcher;
+import com.supertechgroup.core.machinery.multiblock.matcher.DictBlockMatcher;
+import com.supertechgroup.core.machinery.multiblock.matcher.DirectBlockMatcher;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -14,23 +18,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreIngredient;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class MultiblockBasicSmelter implements IMultiblock {
-	static Ingredient[][][] structure = new Ingredient[2][2][2];
-	{
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 2; j++) {
-				for (int k = 0; k < 2; k++) {
-					if ((i + j + k) % 2 == 0) {
-						structure[i][j][k] = new OreIngredient("multiWall");
-					} else {
-						structure[i][j][k] = new OreIngredient("plankWood");
-					}
-				}
-			}
-		}
-	}
+	static BlockMatcher[][][] structure = new BlockMatcher[][][] {
+			{ { new CapabilityBlockMatcher(IItemHandler.class, EnumFacing.UP), new DictBlockMatcher("multiblockIO") },
+					{ new DictBlockMatcher("crudeWall"), new DictBlockMatcher("multiblockIO") },
+					{ new DictBlockMatcher("crudeIO"), new DirectBlockMatcher(Blocks.AIR) } } };
 
 	@Override
 	public boolean canRenderFormedStructure() {
@@ -66,7 +61,7 @@ public class MultiblockBasicSmelter implements IMultiblock {
 	}
 
 	@Override
-	public Ingredient[][][] getStructureManual() {
+	public BlockMatcher[][][] getStructureManual() {
 		return structure;
 	}
 

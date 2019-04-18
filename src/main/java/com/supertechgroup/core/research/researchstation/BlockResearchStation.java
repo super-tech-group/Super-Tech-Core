@@ -5,9 +5,9 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import com.supertechgroup.core.ModRegistry;
-import com.supertechgroup.core.research.teams.listCapability.IListCapability;
-import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
+import com.supertechgroup.core.capabilities.team.TeamCapabilityProvider;
+import com.supertechgroup.core.capabilities.teamlist.IListCapability;
+import com.supertechgroup.core.capabilities.teamlist.ListCapabilityProvider;
 import com.supertechgroup.core.util.BlockTileEntity;
 
 import net.minecraft.block.material.Material;

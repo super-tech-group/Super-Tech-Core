@@ -6,6 +6,7 @@ import java.util.List;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
+import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOBlock;
@@ -168,6 +169,8 @@ public class ModRegistry {
 		event.getRegistry().register(crudeWallBlock);
 		ForgeRegistries.ITEMS.register(new ItemBlock(crudeWallBlock).setRegistryName(crudeWallBlock.getRegistryName()));
 		GameRegistry.registerTileEntity(CrudeWallTileEntity.class, crudeWallBlock.getRegistryName());
+		GameRegistry.registerTileEntity(TileEntityBasicSmelter.class,
+				new ResourceLocation(Reference.MODID, "basicSmelter"));
 
 		superore = new OreBlock();
 		event.getRegistry().register(superore);

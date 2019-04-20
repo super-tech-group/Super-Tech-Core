@@ -51,12 +51,12 @@ public class MultiblockBasicSmelter implements IMultiblock {
 		}
 		TileEntity oldTile = world.getTileEntity(pos.add(getTriggerOffset()));
 		TileEntityBasicSmelter newTile = new TileEntityBasicSmelter();
-		newTile.setMasterPos(fll);
+		newTile.setMasterPos(pos);
 		if (oldTile instanceof TileMultiBlock) {
 			player.sendMessage(new TextComponentString(oldTile.writeToNBT(new NBTTagCompound()).toString()));
 		}
-		world.removeTileEntity(pos.add(getTriggerOffset()));
-		world.setTileEntity(pos.add(getTriggerOffset()), newTile);
+		world.removeTileEntity(pos);
+		world.setTileEntity(pos, newTile);
 		return true;
 	}
 

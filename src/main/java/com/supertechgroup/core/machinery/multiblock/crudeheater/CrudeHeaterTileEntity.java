@@ -71,7 +71,6 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 		if (world.isRemote) {
 			return true;
 		}
-
 		player.openGui(SuperTechCoreMod.instance, Reference.GUI_CRUDE_HEATER, world, pos.getX(), pos.getY(),
 				pos.getZ());
 		return true;

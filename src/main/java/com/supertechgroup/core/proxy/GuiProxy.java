@@ -23,9 +23,11 @@ public class GuiProxy implements IGuiHandler {
 		switch (ID) {
 		case Reference.GUI_CRUDE_IO:
 			CrudeIOTileEntity io = (CrudeIOTileEntity) te;
+			System.out.println("Opening io");
 			return new CrudeIOGui(io, new CrudeIOContainer(player.inventory, io));
 		case Reference.GUI_CRUDE_HEATER:
 			CrudeHeaterTileEntity heater = (CrudeHeaterTileEntity) te;
+			System.out.println("Opening heater");
 			return new CrudeHeaterGui(heater, new CrudeHeaterContainer(player.inventory, heater));
 		}
 		return null;

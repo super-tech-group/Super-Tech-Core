@@ -49,7 +49,7 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable,
 	@Nullable
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 		if (capability == HeatCapabilityProvider.HEAT_CAP) {
-			return HeatCapabilityProvider.HEAT_CAP.cast(this);
+			//return HeatCapabilityProvider.HEAT_CAP.cast(this);
 		}
 		return super.getCapability(capability, facing);
 	}

@@ -46,7 +46,7 @@ public class CrudeIOContainer extends Container {
 
 		// Slots for the hotbar
 		for (int row = 0; row < 9; ++row) {
-			int x = 8 + row * 58;
+			int x = 8 + row * 18;
 			int y = 58 + 51;
 			addSlotToContainer(new Slot(playerInventory, row, x, y));
 		}

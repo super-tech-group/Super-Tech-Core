@@ -5,16 +5,19 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import com.supertechgroup.core.ModRegistry;
+import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.capabilities.team.TeamCapabilityProvider;
 import com.supertechgroup.core.capabilities.teamlist.IListCapability;
 import com.supertechgroup.core.capabilities.teamlist.ListCapabilityProvider;
-import com.supertechgroup.core.util.BlockTileEntity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -27,15 +30,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 
-public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStation> {
+public class BlockResearchStation extends Block {
 
 	private static final AxisAlignedBB BASE_AABB = new AxisAlignedBB(0, 0, 0, 1, 1.0625, 1);
 
 	public BlockResearchStation() {
-		super(Material.ROCK, "researchStation");
+		super(Material.ROCK);
+		this.setUnlocalizedName(Reference.MODID + ".researchStation");
+		this.setRegistryName(Reference.MODID, "researchStation");
 	}
 
 	@Nullable
@@ -56,15 +62,10 @@ public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStat
 	}
 
 	@Override
-	public Class<TileEntityResearchStation> getTileEntityClass() {
-		return TileEntityResearchStation.class;
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
-			TileEntityResearchStation tile = getTileEntity(world, pos);
+			TileEntityResearchStation tile = (TileEntityResearchStation) world.getTileEntity(pos);
 			ItemStack stack = player.getHeldItemMainhand();
 			if (stack.getItem().equals(ModRegistry.itemResearchBook)) {
 				NBTTagCompound tag = stack.getTagCompound();
@@ -109,5 +110,13 @@ public class BlockResearchStation extends BlockTileEntity<TileEntityResearchStat
 					+ placer.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
 			worldIn.getTileEntity(pos).markDirty();
 		}
+	}
+
+	public void registerModels() {
+		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(this.getRegistryName().toString(),
+				"inventory");
+		final int DEFAULT_ITEM_SUBTYPE = 0;
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), DEFAULT_ITEM_SUBTYPE,
+				itemModelResourceLocation);
 	}
 }

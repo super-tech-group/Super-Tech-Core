@@ -19,6 +19,7 @@ import com.supertechgroup.core.proxy.CommonProxy;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
+import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
@@ -143,13 +144,13 @@ public class ModRegistry {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void initItemModels() {
-	}
-
-	@SideOnly(Side.CLIENT)
 	public static void initModels() {
 		itemTech.registerModels();
 		itemResearchBook.registerModels();
+		researchStation.registerModels();
+		crudeIOBlock.registerModels();
+		crudeWallBlock.registerModels();
+		crudeHeaterBlock.registerModels();
 	}
 
 	@SubscribeEvent
@@ -179,7 +180,7 @@ public class ModRegistry {
 		ForgeRegistries.ITEMS
 				.register(new ItemBlock(researchStation).setRegistryName(researchStation.getRegistryName()));
 		event.getRegistry().register(researchStation);
-		GameRegistry.registerTileEntity(researchStation.getTileEntityClass(), researchStation.getRegistryName());
+		GameRegistry.registerTileEntity(TileEntityResearchStation.class, researchStation.getRegistryName());
 
 		// Rocks
 
@@ -567,5 +568,10 @@ public class ModRegistry {
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		bronze.registerResearch();
+	}
+
+	public static void registerItemModels() {
+		// TODO Auto-generated method stub
+
 	}
 }

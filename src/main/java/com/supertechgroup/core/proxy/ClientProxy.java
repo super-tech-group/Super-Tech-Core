@@ -141,16 +141,14 @@ public class ClientProxy extends CommonProxy {
 		Ore.REGISTRY.getValuesCollection().forEach((o) -> {
 			Minecraft.getMinecraft().getItemColors().registerItemColorHandler(OreColor.INSTANCE, o.getItemOre());
 		});
-		ModRegistry.initItemModels();
 	}
 
 	@Override
 	public void preInit(FMLPreInitializationEvent e) {
 		super.preInit(e);
-		// ((ItemTechComponent) ModRegistry.itemTechComponent).registerModels();
+		ModRegistry.registerItemModels();
 		ModelLoaderRegistry.registerLoader(new BakedModelLoader());
 		OBJLoader.INSTANCE.addDomain(Reference.MODID);
-		// ModelLoaderRegistry.registerLoader(ModelLoaderRock.INSTANCE);
 	}
 
 	@Override

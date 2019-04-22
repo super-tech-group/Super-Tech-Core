@@ -1,19 +1,26 @@
 package com.supertechgroup.core.machinery.multiblock.crudeheater;
 
-import com.supertechgroup.core.machinery.multiblock.BlockMultiWall;
+import com.supertechgroup.core.Reference;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class CrudeHeaterBlock extends BlockMultiWall implements ITileEntityProvider {
+public class CrudeHeaterBlock extends Block implements ITileEntityProvider {
 	public CrudeHeaterBlock() {
-		super("crudeHeater");
+		super(Material.ROCK);
+		this.setUnlocalizedName(Reference.MODID + ".crudeHeater");
+		this.setRegistryName(Reference.MODID, "crudeHeater");
 	}
 
 	@Override
@@ -52,5 +59,13 @@ public class CrudeHeaterBlock extends BlockMultiWall implements ITileEntityProvi
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new CrudeHeaterTileEntity();
+	}
+
+	public void registerModels() {
+		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(this.getRegistryName().toString(),
+				"inventory");
+		final int DEFAULT_ITEM_SUBTYPE = 0;
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), DEFAULT_ITEM_SUBTYPE,
+				itemModelResourceLocation);
 	}
 }

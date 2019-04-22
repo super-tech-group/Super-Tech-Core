@@ -82,6 +82,7 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable 
 				if (bsr.apply(cap)) {
 					bsr.start(cap);
 					this.inProgress = bsr;
+					break;
 				}
 			}
 		}

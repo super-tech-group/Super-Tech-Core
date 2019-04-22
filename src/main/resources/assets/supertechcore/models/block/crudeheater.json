@@ -1,6 +1,7 @@
 {
-    "parent": "block/cube_all",
+    "parent": "block/cube_column",
     "textures": {
-        "all": "supertechcore:blocks/crude_heater"
+        "side": "supertechcore:blocks/crude_heater",
+		"end": "supertechcore:blocks/crude_wall"
     }
 }

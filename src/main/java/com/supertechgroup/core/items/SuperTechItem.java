@@ -25,6 +25,8 @@ public class SuperTechItem extends ItemBase {
 	public final static int HEATING_UNIT = 6;
 	public final static int SLAG = 7;
 	public final static int FLUX = 8;
+	public static final int FIRE_CLAY = 9;
+	public static final int FIRE_BRICK = 10;
 
 	public SuperTechItem() {
 		super("itemTechComponent");
@@ -42,7 +44,7 @@ public class SuperTechItem extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 0; i < 11; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -69,6 +71,10 @@ public class SuperTechItem extends ItemBase {
 			return super.getUnlocalizedName() + ".slag";
 		case FLUX:
 			return super.getUnlocalizedName() + ".flux";
+		case FIRE_CLAY:
+			return super.getUnlocalizedName() + ".fireClay";
+		case FIRE_BRICK:
+			return super.getUnlocalizedName() + ".fireBrick";
 		default:
 			return super.getUnlocalizedName();
 		}
@@ -93,6 +99,10 @@ public class SuperTechItem extends ItemBase {
 				new ModelResourceLocation("supertechcore:itemSlag", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(this, FLUX,
 				new ModelResourceLocation("supertechcore:itemFlux", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, FIRE_CLAY,
+				new ModelResourceLocation("supertechcore:itemFireClay", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, FIRE_BRICK,
+				new ModelResourceLocation("supertechcore:itemFireBrick", "inventory"));
 	}
 
 	public void setupDictionary() {

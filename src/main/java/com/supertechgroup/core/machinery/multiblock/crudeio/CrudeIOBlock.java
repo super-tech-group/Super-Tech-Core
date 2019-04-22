@@ -1,19 +1,26 @@
 package com.supertechgroup.core.machinery.multiblock.crudeio;
 
+import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.machinery.multiblock.BlockMultiWall;
 
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class CrudeIOBlock extends BlockMultiWall implements ITileEntityProvider {
 	public CrudeIOBlock() {
-		super("crudeIO");
+		super(Material.ROCK);
+		this.setUnlocalizedName(Reference.MODID + ".crudeIO");
+		this.setRegistryName(Reference.MODID, "crudeIO");
 	}
 
 	@Override
@@ -52,5 +59,13 @@ public class CrudeIOBlock extends BlockMultiWall implements ITileEntityProvider 
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		return new CrudeIOTileEntity();
+	}
+
+	public void registerModels() {
+		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(this.getRegistryName().toString(),
+				"inventory");
+		final int DEFAULT_ITEM_SUBTYPE = 0;
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), DEFAULT_ITEM_SUBTYPE,
+				itemModelResourceLocation);
 	}
 }

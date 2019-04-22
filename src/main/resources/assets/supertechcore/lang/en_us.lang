@@ -2,6 +2,9 @@ tile.supertechcore.superore.name=Super Tech Ore
 tile.supertechcore.basicresearcher.name=Basic Research Station
 tile.supertechcore.multiwall.name=Multiblock Wall
 tile.supertechcore.researchStation.name=Research Station
+tile.supertechcore.crude_wall.name=Crude Firebrick Wall
+tile.supertechcore.crudeIO.name=Crude Firebrick Interface
+tile.supertechcore.crudeHeater.name=Crude Firebrick Heater
 
 tile.supertechcore.amphibolite.name=Amphibolite
 tile.supertechcore.basalt.name=Basalt

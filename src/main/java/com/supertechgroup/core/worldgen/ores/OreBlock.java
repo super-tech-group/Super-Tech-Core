@@ -6,12 +6,14 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
-import com.supertechgroup.core.util.BlockBase;
 import com.supertechgroup.core.worldgen.OreSavedData;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -41,13 +43,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author oa10712
  *
  */
-public class OreBlock extends BlockBase {
+public class OreBlock extends Block {
 
 	public static final PropertyBase BASE = new PropertyBase("base");
 	public static final PropertyOres ORES = new PropertyOres("ores");
 
 	public OreBlock() {
-		super(net.minecraft.block.material.Material.ROCK, "superore");
+		super(net.minecraft.block.material.Material.ROCK);
+		this.setUnlocalizedName(Reference.MODID + "superore");
+		this.setRegistryName(Reference.MODID, "superore");
 	}
 
 	@Override
@@ -156,11 +160,6 @@ public class OreBlock extends BlockBase {
 	@Override
 	public EnumBlockRenderType getRenderType(IBlockState iBlockState) {
 		return EnumBlockRenderType.MODEL;
-	}
-
-	@Override
-	public void registerItemModel(Item item) {
-		// void since we shouldn't have this in inventory
 	}
 
 	/**

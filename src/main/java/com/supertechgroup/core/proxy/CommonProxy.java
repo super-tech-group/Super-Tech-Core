@@ -68,6 +68,33 @@ public abstract class CommonProxy {
 	private File configFolder;
 
 	private void addBasicRecipies() {
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapelessOreRecipe(new ResourceLocation(Reference.MODID, "fireclay"),
+						new ItemStack(ModRegistry.itemTech, 4, SuperTechItem.FIRE_CLAY),
+						new Object[] { new OreIngredient("sand"), new ItemStack(Items.CLAY_BALL),
+								new ItemStack(Items.CLAY_BALL), new ItemStack(Items.CLAY_BALL) })
+										.setRegistryName(Reference.MODID, "fireclay"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "crude_heater"),
+						new ItemStack(ModRegistry.crudeHeaterBlock),
+						new Object[] { new String[] { "xxx", "xfx", "xxx" }, 'x',
+								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK), 'f',
+								new ItemStack(Blocks.FURNACE) }).setRegistryName(Reference.MODID, "crude_heater"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "crude_io"),
+						new ItemStack(ModRegistry.crudeIOBlock),
+						new Object[] { new String[] { "x x", "xxx", "x x" }, 'x',
+								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK) })
+										.setRegistryName(Reference.MODID, "crude_io"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "crude_wall"),
+						new ItemStack(ModRegistry.crudeWallBlock),
+						new Object[] { new String[] { "xxx", "x x", "xxx" }, 'x',
+								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK) })
+										.setRegistryName(Reference.MODID, "crude_wall"));
+
+		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_CLAY),
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK), 0.5f);
 
 		// add basic tool recipies
 

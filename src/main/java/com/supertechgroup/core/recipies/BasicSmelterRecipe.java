@@ -53,12 +53,29 @@ public class BasicSmelterRecipe {
 		this.specHeatMass = specHeatMass;
 	}
 
+	public boolean apply(IItemHandler cap) {
+		for (ItemStack is : this.input) {
+			if (!Helpers.consumeFromInventory((IItemHandlerModifiable) cap, is, true)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public double getCoefficient() {
 		return this.coefficient;
 	}
 
+	public ItemStack getPrimaryOutStack() {
+		return primaryOut.copy();
+	}
+
 	public ResourceLocation getRegistryName() {
 		return name;
+	}
+
+	public ItemStack getSlagStack() {
+		return slagOut.copy();
 	}
 
 	public double getSpecificHeatMass() {
@@ -67,23 +84,6 @@ public class BasicSmelterRecipe {
 
 	public double getTemperature() {
 		return temp;
-	}
-
-	public ItemStack getPrimaryOutStack() {
-		return primaryOut.copy();
-	}
-
-	public ItemStack getSlagStack() {
-		return slagOut.copy();
-	}
-
-	public boolean apply(IItemHandler cap) {
-		for (ItemStack is : this.input) {
-			if (!Helpers.consumeFromInventory((IItemHandlerModifiable) cap, is, true)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	public void start(IItemHandler cap) {

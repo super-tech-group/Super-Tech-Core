@@ -33,10 +33,31 @@ import net.minecraftforge.oredict.OreDictionary;
 /**
  * Some of the methods in this class are inspired/lifted from Modular Machinery
  * and vanilla classes
- * 
+ *
  * @author oa10712
  */
 public class Helpers {
+
+	public static boolean consumeFromInventory(IItemHandlerModifiable handler, ItemStack toConsume, boolean simulate) {
+		Map<Integer, ItemStack> contents = findItemsIndexedInInventory(handler, toConsume, false);
+		if (contents.isEmpty()) {
+			return false;
+		}
+
+		int cAmt = toConsume.getCount();
+		for (int slot : contents.keySet()) {
+			ItemStack inSlot = contents.get(slot);
+			int toRemove = cAmt > inSlot.getCount() ? inSlot.getCount() : cAmt;
+			cAmt -= toRemove;
+			if (!simulate) {
+				handler.setStackInSlot(slot, copyStackWithSize(inSlot, inSlot.getCount() - toRemove));
+			}
+			if (cAmt <= 0) {
+				break;
+			}
+		}
+		return cAmt <= 0;
+	}
 
 	public static void copyFileUsingStream(String source, File dest) throws IOException {
 
@@ -53,6 +74,28 @@ public class Helpers {
 	public static void copyFileUsingStream(String source, String dest) throws IOException {
 
 		copyFileUsingStream(source, new File(dest));
+	}
+
+	@Nonnull
+	public static ItemStack copyStackWithSize(@Nonnull ItemStack stack, int amount) {
+		if (stack.isEmpty() || amount <= 0) {
+			return ItemStack.EMPTY;
+		}
+		ItemStack s = stack.copy();
+		s.setCount(amount);
+		return s;
+	}
+
+	public static Map<Integer, ItemStack> findItemsIndexedInInventory(IItemHandler handler, ItemStack match,
+			boolean strict) {
+		Map<Integer, ItemStack> stacksOut = new HashMap<>();
+		for (int j = 0; j < handler.getSlots(); j++) {
+			ItemStack s = handler.getStackInSlot(j);
+			if (strict ? ItemStack.areItemsEqual(s, match) : matchStackLoosely(s, match)) {
+				stacksOut.put(j, copyStackWithSize(s, s.getCount()));
+			}
+		}
+		return stacksOut;
 	}
 
 	public static int getItemBurnTime(ItemStack stack) {
@@ -130,6 +173,31 @@ public class Helpers {
 		return stack.getTagCompound();
 	}
 
+	public static boolean hasInventorySpace(@Nonnull ItemStack stack, IItemHandler handler, int rangeMin,
+			int rangeMax) {
+		int size = stack.getCount();
+		int max = stack.getMaxStackSize();
+		for (int i = rangeMin; i < rangeMax && size > 0; i++) {
+			ItemStack in = handler.getStackInSlot(i);
+			if (in.isEmpty()) {
+				size -= max;
+			} else {
+				if (stackEqualsNonNBT(stack, in) && ItemStack.areItemStackTagsEqual(stack, in)) {
+					int space = max - in.getCount();
+					size -= space;
+				}
+			}
+		}
+		return size <= 0;
+	}
+
+	public static boolean matchStackLoosely(@Nonnull ItemStack stack, @Nonnull ItemStack other) {
+		if (stack.isEmpty()) {
+			return other.isEmpty();
+		}
+		return stack.isItemEqual(other);
+	}
+
 	public static void setItemMaterial(ItemStack stack, Material material) {
 		NBTTagCompound tag;
 		if (stack.hasTagCompound()) {
@@ -143,6 +211,24 @@ public class Helpers {
 
 	public static void setNBTInt(ItemStack stack, String key, int val) {
 		getTag(stack).setInteger(key, val);
+	}
+
+	public static boolean stackEqualsNonNBT(@Nonnull ItemStack stack, @Nonnull ItemStack other) {
+		if (stack.isEmpty() && other.isEmpty()) {
+			return true;
+		}
+		if (stack.isEmpty() || other.isEmpty()) {
+			return false;
+		}
+		Item sItem = stack.getItem();
+		Item oItem = other.getItem();
+		if (sItem.getHasSubtypes() || oItem.getHasSubtypes()) {
+			return sItem.equals(other.getItem()) && (stack.getItemDamage() == other.getItemDamage()
+					|| stack.getItemDamage() == OreDictionary.WILDCARD_VALUE
+					|| other.getItemDamage() == OreDictionary.WILDCARD_VALUE);
+		} else {
+			return sItem.equals(other.getItem());
+		}
 	}
 
 	public static int tryPlaceItemInInventory(@Nonnull ItemStack stack, IItemHandlerModifiable handler, int start,
@@ -163,8 +249,9 @@ public class Helpers {
 					handler.setStackInSlot(i, copyStackWithSize(toAdd, added));
 				}
 				insertedAmt += added;
-				if (stack.getCount() <= 0)
+				if (stack.getCount() <= 0) {
 					return insertedAmt;
+				}
 			} else {
 				if (stackEqualsNonNBT(toAdd, in) && ItemStack.areItemStackTagsEqual(toAdd, in)) {
 					int space = max - in.getCount();
@@ -174,92 +261,12 @@ public class Helpers {
 					if (!simulate) {
 						handler.getStackInSlot(i).setCount(handler.getStackInSlot(i).getCount() + added);
 					}
-					if (stack.getCount() <= 0)
+					if (stack.getCount() <= 0) {
 						return insertedAmt;
+					}
 				}
 			}
 		}
 		return insertedAmt;
-	}
-
-	@Nonnull
-	public static ItemStack copyStackWithSize(@Nonnull ItemStack stack, int amount) {
-		if (stack.isEmpty() || amount <= 0)
-			return ItemStack.EMPTY;
-		ItemStack s = stack.copy();
-		s.setCount(amount);
-		return s;
-	}
-
-	public static boolean stackEqualsNonNBT(@Nonnull ItemStack stack, @Nonnull ItemStack other) {
-		if (stack.isEmpty() && other.isEmpty())
-			return true;
-		if (stack.isEmpty() || other.isEmpty())
-			return false;
-		Item sItem = stack.getItem();
-		Item oItem = other.getItem();
-		if (sItem.getHasSubtypes() || oItem.getHasSubtypes()) {
-			return sItem.equals(other.getItem()) && (stack.getItemDamage() == other.getItemDamage()
-					|| stack.getItemDamage() == OreDictionary.WILDCARD_VALUE
-					|| other.getItemDamage() == OreDictionary.WILDCARD_VALUE);
-		} else {
-			return sItem.equals(other.getItem());
-		}
-	}
-
-	public static boolean hasInventorySpace(@Nonnull ItemStack stack, IItemHandler handler, int rangeMin,
-			int rangeMax) {
-		int size = stack.getCount();
-		int max = stack.getMaxStackSize();
-		for (int i = rangeMin; i < rangeMax && size > 0; i++) {
-			ItemStack in = handler.getStackInSlot(i);
-			if (in.isEmpty()) {
-				size -= max;
-			} else {
-				if (stackEqualsNonNBT(stack, in) && ItemStack.areItemStackTagsEqual(stack, in)) {
-					int space = max - in.getCount();
-					size -= space;
-				}
-			}
-		}
-		return size <= 0;
-	}
-
-	public static boolean consumeFromInventory(IItemHandlerModifiable handler, ItemStack toConsume, boolean simulate) {
-		Map<Integer, ItemStack> contents = findItemsIndexedInInventory(handler, toConsume, false);
-		if (contents.isEmpty())
-			return false;
-
-		int cAmt = toConsume.getCount();
-		for (int slot : contents.keySet()) {
-			ItemStack inSlot = contents.get(slot);
-			int toRemove = cAmt > inSlot.getCount() ? inSlot.getCount() : cAmt;
-			cAmt -= toRemove;
-			if (!simulate) {
-				handler.setStackInSlot(slot, copyStackWithSize(inSlot, inSlot.getCount() - toRemove));
-			}
-			if (cAmt <= 0) {
-				break;
-			}
-		}
-		return cAmt <= 0;
-	}
-
-	public static Map<Integer, ItemStack> findItemsIndexedInInventory(IItemHandler handler, ItemStack match,
-			boolean strict) {
-		Map<Integer, ItemStack> stacksOut = new HashMap<>();
-		for (int j = 0; j < handler.getSlots(); j++) {
-			ItemStack s = handler.getStackInSlot(j);
-			if (strict ? ItemStack.areItemsEqual(s, match) : matchStackLoosely(s, match)) {
-				stacksOut.put(j, copyStackWithSize(s, s.getCount()));
-			}
-		}
-		return stacksOut;
-	}
-
-	public static boolean matchStackLoosely(@Nonnull ItemStack stack, @Nonnull ItemStack other) {
-		if (stack.isEmpty())
-			return other.isEmpty();
-		return stack.isItemEqual(other);
 	}
 }

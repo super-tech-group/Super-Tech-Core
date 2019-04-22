@@ -40,7 +40,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -207,8 +206,6 @@ public abstract class CommonProxy {
 				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 0.5f);
 
 		Ore cassiterite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":cassiterite"));
-		GameRegistry.addSmelting(new ItemStack(cassiterite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(tinItem, 3, MaterialItem.NUGGET), 0.3f);
 		BasicSmelterRecipe tinSmelt = new BasicSmelterRecipe(
 				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
 						new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED) },
@@ -217,22 +214,28 @@ public abstract class CommonProxy {
 		BasicSmelterRecipe.registerRecipe(tinSmelt, new ResourceLocation(Reference.MODID, "crushed_cassiterite"));
 
 		Ore chalcocite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":chalcocite"));
-		GameRegistry.addSmelting(new ItemStack(chalcocite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(copperItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(copperItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe chalcociteSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(copperItem, 5, MaterialItem.NUGGET), 1358, 48.37, 644.44);
+		BasicSmelterRecipe.registerRecipe(chalcociteSmelt, new ResourceLocation(Reference.MODID, "crushed_chalcocite"));
 
 		Ore bornite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":bornite"));
-		GameRegistry.addSmelting(new ItemStack(bornite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(copperItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(copperItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe borniteSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(copperItem, 5, MaterialItem.NUGGET), 1358, 43.29, 565.55);
+		BasicSmelterRecipe.registerRecipe(borniteSmelt, new ResourceLocation(Reference.MODID, "crushed_bornite"));
 
 		Ore sphalerite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":sphalerite"));
-		GameRegistry.addSmelting(new ItemStack(sphalerite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(zincItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe sphaleriteSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
+		BasicSmelterRecipe.registerRecipe(sphaleriteSmelt, new ResourceLocation(Reference.MODID, "crushed_sphalerite"));
 
 		// other recipies
 		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);

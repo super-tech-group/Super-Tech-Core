@@ -107,7 +107,12 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 	@Override
 	public double getConductionCoefficient(EnumFacing side) {
 		// FOUND FROM https://www.engineeringtoolbox.com/thermal-conductivity-d_429.html
-		return 0.47;
+		if (side == null) {
+			// this means we want the "in-side". Most stones are around 1.3-4, and we use a
+			// furnace (made of stone) as the inside block for the crafting.
+			return 2.7;
+		}
+		return 0.15;
 	}
 
 	/**
@@ -213,7 +218,7 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 		if (!this.world.isRemote) {
 
 			if (this.isBurning()) {
-				this.setJouleChange(this.getJouleChange() + this.calcJoules(heatValue, EnumFacing.UP));
+				this.setJouleChange(this.getJouleChange() + this.calcJoules(heatValue, null));
 				--this.burnTime;
 			}
 

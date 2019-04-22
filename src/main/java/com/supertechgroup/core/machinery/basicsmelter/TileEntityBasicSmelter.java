@@ -44,6 +44,36 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable 
 		}
 	}
 
+	public void setFacing(EnumFacing side) {
+		this.facing = side;
+	}
+
+	private void smeltItem() {
+		System.out.println("Putting items in " + getPos().offset(facing.getOpposite()));
+		TileEntity behind = world.getTileEntity(getPos().offset(facing.getOpposite()));
+		TileEntity behindBelow = world.getTileEntity(getPos().offset(facing.getOpposite()).down());
+		if (behind.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)
+				&& behindBelow.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
+			IItemHandler slagHandler = behind.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+					facing.getOpposite());
+			IItemHandler primaryHandler = behindBelow.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+					facing.getOpposite());
+
+			if (Helpers.hasInventorySpace(inProgress.getSlagStack(), slagHandler, 0, slagHandler.getSlots()) && Helpers
+					.hasInventorySpace(inProgress.getPrimaryOutStack(), primaryHandler, 0, primaryHandler.getSlots())) {
+				// if we have room for both the slag and the primary output add them
+				Helpers.tryPlaceItemInInventory(inProgress.getPrimaryOutStack(),
+						(IItemHandlerModifiable) primaryHandler, 0, primaryHandler.getSlots(), false);
+				Helpers.tryPlaceItemInInventory(inProgress.getSlagStack(), (IItemHandlerModifiable) slagHandler, 0,
+						slagHandler.getSlots(), false);
+
+				// and reset the crafting process to be ready for the next one
+				inProgress = null;
+				this.processTemp = IHeatCapability.AMBIENT_TEMP;
+			}
+		}
+	}
+
 	private void tryStartSmelt() {
 		TileEntity te = world.getTileEntity(getPos().up());
 		if (te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
@@ -83,32 +113,6 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable 
 		}
 	}
 
-	private void smeltItem() {
-		System.out.println("Putting items in " + getPos().offset(facing.getOpposite()));
-		TileEntity behind = world.getTileEntity(getPos().offset(facing.getOpposite()));
-		TileEntity behindBelow = world.getTileEntity(getPos().offset(facing.getOpposite()).down());
-		if (behind.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)
-				&& behindBelow.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing)) {
-			IItemHandler slagHandler = behind.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-					facing.getOpposite());
-			IItemHandler primaryHandler = behindBelow.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
-					facing.getOpposite());
-
-			if (Helpers.hasInventorySpace(inProgress.getSlagStack(), slagHandler, 0, slagHandler.getSlots()) && Helpers
-					.hasInventorySpace(inProgress.getPrimaryOutStack(), primaryHandler, 0, primaryHandler.getSlots())) {
-				// if we have room for both the slag and the primary output add them
-				Helpers.tryPlaceItemInInventory(inProgress.getPrimaryOutStack(),
-						(IItemHandlerModifiable) primaryHandler, 0, primaryHandler.getSlots(), false);
-				Helpers.tryPlaceItemInInventory(inProgress.getSlagStack(), (IItemHandlerModifiable) slagHandler, 0,
-						slagHandler.getSlots(), false);
-
-				// and reset the crafting process to be ready for the next one
-				inProgress = null;
-				this.processTemp = IHeatCapability.AMBIENT_TEMP;
-			}
-		}
-	}
-
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
@@ -118,10 +122,6 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable 
 			compound.setString("processName", inProgress.getRegistryName().toString());
 		}
 		return compound;
-	}
-
-	public void setFacing(EnumFacing side) {
-		this.facing = side;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.supertechgroup.core.machinery.multiblock.crudeheater;
 import com.supertechgroup.core.machinery.slots.SlotItemHandlerFuel;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -29,7 +30,7 @@ public class CrudeHeaterContainer extends Container {
 		final int TILE_INVENTORY_YPOS = 20;
 		IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		// Add the tile inventory container to the gui
-		addSlotToContainer(new SlotItemHandlerFuel(itemHandler, 0, 81, 42));
+		addSlotToContainer(new SlotItemHandlerFuel(itemHandler, 0, 80, 27));
 	}
 
 	private void addPlayerSlots(IInventory playerInventory) {
@@ -79,10 +80,10 @@ public class CrudeHeaterContainer extends Container {
 		// Check if the slot clicked is one of the vanilla container slots
 		if (sourceSlotIndex >= 0 && sourceSlotIndex < 36) {
 			// This is a vanilla container slot so merge the stack into the tile inventory
-			if (!mergeItemStack(sourceStack, 37, 37 + CrudeHeaterTileEntity.getSlotCount(), false)) {
+			if (!mergeItemStack(sourceStack, 36, 36 + CrudeHeaterTileEntity.getSlotCount(), false)) {
 				return ItemStack.EMPTY; // EMPTY_ITEM
 			}
-		} else if (sourceSlotIndex >= 37 && sourceSlotIndex < 37 + CrudeHeaterTileEntity.getSlotCount()) {
+		} else if (sourceSlotIndex >= 36 && sourceSlotIndex < 36 + CrudeHeaterTileEntity.getSlotCount()) {
 			// This is a TE slot so merge the stack into the players inventory
 			if (!mergeItemStack(sourceStack, 0, 36, false)) {
 				return ItemStack.EMPTY; // EMPTY_ITEM

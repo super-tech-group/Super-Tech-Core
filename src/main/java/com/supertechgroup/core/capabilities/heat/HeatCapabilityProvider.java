@@ -13,7 +13,7 @@ public class HeatCapabilityProvider implements ICapabilitySerializable<NBTBase> 
 
 	public static double getHeatValueForStack(ItemStack itemstack) {
 		// TODO Auto-generated method stub
-		return 1500;
+		return 2222;
 	}
 
 	private IHeatCapability instance = HEAT_CAP.getDefaultInstance();

@@ -81,10 +81,10 @@ public class CrudeIOContainer extends Container {
 		// Check if the slot clicked is one of the vanilla container slots
 		if (sourceSlotIndex >= 0 && sourceSlotIndex < 36) {
 			// This is a vanilla container slot so merge the stack into the tile inventory
-			if (!mergeItemStack(sourceStack, 37, 37 + CrudeIOTileEntity.getSlotCount(), false)) {
+			if (!mergeItemStack(sourceStack, 36, 36 + CrudeIOTileEntity.getSlotCount(), false)) {
 				return ItemStack.EMPTY; // EMPTY_ITEM
 			}
-		} else if (sourceSlotIndex >= 37 && sourceSlotIndex < 37 + CrudeIOTileEntity.getSlotCount()) {
+		} else if (sourceSlotIndex >= 36 && sourceSlotIndex < 36 + CrudeIOTileEntity.getSlotCount()) {
 			// This is a TE slot so merge the stack into the players inventory
 			if (!mergeItemStack(sourceStack, 0, 36, false)) {
 				return ItemStack.EMPTY; // EMPTY_ITEM

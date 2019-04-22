@@ -1,7 +1,5 @@
 package com.supertechgroup.core.machinery.basicsmelter;
 
-import javax.annotation.Nullable;
-
 import com.supertechgroup.core.capabilities.heat.HeatCapabilityProvider;
 import com.supertechgroup.core.capabilities.heat.IHeatCapability;
 import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
@@ -11,70 +9,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.capabilities.Capability;
+import net.minecraft.util.text.TextComponentString;
 
-public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable, IHeatCapability {
-	private double temperature = 0;
-
-	private double heatToAbsorb = 0;
-
-	@Override
-	public double applyTemperatureChange() {
-		temperature += heatToAbsorb;
-		heatToAbsorb = 0;
-		return temperature;
-	}
+public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable {
+	private double temperature = IHeatCapability.AMBIENT_TEMP;
 
 	@Override
 	protected boolean blockActivated(EntityPlayer player, EnumFacing side) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+		if (world.isRemote) {
+			return true;
+		}
+		if (player.isSneaking()) {
+			player.sendMessage(new TextComponentString(this.temperature + " k"));
 
-	@Override
-	public boolean canConnectHeat(EnumFacing side) {
+		}
 		return true;
-	}
-
-	@Override
-	public IHeatCapability getAdjacent(EnumFacing side) {
-		TileEntity adj = world.getTileEntity(getPos().offset(side));
-		if (adj != null && adj.hasCapability(HeatCapabilityProvider.HEAT_CAP, side.getOpposite())) {
-			return adj.getCapability(HeatCapabilityProvider.HEAT_CAP, side.getOpposite());
-		}
-		return null;
-	}
-
-	@Override
-	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if (capability == HeatCapabilityProvider.HEAT_CAP) {
-			//return HeatCapabilityProvider.HEAT_CAP.cast(this);
-		}
-		return super.getCapability(capability, facing);
-	}
-
-	@Override
-	public double getConductionCoefficient() {
-		// TODO Auto-generated method stub
-		return 1.7;
-	}
-
-	@Override
-	public double getInsulationCoefficient(EnumFacing side) {
-		// TODO Auto-generated method stub
-		return 1.7;
-	}
-
-	@Override
-	public double getTemp() {
-		return temperature;
-	}
-
-	@Override
-	public boolean hasCapability(net.minecraftforge.common.capabilities.Capability<?> capability,
-			@Nullable net.minecraft.util.EnumFacing facing) {
-		return capability == HeatCapabilityProvider.HEAT_CAP || super.hasCapability(capability, facing);
 	}
 
 	@Override
@@ -92,22 +41,23 @@ public class TileEntityBasicSmelter extends TileMultiBlock implements ITickable,
 	}
 
 	@Override
-	public void transferHeatTo(double heat) {
-		heatToAbsorb += heat;
-	}
-
-	@Override
-	public void update() {
-//TODO do recipe updates
-		this.updateHeatCapability(getWorld());
-	}
-
-	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		compound.setDouble("temperature", this.temperature);
 
 		return compound;
+	}
+
+	@Override
+	public void update() {
+		if (!world.isRemote && world.getTileEntity(getPos().down()) != null) {
+			TileEntity te = world.getTileEntity(getPos().down());
+			if (te.hasCapability(HeatCapabilityProvider.HEAT_CAP, EnumFacing.DOWN)) {
+				IHeatCapability cap = te.getCapability(HeatCapabilityProvider.HEAT_CAP, EnumFacing.DOWN);
+				this.temperature = cap.getTemp();
+			}
+		}
+
 	}
 
 }

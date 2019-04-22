@@ -5,47 +5,56 @@ import net.minecraft.world.World;
 
 public interface IHeatCapability {
 	/**
-	 * The inverse transfer rate of heat. Higher values mean slower transfer.
-	 */
-	double TRANSFER_RATE = 6;
-	/**
 	 * The value of the zero point of our temperature scale in kelvin
 	 */
 	double AMBIENT_TEMP = 300;
 
-	/**
-	 * The heat transfer coefficient for air
-	 */
-	double AIR_COEFFICIENT = 38;
+	public default void applyTemperatureChange() {
+		double newTemp = this.getTemp() + (this.getJouleChange() / (this.getSpecHeatMass()));
 
-	double applyTemperatureChange();
+		this.setTemp(newTemp);
+		this.setJouleChange(0);
+	}
+
+	/**
+	 * 
+	 * @return the specific heat multiplied by the mass for the onbject this
+	 *         represents
+	 */
+	double getSpecHeatMass();
 
 	boolean canConnectHeat(EnumFacing side);
 
 	public IHeatCapability getAdjacent(EnumFacing side);
 
-	double getConductionCoefficient();
-
-	double getInsulationCoefficient(EnumFacing side);
+	double getConductionCoefficient(EnumFacing side);
 
 	double getTemp();
 
-	void transferHeatTo(double heat);
+	void setTemp(Double newTemp);
 
 	public default void updateHeatCapability(World world) {
 		if (world.getTotalWorldTime() % 2 == 0) {
+			double jouleChange = 0;
 			for (EnumFacing facing : EnumFacing.VALUES) {
 				IHeatCapability adj = getAdjacent(facing);
 				if (adj != null) {
-					transferHeatTo(
-							(adj.getTemp() - this.getTemp()) / (this.getConductionCoefficient() * TRANSFER_RATE));
+					jouleChange += calcJoules(adj.getTemp(), facing);
 				} else {
-					transferHeatTo(
-							(AMBIENT_TEMP - this.getTemp()) / (this.getInsulationCoefficient(facing) * TRANSFER_RATE));
+					jouleChange += calcJoules(AMBIENT_TEMP, facing);
 				}
 			}
+			this.setJouleChange(this.getJouleChange() + jouleChange);
 		} else {
 			applyTemperatureChange();
 		}
 	}
+
+	public default double calcJoules(double otherTemp, EnumFacing facing) {
+		return (((this.getConductionCoefficient(facing) * (otherTemp - this.getTemp())) / 20));
+	}
+
+	void setJouleChange(double d);
+
+	double getJouleChange();
 }

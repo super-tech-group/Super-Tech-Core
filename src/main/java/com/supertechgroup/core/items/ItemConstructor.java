@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler;
 import com.supertechgroup.core.util.ItemBase;
 
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
@@ -14,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 
 public class ItemConstructor extends ItemBase {
 
@@ -54,6 +56,13 @@ public class ItemConstructor extends ItemBase {
 		}
 
 		return EnumActionResult.PASS;
+	}
+
+	public void registerModels() {
+		ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(this.getRegistryName().toString(),
+				"inventory");
+		final int DEFAULT_ITEM_SUBTYPE = 0;
+		ModelLoader.setCustomModelResourceLocation(this, DEFAULT_ITEM_SUBTYPE, itemModelResourceLocation);
 	}
 
 }

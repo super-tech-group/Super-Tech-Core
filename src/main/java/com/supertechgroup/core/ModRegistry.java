@@ -147,6 +147,7 @@ public class ModRegistry {
 	public static void initModels() {
 		itemTech.registerModels();
 		itemResearchBook.registerModels();
+		itemConstructor.registerModels();
 		researchStation.registerModels();
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
@@ -225,6 +226,16 @@ public class ModRegistry {
 		createStoneType("slate", 1.5, 10, 0, event, "metamorphic");
 
 		createStoneType("kimberlite", 2.0, 14, 3, event, "gabbro");
+
+		OreDictionary.registerOre("fluxStone",
+				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "limestonecobble")));
+		OreDictionary.registerOre("fluxStone",
+				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "dolomitecobble")));
+	}
+
+	public static void registerItemModels() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@SubscribeEvent
@@ -568,10 +579,5 @@ public class ModRegistry {
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		bronze.registerResearch();
-	}
-
-	public static void registerItemModels() {
-		// TODO Auto-generated method stub
-
 	}
 }

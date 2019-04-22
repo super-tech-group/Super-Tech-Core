@@ -69,6 +69,17 @@ public abstract class CommonProxy {
 
 	private void addBasicRecipies() {
 		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapelessOreRecipe(new ResourceLocation(Reference.MODID, "flux"),
+						new ItemStack(ModRegistry.itemTech, 4, SuperTechItem.FLUX),
+						new Object[] { new OreIngredient("fluxStone"), new OreIngredient("toolHammer") })
+								.setRegistryName(Reference.MODID, "fluxdust"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "constructor"),
+						new ItemStack(ModRegistry.itemConstructor),
+						new Object[] { new String[] { " x ", "xsx", " s " }, 's', new ItemStack(Items.STICK), 'x',
+								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK) })
+										.setRegistryName(Reference.MODID, "constructor"));
+		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapelessOreRecipe(new ResourceLocation(Reference.MODID, "fireclay"),
 						new ItemStack(ModRegistry.itemTech, 4, SuperTechItem.FIRE_CLAY),
 						new Object[] { new OreIngredient("sand"), new ItemStack(Items.CLAY_BALL),

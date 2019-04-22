@@ -213,7 +213,7 @@ public abstract class CommonProxy {
 				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
 						new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED) },
 				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
-				new ItemStack(tinItem, 5, MaterialItem.NUGGET), 505.1, 34.95, 0.38);
+				new ItemStack(tinItem, 5, MaterialItem.NUGGET), 505.1, 34.95, 295.26);
 		BasicSmelterRecipe.registerRecipe(tinSmelt, new ResourceLocation(Reference.MODID, "crushed_cassiterite"));
 
 		Ore chalcocite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":chalcocite"));

@@ -80,7 +80,6 @@ public class BasicSmelterRecipe {
 	public boolean apply(IItemHandler cap) {
 		for (ItemStack is : this.input) {
 			if (!Helpers.consumeFromInventory((IItemHandlerModifiable) cap, is, true)) {
-				System.out.println("REcipe mismatch: " + is);
 				return false;
 			}
 		}

@@ -52,6 +52,7 @@ public class MultiblockBasicSmelter implements IMultiblock {
 		TileEntityBasicSmelter newTile = new TileEntityBasicSmelter();
 		newTile.setMasterPos(pos);
 		newTile.setFacing(side);
+		System.out.println(pos.offset(side.getOpposite()));
 		if (oldTile instanceof TileMultiBlock) {
 			player.sendMessage(new TextComponentString(oldTile.writeToNBT(new NBTTagCompound()).toString()));
 		}

@@ -17,10 +17,6 @@ public class DictBlockMatcher extends BlockMatcher {
 		c = string;
 	}
 
-	public String toString() {
-		return c;
-	}
-
 	@Override
 	public boolean apply(World world, BlockPos pos) {
 		return check.apply(new ItemStack(world.getBlockState(pos).getBlock()));
@@ -29,6 +25,11 @@ public class DictBlockMatcher extends BlockMatcher {
 	@Override
 	public IBlockState getExample() {
 		return ((ItemBlock) check.getMatchingStacks()[0].getItem()).getBlock().getDefaultState();
+	}
+
+	@Override
+	public String toString() {
+		return c;
 	}
 
 }

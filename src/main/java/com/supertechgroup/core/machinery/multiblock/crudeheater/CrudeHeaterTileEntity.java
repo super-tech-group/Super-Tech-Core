@@ -104,6 +104,12 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 		return super.getCapability(capability, facing);
 	}
 
+	@Override
+	public double getConductionCoefficient(EnumFacing side) {
+		// FOUND FROM https://www.engineeringtoolbox.com/thermal-conductivity-d_429.html
+		return 0.47;
+	}
+
 	/**
 	 * Get the formatted ChatComponent that will be used for the sender's username
 	 * in chat
@@ -132,9 +138,14 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 	}
 
 	@Override
-	public double getConductionCoefficient(EnumFacing side) {
-		// FOUND FROM https://www.engineeringtoolbox.com/thermal-conductivity-d_429.html
-		return 0.47;
+	public double getJouleChange() {
+		return this.heatToAbsorb;
+	}
+
+	@Override
+	public double getSpecHeatMass() {
+//spec heat for brick is 0.9, we will assume volume of .417 cubic meters of brick, at a density of 1765 kg/m^3, giving us a weight of ~227
+		return 204.16;
 	}
 
 	@Override
@@ -179,6 +190,16 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 			this.heatValue = value;
 			break;
 		}
+	}
+
+	@Override
+	public void setJouleChange(double d) {
+		this.heatToAbsorb = d;
+	}
+
+	@Override
+	public void setTemp(Double newTemp) {
+		this.temperature = newTemp;
 	}
 
 	/**
@@ -235,27 +256,6 @@ public class CrudeHeaterTileEntity extends TileMultiBlock implements IHeatCapabi
 		compound.setDouble("heatValue", this.heatValue);
 		compound.setDouble("temperature", this.temperature);
 		return compound;
-	}
-
-	@Override
-	public double getSpecHeatMass() {
-//spec heat for brick is 0.9, we will assume volume of .417 cubic meters of brick, at a density of 1765 kg/m^3, giving us a weight of ~227
-		return 204.16;
-	}
-
-	@Override
-	public void setTemp(Double newTemp) {
-		this.temperature = newTemp;
-	}
-
-	@Override
-	public void setJouleChange(double d) {
-		this.heatToAbsorb = d;
-	}
-
-	@Override
-	public double getJouleChange() {
-		return this.heatToAbsorb;
 	}
 
 }

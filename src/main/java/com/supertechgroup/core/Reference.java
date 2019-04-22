@@ -1,5 +1,7 @@
 package com.supertechgroup.core;
 
+import net.minecraft.util.ResourceLocation;
+
 public class Reference {
 	public static final String MODID = "supertechcore";
 	public static final String MODNAME = "Super Tech Core";
@@ -15,4 +17,6 @@ public class Reference {
 
 	public static final int GUI_CRUDE_IO = 0;
 	public static final int GUI_CRUDE_HEATER = 1;
+
+	public static final ResourceLocation EMPTY_RESOURCE = new ResourceLocation("void:null");
 }

@@ -16,12 +16,9 @@ public interface IHeatCapability {
 		this.setJouleChange(0);
 	}
 
-	/**
-	 * 
-	 * @return the specific heat multiplied by the mass for the onbject this
-	 *         represents
-	 */
-	double getSpecHeatMass();
+	public default double calcJoules(double otherTemp, EnumFacing facing) {
+		return (((this.getConductionCoefficient(facing) * (otherTemp - this.getTemp())) / 20));
+	}
 
 	boolean canConnectHeat(EnumFacing side);
 
@@ -29,7 +26,18 @@ public interface IHeatCapability {
 
 	double getConductionCoefficient(EnumFacing side);
 
+	double getJouleChange();
+
+	/**
+	 *
+	 * @return the specific heat multiplied by the mass for the onbject this
+	 *         represents
+	 */
+	double getSpecHeatMass();
+
 	double getTemp();
+
+	void setJouleChange(double d);
 
 	void setTemp(Double newTemp);
 
@@ -49,12 +57,4 @@ public interface IHeatCapability {
 			applyTemperatureChange();
 		}
 	}
-
-	public default double calcJoules(double otherTemp, EnumFacing facing) {
-		return (((this.getConductionCoefficient(facing) * (otherTemp - this.getTemp())) / 20));
-	}
-
-	void setJouleChange(double d);
-
-	double getJouleChange();
 }

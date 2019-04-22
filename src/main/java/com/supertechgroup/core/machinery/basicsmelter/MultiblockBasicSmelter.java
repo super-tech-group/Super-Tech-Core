@@ -5,7 +5,6 @@ import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler.IMultiblock;
 import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
 import com.supertechgroup.core.machinery.multiblock.matcher.BlockMatcher;
-import com.supertechgroup.core.machinery.multiblock.matcher.DictBlockMatcher;
 import com.supertechgroup.core.machinery.multiblock.matcher.DirectBlockMatcher;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,6 +51,7 @@ public class MultiblockBasicSmelter implements IMultiblock {
 		TileEntity oldTile = world.getTileEntity(pos.add(getTriggerOffset()));
 		TileEntityBasicSmelter newTile = new TileEntityBasicSmelter();
 		newTile.setMasterPos(pos);
+		newTile.setFacing(side);
 		if (oldTile instanceof TileMultiBlock) {
 			player.sendMessage(new TextComponentString(oldTile.writeToNBT(new NBTTagCompound()).toString()));
 		}
@@ -63,6 +63,12 @@ public class MultiblockBasicSmelter implements IMultiblock {
 	@Override
 	public BlockMatcher[][][] getStructureManual() {
 		return structure;
+	}
+
+	@Override
+	public BlockMatcher getTrigger() {
+		Vec3i offset = getTriggerOffset();
+		return structure[offset.getX() * -1][offset.getY() * -1][offset.getZ() * -1];
 	}
 
 	@Override
@@ -86,12 +92,6 @@ public class MultiblockBasicSmelter implements IMultiblock {
 	public void renderFormedStructure() {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public BlockMatcher getTrigger() {
-		Vec3i offset = getTriggerOffset();
-		return structure[offset.getX() * -1][offset.getY() * -1][offset.getZ() * -1];
 	}
 
 }

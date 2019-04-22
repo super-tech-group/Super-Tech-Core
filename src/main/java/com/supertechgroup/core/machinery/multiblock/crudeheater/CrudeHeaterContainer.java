@@ -3,7 +3,6 @@ package com.supertechgroup.core.machinery.multiblock.crudeheater;
 import com.supertechgroup.core.machinery.slots.SlotItemHandlerFuel;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

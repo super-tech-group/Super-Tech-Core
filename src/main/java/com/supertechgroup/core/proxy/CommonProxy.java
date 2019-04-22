@@ -19,10 +19,12 @@ import com.supertechgroup.core.capabilities.teamlist.ListCapabilityStorage;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
+import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.machinery.basicsmelter.MultiblockBasicSmelter;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.recipies.BasicSmelterRecipe;
 import com.supertechgroup.core.recipies.ShapelessResearchRecipe;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
@@ -38,6 +40,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -66,6 +69,7 @@ public abstract class CommonProxy {
 	private File configFolder;
 
 	private void addBasicRecipies() {
+
 		// add basic tool recipies
 
 		Material stone = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":stone"));
@@ -205,8 +209,12 @@ public abstract class CommonProxy {
 		Ore cassiterite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":cassiterite"));
 		GameRegistry.addSmelting(new ItemStack(cassiterite.getItemOre(), 1, OreItem.ORE),
 				new ItemStack(tinItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(tinItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe tinSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(tinItem, 5, MaterialItem.NUGGET), 505.1, 34.95, 0.38);
+		BasicSmelterRecipe.registerRecipe(tinSmelt, new ResourceLocation(Reference.MODID, "crushed_cassiterite"));
 
 		Ore chalcocite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":chalcocite"));
 		GameRegistry.addSmelting(new ItemStack(chalcocite.getItemOre(), 1, OreItem.ORE),

@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.research.teams.listCapability.IListCapability;
-import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
-import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
+import com.supertechgroup.core.capabilities.team.ITeamCapability;
+import com.supertechgroup.core.capabilities.team.TeamCapability;
+import com.supertechgroup.core.capabilities.team.TeamCapabilityProvider;
+import com.supertechgroup.core.capabilities.teamlist.IListCapability;
+import com.supertechgroup.core.capabilities.teamlist.ListCapabilityProvider;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

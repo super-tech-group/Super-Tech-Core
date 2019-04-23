@@ -1,14 +1,14 @@
-package com.supertechgroup.core.research.teams.listCapability;
+package com.supertechgroup.core.capabilities.teamlist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.supertechgroup.core.capabilities.team.ITeamCapability;
+import com.supertechgroup.core.capabilities.team.TeamCapabilityProvider;
 import com.supertechgroup.core.network.CompleteResearchPacket;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.research.Research;
-import com.supertechgroup.core.research.teams.teamcapability.ITeamCapability;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;

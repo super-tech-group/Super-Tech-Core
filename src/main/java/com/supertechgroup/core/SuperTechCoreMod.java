@@ -16,6 +16,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Reference.MODID, name = Reference.MODNAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_MINECRAFT_VERSIONS)
 public class SuperTechCoreMod {
+	@Mod.Instance(Reference.MODID)
+	public static SuperTechCoreMod instance;
 	public static Logger logger;
 	/**
 	 * The proxy to be used. Holds various functions and objects that may need to be

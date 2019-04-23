@@ -2,6 +2,9 @@ tile.supertechcore.superore.name=Super Tech Ore
 tile.supertechcore.basicresearcher.name=Basic Research Station
 tile.supertechcore.multiwall.name=Multiblock Wall
 tile.supertechcore.researchStation.name=Research Station
+tile.supertechcore.crude_wall.name=Crude Firebrick Wall
+tile.supertechcore.crudeIO.name=Crude Firebrick Interface
+tile.supertechcore.crudeHeater.name=Crude Firebrick Heater
 
 tile.supertechcore.amphibolite.name=Amphibolite
 tile.supertechcore.basalt.name=Basalt
@@ -49,9 +52,13 @@ item.supertechcore.itemTechComponent.casingBasic.name=Basic Casing
 item.supertechcore.itemTechComponent.heatingElement.name=Heating Element
 item.supertechcore.itemTechComponent.powerUnitSmall.name=Small Power Unit
 item.supertechcore.itemTechComponent.slag.name=Slag
+item.supertechcore.itemTechComponent.flux.name=Flux
+item.supertechcore.itemTechComponent.fireClay.name=Fireclay
+item.supertechcore.itemTechComponent.fireBrick.name=Firebrick
 item.supertechcore.itemConstructor.name=Constructor
 item.supertechcore.researchBook.name=Research Notebook
 
+gui.supertechcore.basicsmelting.name=Basic Smelting
 
 #generic titles
 item.supertechcore.blade.name=%s Blade

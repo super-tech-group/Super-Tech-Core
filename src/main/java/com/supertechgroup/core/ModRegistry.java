@@ -496,7 +496,7 @@ public class ModRegistry {
 		OreDictionary.registerOre("crushedTinOre", new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
-		OreDictionary.registerOre("crushedCopperOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedZincOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
 
 		// setup ore veins
 		CommonProxy.parsed.add(new WorldGeneratorPlate(
@@ -579,5 +579,10 @@ public class ModRegistry {
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		bronze.registerResearch();
+
+		Research brass = new Research("brass");
+		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"), 5);
+		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
+		brass.registerResearch();
 	}
 }

@@ -194,6 +194,36 @@ public abstract class CommonProxy {
 						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")))
 								.setRegistryName(Reference.MODID, "hammerBronze"));
 
+		Material brass = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":brass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("axes"),
+						new ItemStack(brass.getItemAxe(), 1, MaterialTool.AXE),
+						new Object[] { new String[] { " xx", " sx", " s " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+								.setRegistryName(Reference.MODID, "axeBrass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("shovels"),
+						new ItemStack(brass.getItemShovel(), 1, MaterialTool.SHOVEL),
+						new Object[] { new String[] { " x ", " s ", " s " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+								.setRegistryName(Reference.MODID, "shovelBrass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("pickaxes"),
+						new ItemStack(brass.getItemPickaxe(), 1, MaterialTool.PICKAXE),
+						new Object[] { new String[] { "xxx", " s ", " s " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+								.setRegistryName(Reference.MODID, "pickaxeBrass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("hammers"),
+						new ItemStack(brass.getItemHammer(), 1, MaterialTool.HAMMER),
+						new Object[] { new String[] { " x ", " sx", "s  " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+								.setRegistryName(Reference.MODID, "hammerBrass"));
+
 		// basic ingot/nuggets
 		Item bronzeItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":bronze"))
 				.getMaterialItem();
@@ -207,6 +237,18 @@ public abstract class CommonProxy {
 				new ItemStack(bronzeItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotBronze") },
 				Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")))
 						.setRegistryName(Reference.MODID, "bronzeNugget"));
+
+		Item brassItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":brass")).getMaterialItem();
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("ingots"),
+						new ItemStack(brassItem, 1, MaterialItem.INGOT),
+						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("nuggetBrass") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+								.setRegistryName(Reference.MODID, "brassIngot"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessResearchRecipe(new ResourceLocation("nuggets"),
+				new ItemStack(brassItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotBrass") },
+				Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+						.setRegistryName(Reference.MODID, "brassNugget"));
 
 		Item ironItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":iron")).getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
@@ -337,6 +379,17 @@ public abstract class CommonProxy {
 				1186.15, 30, 435.62);
 		BasicSmelterRecipe.registerRecipe(bronzeSmelt, new ResourceLocation(Reference.MODID, "poor_bronze"));
 
+		BasicSmelterRecipe brassSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass"))
+								.getMaterialItem(), 1, MaterialItem.DIRTY) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 5,
+						MaterialItem.NUGGET),
+				1186.15, 30, 425.62);
+		BasicSmelterRecipe.registerRecipe(brassSmelt, new ResourceLocation(Reference.MODID, "poor_brass"));
+
 		// other recipies
 		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);
 		recipeRegistry.register(
@@ -358,6 +411,16 @@ public abstract class CommonProxy {
 						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedTinOre") });
 		dirtyBronzeDust.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
 		recipeRegistry.register(dirtyBronzeDust.setRegistryName(Reference.MODID, "oreDirtyBronzeDust"));
+
+		ShapelessResearchRecipe dirtyBrassDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 3,
+						MaterialItem.DIRTY),
+				new Object[] { new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedZincOre") });
+		dirtyBrassDust.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")));
+		recipeRegistry.register(dirtyBrassDust.setRegistryName(Reference.MODID, "oreDirtyBrassDust"));
 
 	}
 

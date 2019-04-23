@@ -226,22 +226,28 @@ public abstract class CommonProxy {
 
 		// basic ore processing
 		Ore magnetite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":magnetite"));
-		GameRegistry.addSmelting(new ItemStack(magnetite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(ironItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(magnetite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe magnetiteSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(magnetite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 1811, 27.75, 572.22);
+		BasicSmelterRecipe.registerRecipe(magnetiteSmelt, new ResourceLocation(Reference.MODID, "crushed_magnetite"));
 
 		Ore limonite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":limonite"));
-		GameRegistry.addSmelting(new ItemStack(limonite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(ironItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(limonite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe limoniteSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(limonite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 1811, 17.77, 388.88);
+		BasicSmelterRecipe.registerRecipe(limoniteSmelt, new ResourceLocation(Reference.MODID, "crushed_limonite"));
 
 		Ore hematite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":hematite"));
-		GameRegistry.addSmelting(new ItemStack(hematite.getItemOre(), 1, OreItem.ORE),
-				new ItemStack(ironItem, 3, MaterialItem.NUGGET), 0.3f);
-		GameRegistry.addSmelting(new ItemStack(hematite.getItemOre(), 1, OreItem.CRUSHED),
-				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 0.5f);
+		BasicSmelterRecipe hematiteSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(hematite.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 1811, 22.83, 583.88);
+		BasicSmelterRecipe.registerRecipe(hematiteSmelt, new ResourceLocation(Reference.MODID, "crushed_hematite"));
 
 		Ore cassiterite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":cassiterite"));
 		BasicSmelterRecipe tinSmelt = new BasicSmelterRecipe(

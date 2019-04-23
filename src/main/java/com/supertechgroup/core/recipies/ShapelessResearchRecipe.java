@@ -50,8 +50,12 @@ public class ShapelessResearchRecipe extends ShapelessOreRecipe implements IUnlo
 
 	ComplexResearchRequirement required = new ComplexResearchRequirement(1);
 
-	public ShapelessResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe) {
+	public ShapelessResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe,
+			IResearchRequirement... requirements) {
 		super(group, result, recipe);
+		for (IResearchRequirement rr : requirements) {
+			this.addResearchUnlock(rr);
+		}
 	}
 
 	@Override

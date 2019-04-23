@@ -49,6 +49,7 @@ public class BasicSmelterRecipe {
 		this.slagOut = slag;
 		this.primaryOut = primary;
 		this.temp = requiredTemp;
+		// useful approx calc if J/K/kg not available: (molarHeat)/density
 		this.coefficient = thermalCoefficient;
 		this.specHeatMass = specHeatMass;
 	}
@@ -90,6 +91,10 @@ public class BasicSmelterRecipe {
 		for (ItemStack is : this.input) {
 			Helpers.consumeFromInventory((IItemHandlerModifiable) cap, is, false);
 		}
+	}
+
+	public NonNullList<ItemStack> getInputs() {
+		return input;
 	}
 
 }

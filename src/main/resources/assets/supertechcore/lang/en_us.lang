@@ -58,6 +58,7 @@ item.supertechcore.itemTechComponent.fireBrick.name=Firebrick
 item.supertechcore.itemConstructor.name=Constructor
 item.supertechcore.researchBook.name=Research Notebook
 
+gui.supertechcore.basicsmelting.name=Basic Smelting
 
 #generic titles
 item.supertechcore.blade.name=%s Blade

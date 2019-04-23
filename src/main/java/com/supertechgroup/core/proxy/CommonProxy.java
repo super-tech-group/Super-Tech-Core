@@ -53,6 +53,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -280,6 +281,17 @@ public abstract class CommonProxy {
 				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
 		BasicSmelterRecipe.registerRecipe(sphaleriteSmelt, new ResourceLocation(Reference.MODID, "crushed_sphalerite"));
+
+		BasicSmelterRecipe bronzeSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze"))
+								.getMaterialItem(), 1, MaterialItem.DIRTY) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(),
+						5, MaterialItem.NUGGET),
+				1186.15, 30, 435.62);
+		BasicSmelterRecipe.registerRecipe(bronzeSmelt, new ResourceLocation(Reference.MODID, "poor_bronze"));
 
 		// other recipies
 		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);

@@ -104,12 +104,17 @@ public class BlockResearchStation extends Block {
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
 			ItemStack stack) {
 		if (!worldIn.isRemote) {
-			((TileEntityResearchStation) worldIn.getTileEntity(pos))
-					.setTeam(((EntityPlayerMP) placer).getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
 			System.out.println("Setting team to " + placer.getName() + "'s team: "
 					+ placer.getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
+			((TileEntityResearchStation) worldIn.getTileEntity(pos))
+					.setTeam(((EntityPlayerMP) placer).getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
 			worldIn.getTileEntity(pos).markDirty();
 		}
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
 	}
 
 	public void registerModels() {

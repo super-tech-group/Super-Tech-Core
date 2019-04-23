@@ -3,10 +3,10 @@ package com.supertechgroup.core.research.researchstation;
 import java.util.HashMap;
 import java.util.UUID;
 
+import com.supertechgroup.core.capabilities.team.TeamCapability;
+import com.supertechgroup.core.capabilities.teamlist.IListCapability;
+import com.supertechgroup.core.capabilities.teamlist.ListCapabilityProvider;
 import com.supertechgroup.core.research.Research;
-import com.supertechgroup.core.research.teams.listCapability.IListCapability;
-import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

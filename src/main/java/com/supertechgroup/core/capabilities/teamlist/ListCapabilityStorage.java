@@ -1,4 +1,4 @@
-package com.supertechgroup.core.research.teams.listCapability;
+package com.supertechgroup.core.capabilities.teamlist;
 
 import java.util.ArrayList;
 import java.util.HashMap;

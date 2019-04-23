@@ -3,14 +3,23 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
+import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
+import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterTileEntity;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOBlock;
+import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOTileEntity;
+import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallBlock;
+import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallTileEntity;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
+import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
@@ -69,6 +78,10 @@ public class ModRegistry {
 
 	public static SuperTechItem itemTech;
 	public static ItemResearchBook itemResearchBook;
+	public static ItemConstructor itemConstructor;
+	public static CrudeIOBlock crudeIOBlock;
+	public static CrudeWallBlock crudeWallBlock;
+	public static CrudeHeaterBlock crudeHeaterBlock;
 
 	/**
 	 *
@@ -131,17 +144,36 @@ public class ModRegistry {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static void initItemModels() {
-	}
-
-	@SideOnly(Side.CLIENT)
 	public static void initModels() {
 		itemTech.registerModels();
 		itemResearchBook.registerModels();
+		itemConstructor.registerModels();
+		researchStation.registerModels();
+		crudeIOBlock.registerModels();
+		crudeWallBlock.registerModels();
+		crudeHeaterBlock.registerModels();
 	}
 
 	@SubscribeEvent
 	public static void registerBlocks(RegistryEvent.Register<Block> event) {
+		crudeIOBlock = new CrudeIOBlock();
+		event.getRegistry().register(crudeIOBlock);
+		ForgeRegistries.ITEMS.register(new ItemBlock(crudeIOBlock).setRegistryName(crudeIOBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
+
+		crudeHeaterBlock = new CrudeHeaterBlock();
+		event.getRegistry().register(crudeHeaterBlock);
+		ForgeRegistries.ITEMS
+				.register(new ItemBlock(crudeHeaterBlock).setRegistryName(crudeHeaterBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeHeaterTileEntity.class, crudeHeaterBlock.getRegistryName());
+
+		crudeWallBlock = new CrudeWallBlock();
+		event.getRegistry().register(crudeWallBlock);
+		ForgeRegistries.ITEMS.register(new ItemBlock(crudeWallBlock).setRegistryName(crudeWallBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeWallTileEntity.class, crudeWallBlock.getRegistryName());
+		GameRegistry.registerTileEntity(TileEntityBasicSmelter.class,
+				new ResourceLocation(Reference.MODID, "basicSmelter"));
+
 		superore = new OreBlock();
 		event.getRegistry().register(superore);
 
@@ -149,7 +181,7 @@ public class ModRegistry {
 		ForgeRegistries.ITEMS
 				.register(new ItemBlock(researchStation).setRegistryName(researchStation.getRegistryName()));
 		event.getRegistry().register(researchStation);
-		GameRegistry.registerTileEntity(researchStation.getTileEntityClass(), researchStation.getRegistryName());
+		GameRegistry.registerTileEntity(TileEntityResearchStation.class, researchStation.getRegistryName());
 
 		// Rocks
 
@@ -194,14 +226,26 @@ public class ModRegistry {
 		createStoneType("slate", 1.5, 10, 0, event, "metamorphic");
 
 		createStoneType("kimberlite", 2.0, 14, 3, event, "gabbro");
+
+		OreDictionary.registerOre("fluxStone",
+				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "limestonecobble")));
+		OreDictionary.registerOre("fluxStone",
+				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "dolomitecobble")));
+	}
+
+	public static void registerItemModels() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event) {
+		itemConstructor = new ItemConstructor();
+
 		itemTech = new SuperTechItem();
 		itemResearchBook = new ItemResearchBook();
 
-		event.getRegistry().registerAll(itemTech, itemResearchBook);
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor);
 
 		itemTech.setupDictionary();
 	}

@@ -4,11 +4,11 @@ import java.lang.reflect.Field;
 import java.util.UUID;
 
 import com.google.common.base.Throwables;
+import com.supertechgroup.core.capabilities.team.TeamCapability;
+import com.supertechgroup.core.capabilities.team.TeamCapabilityProvider;
 import com.supertechgroup.core.research.ComplexResearchRequirement;
 import com.supertechgroup.core.research.IResearchRequirement;
 import com.supertechgroup.core.research.IUnlockable;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapability;
-import com.supertechgroup.core.research.teams.teamcapability.TeamCapabilityProvider;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

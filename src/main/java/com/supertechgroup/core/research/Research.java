@@ -7,9 +7,9 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.UUID;
 
+import com.supertechgroup.core.capabilities.teamlist.IListCapability;
+import com.supertechgroup.core.capabilities.teamlist.ListCapabilityProvider;
 import com.supertechgroup.core.network.CompleteResearchPacket;
-import com.supertechgroup.core.research.teams.listCapability.IListCapability;
-import com.supertechgroup.core.research.teams.listCapability.ListCapabilityProvider;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.DimensionManager;

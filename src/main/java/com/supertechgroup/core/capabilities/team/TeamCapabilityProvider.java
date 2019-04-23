@@ -1,4 +1,4 @@
-package com.supertechgroup.core.research.teams.teamcapability;
+package com.supertechgroup.core.capabilities.team;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.EnumFacing;

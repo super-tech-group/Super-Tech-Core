@@ -392,6 +392,12 @@ public abstract class CommonProxy {
 
 		// other recipies
 		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);
+		recipeRegistry
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("buckets"), new ItemStack(Items.BUCKET),
+								new Object[] { new String[] { "bxb", " b " }, 'x', new OreIngredient("toolHammer"), 'b',
+										new OreIngredient("ingotCopper") }).setRegistryName(Reference.MODID,
+												"copperBucket"));
 		recipeRegistry.register(
 				new ShapedOreRecipe(new ResourceLocation("research"), new ItemStack(ModRegistry.researchStation),
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
@@ -400,6 +406,14 @@ public abstract class CommonProxy {
 		recipeRegistry.register(new ShapelessOreRecipe(new ResourceLocation("research"),
 				ItemResearchBook.getEmptyBookStack(), new Object[] { new ItemStack(Items.WRITABLE_BOOK) })
 						.setRegistryName(Reference.MODID, "emptyResearchBook"));
+		recipeRegistry
+				.register(new ShapelessOreRecipe(new ResourceLocation("paper"),
+						new ItemStack(ModRegistry.itemTech, 2, SuperTechItem.WOOD_PULP),
+						new Object[] { new OreIngredient("logWood"), new OreIngredient("toolHammer"),
+								new ItemStack(Items.WATER_BUCKET) }).setRegistryName(Reference.MODID,
+										"woodenPaper"));
+		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.WOOD_PULP),
+				new ItemStack(Items.PAPER, 2), 0.15f);
 
 		ShapelessResearchRecipe dirtyBronzeDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
 				new ItemStack(

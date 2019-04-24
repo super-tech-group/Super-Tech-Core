@@ -15,7 +15,7 @@ public class ResearchTasks {
 
 	public static ResourceLocation getFromResultStack(ItemStack stack) {
 		for (Object o : craftingTableResearch.keySet()) {
-			if (o instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) o)) {
+			if (o instanceof ItemStack && ItemStack.areItemStacksEqual(stack, (ItemStack) o)) {
 				return craftingTableResearch.get(o);
 			}
 			if (o instanceof Ingredient && ((Ingredient) o).apply(stack)) {

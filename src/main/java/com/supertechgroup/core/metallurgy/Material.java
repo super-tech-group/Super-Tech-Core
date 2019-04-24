@@ -35,7 +35,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		Material building;
 
 		public MaterialBuilder(String name) {
-			building = new Material(name, 0x000000, -1, -1, 5.0, 999999, 10, 30, 15, 200, 150);
+			building = new Material(name, 0x000000, -1, 0, 5.0, 999999, 10, 30, 15, 200, 150);
 		}
 
 		public Material build() {

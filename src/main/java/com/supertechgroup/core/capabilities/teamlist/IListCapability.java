@@ -18,21 +18,21 @@ import net.minecraft.entity.player.EntityPlayerMP;
  */
 public interface IListCapability {
 
-	public void addInvite(EntityPlayer otherPlayer, UUID team);
+	void addInvite(EntityPlayer otherPlayer, UUID team);
 
-	public void completeResearchForTeam(UUID team, Research r);
+	void completeResearchForTeam(UUID team, Research r);
 
-	public void createTeam(EntityPlayer player);
+	void createTeam(EntityPlayer player);
 
-	public ArrayList<Research> getCompletedForTeam(UUID team);
+	ArrayList<Research> getCompletedForTeam(UUID team);
 
-	public UUID[] getTeamIDs();
+	UUID[] getTeamIDs();
 
-	public String getTeamName(UUID team);
+	String getTeamName(UUID team);
 
-	public boolean isCompletedForTeam(Research research, UUID rt);
+	boolean isCompletedForTeam(Research research, UUID rt);
 
-	public boolean joinTeam(EntityPlayerMP player);
+	boolean joinTeam(EntityPlayerMP player);
 
-	public void setData(HashMap<UUID, String> teams, HashMap<UUID, ArrayList<Research>> unlockedResearch);
+	void setData(HashMap<UUID, String> teams, HashMap<UUID, ArrayList<Research>> unlockedResearch);
 }

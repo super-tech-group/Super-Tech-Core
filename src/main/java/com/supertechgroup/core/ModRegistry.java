@@ -53,6 +53,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @EventBusSubscriber(modid = Reference.MODID)
@@ -584,5 +585,18 @@ public class ModRegistry {
 		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"), 5);
 		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		brass.registerResearch();
+
+		ResearchTasks.addTask(new OreIngredient("toolHammer"),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
+		ResearchTasks.addTask(new OreIngredient("toolShovel"),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
+		ResearchTasks.addTask(new OreIngredient("toolPickaxe"),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
+		ResearchTasks.addTask(new OreIngredient("toolAxe"),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
+
+		Research metalTools = new Research("metalTools");
+		metalTools.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"), 5);
+		metalTools.registerResearch();
 	}
 }

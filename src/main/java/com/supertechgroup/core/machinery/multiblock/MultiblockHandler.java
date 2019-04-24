@@ -95,7 +95,7 @@ public class MultiblockHandler {
 		 */
 		BlockMatcher[][][] getStructureManual();
 
-		public BlockMatcher getTrigger();
+		BlockMatcher getTrigger();
 
 		/**
 		 * Returns the blockpos offset
@@ -114,7 +114,7 @@ public class MultiblockHandler {
 		 * Basically, a less resource-intensive preliminary check to avoid checking
 		 * every structure.
 		 */
-		public default boolean isBlockTrigger(World world, BlockPos pos) {
+		default boolean isBlockTrigger(World world, BlockPos pos) {
 			System.out.println("Checking trigger " + getTrigger().toString() + " against block "
 					+ world.getBlockState(pos).getBlock() + " at pos " + pos);
 			return getTrigger().apply(world, pos);

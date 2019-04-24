@@ -16,6 +16,7 @@ public class CrudeWallBlock extends BlockMultiWall {
 		super(Material.ROCK);
 		this.setUnlocalizedName(Reference.MODID + ".crude_wall");
 		this.setRegistryName(Reference.MODID, "crude_wall");
+		this.setHardness(2.0f);
 	}
 
 	@Override

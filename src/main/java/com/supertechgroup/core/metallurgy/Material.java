@@ -411,6 +411,12 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		subItemStack = new ItemStack(itemPickaxe, 1, MaterialTool.PICKAXE);
 		OreDictionary.registerOre("pickaxe" + getName(), subItemStack);
 		OreDictionary.registerOre("toolPickaxe", subItemStack);
+		subItemStack = new ItemStack(itemPickaxe, 1, MaterialTool.SHOVEL);
+		OreDictionary.registerOre("shovel" + getName(), subItemStack);
+		OreDictionary.registerOre("toolShovel", subItemStack);
+		subItemStack = new ItemStack(itemPickaxe, 1, MaterialTool.AXE);
+		OreDictionary.registerOre("axe" + getName(), subItemStack);
+		OreDictionary.registerOre("toolAxe", subItemStack);
 		subItemStack = new ItemStack(itemPliers, 1, MaterialTool.PLIERS);
 		OreDictionary.registerOre("pliers" + getName(), subItemStack);
 		OreDictionary.registerOre("toolPliers", subItemStack);

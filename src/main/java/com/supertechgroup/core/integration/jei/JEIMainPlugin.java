@@ -15,7 +15,6 @@ import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Loader;
 
@@ -60,8 +59,9 @@ public class JEIMainPlugin implements IModPlugin {
 		registry.handleRecipes(BasicSmelterRecipe.class, WrapperBasicSmeltingRecipe.FACTORY,
 				Reference.CATEGORY_BASIC_SMELTING);
 		registry.addRecipes(BasicSmelterRecipe.getEntries(), Reference.CATEGORY_BASIC_SMELTING);
-		//TODO add a item to represent the smelter here
-		//registry.addRecipeCatalyst(new ItemStack(Items.APPLE), Reference.CATEGORY_BASIC_SMELTING);
+		// TODO add a item to represent the smelter here
+		// registry.addRecipeCatalyst(new ItemStack(Items.APPLE),
+		// Reference.CATEGORY_BASIC_SMELTING);
 
 		System.out.println("Added recipe handling for smelter");
 

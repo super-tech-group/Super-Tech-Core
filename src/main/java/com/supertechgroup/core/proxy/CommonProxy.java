@@ -318,6 +318,21 @@ public abstract class CommonProxy {
 								new OreIngredient("ingotTin"), new OreIngredient("toolHammer") })
 										.setRegistryName(Reference.MODID, "tinPlate"));
 
+		Item leadItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":lead"))
+				.getMaterialItem();
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation("ingots"),
+						new ItemStack(leadItem, 1, MaterialItem.INGOT),
+						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("nuggetLead") })
+								.setRegistryName(Reference.MODID, "leadIngot"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("nuggets"),
+				new ItemStack(leadItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotLead") })
+						.setRegistryName(Reference.MODID, "leadNugget"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("plates"),
+				new ItemStack(leadItem, 1, MaterialItem.PLATE), new Object[] { new OreIngredient("ingotLead"),
+						new OreIngredient("ingotLead"), new OreIngredient("toolHammer") })
+								.setRegistryName(Reference.MODID, "leadPlate"));
+		
 		Item copperItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":copper"))
 				.getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
@@ -405,6 +420,14 @@ public abstract class CommonProxy {
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
 		BasicSmelterRecipe.registerRecipe(sphaleriteSmelt, new ResourceLocation(Reference.MODID, "crushed_sphalerite"));
 
+		Ore galena = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":galena"));
+		BasicSmelterRecipe galenaSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
+		BasicSmelterRecipe.registerRecipe(galenaSmelt, new ResourceLocation(Reference.MODID, "crushed_galena"));
+		
 		BasicSmelterRecipe bronzeSmelt = new BasicSmelterRecipe(
 				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze"))

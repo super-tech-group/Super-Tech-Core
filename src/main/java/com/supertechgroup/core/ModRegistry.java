@@ -443,7 +443,7 @@ public class ModRegistry {
 		new Ore("Chromite", 0xC0C0CC).registerOre();// iron, chromium. potential for magnesium
 		new Ore("Cinnabar", 0x8b0017).registerOre();// mercury, sulfur
 		new Ore("Cobaltite", 0xd2b48c).registerOre();// cobalt, arsenic, sulfur; small percentage of iron and nickel
-		new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
+		Ore galena = new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
 		new Ore("Hematite", 0x101c1f).registerOre();// iron ore
 		new Ore("Ilmenite", 0x323230).registerOre();// iron, titanium
 		Ore sphalerite = new Ore("Sphalerite", 0x323230).registerOre();// zinc, sulfur, iron.
@@ -494,11 +494,14 @@ public class ModRegistry {
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
 		ResearchTasks.addTask(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"));
+		ResearchTasks.addTask(new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED),
+				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedLeadOre"));
 
 		OreDictionary.registerOre("crushedTinOre", new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedZincOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedLeadOre", new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED));
 
 		// setup ore veins
 		CommonProxy.parsed.add(new WorldGeneratorPlate(

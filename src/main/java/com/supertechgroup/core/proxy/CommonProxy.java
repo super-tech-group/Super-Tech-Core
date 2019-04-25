@@ -425,7 +425,7 @@ public abstract class CommonProxy {
 				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
 						new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED) },
 				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
-				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
+				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 1423, 23.12, 345.55);
 		BasicSmelterRecipe.registerRecipe(galenaSmelt, new ResourceLocation(Reference.MODID, "crushed_galena"));
 		
 		BasicSmelterRecipe bronzeSmelt = new BasicSmelterRecipe(

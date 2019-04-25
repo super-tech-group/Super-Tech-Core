@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
+import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
@@ -16,6 +17,7 @@ import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallTileEntit
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.recipies.MaterialToolIngredient;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
@@ -586,13 +588,13 @@ public class ModRegistry {
 		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		brass.registerResearch();
 
-		ResearchTasks.addTask(new OreIngredient("toolHammer"),
+		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.AXE),
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-		ResearchTasks.addTask(new OreIngredient("toolShovel"),
+		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.HAMMER),
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-		ResearchTasks.addTask(new OreIngredient("toolPickaxe"),
+		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.PICKAXE),
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-		ResearchTasks.addTask(new OreIngredient("toolAxe"),
+		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.SHOVEL),
 				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
 
 		Research metalTools = new Research("metalTools");

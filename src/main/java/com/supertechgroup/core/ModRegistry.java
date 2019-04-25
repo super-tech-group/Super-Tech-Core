@@ -55,7 +55,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.registries.RegistryBuilder;
 
 @EventBusSubscriber(modid = Reference.MODID)

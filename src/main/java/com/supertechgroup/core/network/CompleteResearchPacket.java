@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.research.IUnlockable;
 import com.supertechgroup.core.research.Research;

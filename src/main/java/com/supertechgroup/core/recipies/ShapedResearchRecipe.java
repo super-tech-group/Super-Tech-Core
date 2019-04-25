@@ -48,7 +48,7 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 		}
 	}
 
-	ComplexResearchRequirement required = new ComplexResearchRequirement(1);
+	ComplexResearchRequirement required = new ComplexResearchRequirement(ComplexResearchRequirement.ALL);
 
 	public ShapedResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe,
 			IResearchRequirement... requirements) {

@@ -10,18 +10,22 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class WorldGeneratorOil extends WorldGeneratorBase {
+public class WorldGeneratorFluid extends WorldGeneratorBase {
 
-	public WorldGeneratorOil(String name, int[] dims, int size, int chance, String[] stones) {
+	private Block fluidBlock;
+
+	public WorldGeneratorFluid(String name, int[] dims, int size, int chance, String[] stones, Fluid fluid) {
 		super(null, name, dims, size, chance, stones);
+		this.fluidBlock = fluid.getBlock();
 	}
 
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
 		position = position.add(rand.nextInt(16), rand.nextInt(48) + 10, rand.nextInt(16));
-		if (chance == 1 || rand.nextInt(chance) == 0) {
+		if (fluidBlock != null && (chance == 1 || rand.nextInt(chance) == 0)) {
 			if (this.validStoneTypes.contains(worldIn.getBlockState(position))) {
 				generateDeposit(worldIn, rand, position);
 			}
@@ -39,8 +43,7 @@ public class WorldGeneratorOil extends WorldGeneratorBase {
 				for (int z = -size; z < size; z++) {
 					if (add.distanceSq(x + add.getX(), y + add.getY(), z + add.getZ()) <= dist
 							&& state.equals(worldIn.getBlockState(add.add(x, y, z)))) {
-						worldIn.setBlockState(add.add(x, y, z), GameRegistry.findRegistry(Block.class)
-								.getValue(new ResourceLocation(Reference.MODID, "oil")).getDefaultState());
+						worldIn.setBlockState(add.add(x, y, z), fluidBlock.getDefaultState());
 					}
 				}
 			}

@@ -25,6 +25,7 @@ import com.supertechgroup.core.research.researchstation.BlockResearchStation;
 import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
+import com.supertechgroup.core.worldgen.generators.WorldGeneratorOil;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -174,7 +175,7 @@ public class ModRegistry {
 		for (ModFluid fluid : fluids) {
 			if (fluid.hasBlock()) {
 				((BlockModFluid) fluid.getBlock()).registerModels();
-				;
+
 			}
 		}
 
@@ -597,6 +598,8 @@ public class ModRegistry {
 		CommonProxy.parsed.add(new WorldGeneratorCluster(
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:lapis"))),
 				"lapis", new int[] { 0 }, 5, 1, 7, 2, "intrusive", "marble"));
+
+		CommonProxy.parsed.add(new WorldGeneratorOil("oil", new int[] { 0 }, 5, 15, new String[] { "metamorphic" }));
 	}
 
 	@SubscribeEvent

@@ -67,6 +67,10 @@ public class BasicSmelterRecipe {
 		return this.coefficient;
 	}
 
+	public NonNullList<ItemStack> getInputs() {
+		return input;
+	}
+
 	public ItemStack getPrimaryOutStack() {
 		return primaryOut.copy();
 	}
@@ -91,10 +95,6 @@ public class BasicSmelterRecipe {
 		for (ItemStack is : this.input) {
 			Helpers.consumeFromInventory((IItemHandlerModifiable) cap, is, false);
 		}
-	}
-
-	public NonNullList<ItemStack> getInputs() {
-		return input;
 	}
 
 }

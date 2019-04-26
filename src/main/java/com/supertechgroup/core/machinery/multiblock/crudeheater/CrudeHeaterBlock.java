@@ -1,7 +1,6 @@
 package com.supertechgroup.core.machinery.multiblock.crudeheater;
 
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

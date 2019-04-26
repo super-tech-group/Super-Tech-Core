@@ -19,8 +19,8 @@ public class Reference {
 	public static final int GUI_CRUDE_HEATER = 1;
 
 	public static final ResourceLocation EMPTY_RESOURCE = new ResourceLocation("void:null");
-	
+
 	public static final String CATEGORY_BASIC_SMELTING = "SuperTechCore.Basic_Smelting";
-	
-	public static final ResourceLocation GUI_JEI_1 = new ResourceLocation(MODID,"textures/gui/jei_gui_1.png");
+
+	public static final ResourceLocation GUI_JEI_1 = new ResourceLocation(MODID, "textures/gui/jei_gui_1.png");
 }

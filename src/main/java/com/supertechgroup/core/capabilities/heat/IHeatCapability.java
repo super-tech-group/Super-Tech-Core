@@ -9,20 +9,20 @@ public interface IHeatCapability {
 	 */
 	double AMBIENT_TEMP = 300;
 
-	public default void applyTemperatureChange() {
+	default void applyTemperatureChange() {
 		double newTemp = this.getTemp() + (this.getJouleChange() / (this.getSpecHeatMass()));
 
 		this.setTemp(newTemp);
 		this.setJouleChange(0);
 	}
 
-	public default double calcJoules(double otherTemp, EnumFacing facing) {
+	default double calcJoules(double otherTemp, EnumFacing facing) {
 		return (((this.getConductionCoefficient(facing) * (otherTemp - this.getTemp())) / 20));
 	}
 
 	boolean canConnectHeat(EnumFacing side);
 
-	public IHeatCapability getAdjacent(EnumFacing side);
+	IHeatCapability getAdjacent(EnumFacing side);
 
 	double getConductionCoefficient(EnumFacing side);
 
@@ -41,7 +41,7 @@ public interface IHeatCapability {
 
 	void setTemp(Double newTemp);
 
-	public default void updateHeatCapability(World world) {
+	default void updateHeatCapability(World world) {
 		if (world.getTotalWorldTime() % 2 == 0) {
 			double jouleChange = 0;
 			for (EnumFacing facing : EnumFacing.VALUES) {

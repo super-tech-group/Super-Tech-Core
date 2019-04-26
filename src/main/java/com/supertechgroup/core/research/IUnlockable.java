@@ -27,7 +27,7 @@ public interface IUnlockable {
 	 * @param team
 	 * @return
 	 */
-	public boolean isUnlocked(UUID team);
+	boolean isUnlocked(UUID team);
 
 	void setRequirementsNeeded(int num);
 }

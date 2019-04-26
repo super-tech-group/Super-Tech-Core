@@ -3,6 +3,8 @@ package com.supertechgroup.core;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.fluids.BlockModFluid;
+import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
@@ -34,6 +36,8 @@ import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -46,6 +50,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -82,6 +87,10 @@ public class ModRegistry {
 	public static CrudeIOBlock crudeIOBlock;
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
+	public static ModFluid oil;
+
+	public static BlockModFluid oilSource;
+
 
 	/**
 	 *
@@ -152,6 +161,9 @@ public class ModRegistry {
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
+
+		oilSource.registerModels();
+
 	}
 
 	@SubscribeEvent
@@ -231,6 +243,21 @@ public class ModRegistry {
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "limestonecobble")));
 		OreDictionary.registerOre("fluxStone",
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "dolomitecobble")));
+
+		// fluids
+
+		oilSource = new BlockModFluid(oil, net.minecraft.block.material.Material.WATER);
+		event.getRegistry().register(oilSource);
+
+		ForgeRegistries.ITEMS.register(new ItemBlock(oilSource).setRegistryName(oilSource.getRegistryName()));
+	}
+
+	public static void registerFluids() {
+		oil = (ModFluid) new ModFluid("oil", new ResourceLocation(Reference.MODID, "fluids/oil_still"),
+				new ResourceLocation(Reference.MODID, "fluids/oil_flow"))
+						.setMaterial(net.minecraft.block.material.Material.WATER).setDensity(880).setGaseous(false)
+						.setLuminosity(0).setViscosity(880).setTemperature(300);
+		FluidRegistry.registerFluid(oil);
 	}
 
 	public static void registerItemModels() {

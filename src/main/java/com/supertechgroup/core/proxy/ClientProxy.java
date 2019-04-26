@@ -149,7 +149,7 @@ public class ClientProxy extends CommonProxy {
 		ModRegistry.registerItemModels();
 		ModelLoaderRegistry.registerLoader(new BakedModelLoader());
 		OBJLoader.INSTANCE.addDomain(Reference.MODID);
-		
+
 	}
 
 	@Override
@@ -186,7 +186,7 @@ public class ClientProxy extends CommonProxy {
 		ModelLoader.setCustomModelResourceLocation(mat.getItemDrawplate(), 0, drawPlateLocation);
 		ModelLoader.setCustomModelResourceLocation(mat.getItemShovel(), 0, shovelLocation);
 		ModelLoader.setCustomModelResourceLocation(mat.getItemAxe(), 0, axeLocation);
-		
+
 	}
 
 	@Override

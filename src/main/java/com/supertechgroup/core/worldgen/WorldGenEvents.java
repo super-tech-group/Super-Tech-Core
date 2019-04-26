@@ -2,8 +2,6 @@ package com.supertechgroup.core.worldgen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -12,7 +10,6 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -21,8 +18,6 @@ import com.supertechgroup.core.worldgen.rocks.RockManager;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,9 +36,6 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 /**
  * This class handles most events relating to ores and terrain generation

@@ -1,5 +1,6 @@
 package com.supertechgroup.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,8 +37,6 @@ import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -87,10 +86,20 @@ public class ModRegistry {
 	public static CrudeIOBlock crudeIOBlock;
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
-	public static ModFluid oil;
 
-	public static BlockModFluid oilSource;
+	public static ArrayList<ModFluid> fluids = new ArrayList<>();
 
+	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
+			int temperature, boolean hasBlock) {
+		ModFluid fluid = (ModFluid) new ModFluid(name,
+				new ResourceLocation(Reference.MODID, "fluids/" + name + "_still"),
+				new ResourceLocation(Reference.MODID, "fluids/" + name + "_flow")).setHasBlock(hasBlock)
+						.setMaterial(net.minecraft.block.material.Material.WATER).setDensity(density)
+						.setGaseous(gaseous).setLuminosity(luminosity).setViscosity(viscosity)
+						.setTemperature(temperature);
+		FluidRegistry.registerFluid(fluid);
+		fluids.add(fluid);
+	}
 
 	/**
 	 *
@@ -162,7 +171,12 @@ public class ModRegistry {
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
 
-		oilSource.registerModels();
+		for (ModFluid fluid : fluids) {
+			if (fluid.hasBlock()) {
+				((BlockModFluid) fluid.getBlock()).registerModels();
+				;
+			}
+		}
 
 	}
 
@@ -245,19 +259,19 @@ public class ModRegistry {
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "dolomitecobble")));
 
 		// fluids
+		for (ModFluid fluid : fluids) {
+			if (fluid.hasBlock()) {
+				BlockModFluid bmf = new BlockModFluid(fluid, net.minecraft.block.material.Material.WATER);
 
-		oilSource = new BlockModFluid(oil, net.minecraft.block.material.Material.WATER);
-		event.getRegistry().register(oilSource);
+				event.getRegistry().register(bmf);
 
-		ForgeRegistries.ITEMS.register(new ItemBlock(oilSource).setRegistryName(oilSource.getRegistryName()));
+				ForgeRegistries.ITEMS.register(new ItemBlock(bmf).setRegistryName(bmf.getRegistryName()));
+			}
+		}
 	}
 
 	public static void registerFluids() {
-		oil = (ModFluid) new ModFluid("oil", new ResourceLocation(Reference.MODID, "fluids/oil_still"),
-				new ResourceLocation(Reference.MODID, "fluids/oil_flow"))
-						.setMaterial(net.minecraft.block.material.Material.WATER).setDensity(880).setGaseous(false)
-						.setLuminosity(0).setViscosity(880).setTemperature(300);
-		FluidRegistry.registerFluid(oil);
+		createRegisterFluid("oil", 880, false, 0, 1200, 300, true);
 	}
 
 	public static void registerItemModels() {

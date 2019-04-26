@@ -14,6 +14,7 @@ public class ModFluid extends Fluid {
 	protected static SoundEvent emptySound = SoundEvents.ITEM_BUCKET_EMPTY;
 	protected static SoundEvent fillSound = SoundEvents.ITEM_BUCKET_FILL;
 	protected static Material material = Material.WATER;
+	private boolean hasBlock;
 
 	public ModFluid(String fluidName, ResourceLocation still, ResourceLocation flowing) {
 		super(fluidName, still, flowing);
@@ -62,6 +63,10 @@ public class ModFluid extends Fluid {
 		return material;
 	}
 
+	public boolean hasBlock() {
+		return hasBlock;
+	}
+
 	public ModFluid setAlpha(float parOverlayAlpha) {
 		overlayAlpha = parOverlayAlpha;
 		return this;
@@ -82,6 +87,11 @@ public class ModFluid extends Fluid {
 	@Override
 	public ModFluid setFillSound(SoundEvent parSound) {
 		fillSound = parSound;
+		return this;
+	}
+
+	public ModFluid setHasBlock(boolean has) {
+		this.hasBlock = has;
 		return this;
 	}
 

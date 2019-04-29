@@ -144,7 +144,7 @@ public class ResearchEvents {
 		EntityPlayer player = event.getEntityPlayer();
 		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
 		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-		team.setTeam(oldTeam.getTeam());AnvilRepairEvent a;
+		team.setTeam(oldTeam.getTeam());
 	}
 
 	@SubscribeEvent

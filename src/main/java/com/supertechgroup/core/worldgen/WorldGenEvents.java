@@ -10,6 +10,9 @@ import org.apache.commons.lang3.tuple.MutablePair;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
+import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.capabilities.ore.OreCapability;
+import com.supertechgroup.core.capabilities.ore.OreCapabilityProvider;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
@@ -27,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
@@ -227,6 +231,16 @@ public class WorldGenEvents {
 		}
 
 		handleOreUpdate(e.getPlayer(), x, z);
+	}
+
+	public static final ResourceLocation ORE_CAP = new ResourceLocation(Reference.MODID, "ores");
+
+	@SubscribeEvent
+	public void attachCapabilityChunk(AttachCapabilitiesEvent<Chunk> event) {
+		if (!(event.getObject() instanceof Chunk)) {
+			return;
+		}
+		event.addCapability(ORE_CAP, new OreCapabilityProvider());
 	}
 
 	private IBlockState pickBlockFromSet(double value, Set<IBlockState> list) {

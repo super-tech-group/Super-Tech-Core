@@ -10,6 +10,9 @@ import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
+import com.supertechgroup.core.capabilities.ore.IOreCapability;
+import com.supertechgroup.core.capabilities.ore.OreCapability;
+import com.supertechgroup.core.capabilities.ore.OreCapabilityStorage;
 import com.supertechgroup.core.capabilities.team.ITeamCapability;
 import com.supertechgroup.core.capabilities.team.TeamCapability;
 import com.supertechgroup.core.capabilities.team.TeamCapabilityStorage;
@@ -551,6 +554,7 @@ public abstract class CommonProxy {
 
 		CapabilityManager.INSTANCE.register(ITeamCapability.class, new TeamCapabilityStorage(), TeamCapability.class);
 		CapabilityManager.INSTANCE.register(IListCapability.class, new ListCapabilityStorage(), ListCapability.class);
+		CapabilityManager.INSTANCE.register(IOreCapability.class, new OreCapabilityStorage(), OreCapability.class);
 
 		ModRegistry.registerFluids();
 	}

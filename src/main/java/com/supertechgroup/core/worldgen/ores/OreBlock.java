@@ -24,8 +24,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -225,13 +227,24 @@ public class OreBlock extends Block {
 			ores = removeNulls(ores);
 			cap.setOres(pos, ores);
 			willHarvest = metalLeft;
-			if (!metalLeft) {// When we have removel all of the ore from the
-								// block...
+			if (!metalLeft) {// When we have remove all of the ore from the block...
 				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}
 			worldIn.notifyBlockUpdate(pos, state, state, 2);
 			worldIn.getChunkFromBlockCoords(pos).markDirty();
 			return !metalLeft;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+			EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (world.isRemote) {
+			Chunk chunk = world.getChunkFromBlockCoords(pos);
+			IOreCapability cap = chunk.getCapability(OreCapabilityProvider.ORE_CAP, null);
+			System.out.println("Ore clicked: " + cap.getBase(pos));
+
 		}
 		return true;
 	}

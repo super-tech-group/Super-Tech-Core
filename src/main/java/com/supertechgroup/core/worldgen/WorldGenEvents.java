@@ -9,23 +9,24 @@ import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.capabilities.ore.IOreCapability;
 import com.supertechgroup.core.capabilities.ore.OreCapabilityProvider;
+import com.supertechgroup.core.capabilities.ore.OreCapabilityStorage;
+import com.supertechgroup.core.network.PacketHandler;
+import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
 import com.supertechgroup.core.util.SimplexNoise;
 import com.supertechgroup.core.worldgen.rocks.RockManager;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -149,11 +150,20 @@ public class WorldGenEvents {
 				}
 				Random random = chunk.getRandomWithSeed(event.getWorld().getSeed());
 				CommonProxy.parsed.forEach((gen) -> {
-				//	gen.generate(random, chunk.x, chunk.z, event.getWorld(), null, event.getWorld().getChunkProvider());
+					// gen.generate(random, chunk.x, chunk.z, event.getWorld(), null,
+					// event.getWorld().getChunkProvider());
 				});
 			}
 			chunk.setModified(true);// this is important as it marks it to be saved
 		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerWatchChunk(ChunkWatchEvent.Watch event) {
+		IOreCapability cap = event.getChunkInstance().getCapability(OreCapabilityProvider.ORE_CAP, null);
+		NBTBase tag = (new OreCapabilityStorage()).writeNBT(OreCapabilityProvider.ORE_CAP, cap, null);
+		UpdateOresPacket packet = new UpdateOresPacket(tag, event.getChunkInstance().x, event.getChunkInstance().z);
+		PacketHandler.INSTANCE.sendTo(packet, event.getPlayer());
 	}
 
 	public static final ResourceLocation ORE_CAP = new ResourceLocation(Reference.MODID, "ores");

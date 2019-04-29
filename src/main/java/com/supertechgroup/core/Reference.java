@@ -12,6 +12,7 @@ public class Reference {
 	public static final String RESEARCH_DATA_NAME = Reference.MODID + "_ResearchData";
 
 	public static final String RESEARCH_CRAFTING = "crafting";
+	public static final String RESEARCH_VANILLA_FURNACE = "furnace";
 	public static final String RESEARCH_SMELTING = "smelting";
 	public static final String RESEARCH_TOOL_USE = "toolUsage";
 

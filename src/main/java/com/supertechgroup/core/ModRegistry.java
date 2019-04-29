@@ -486,16 +486,16 @@ public class ModRegistry {
 		}.registerOre();
 
 		// advanced ore dictionary stuff
-		ResearchTasks.addTask(new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"));
-		ResearchTasks.addTask(new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
-		ResearchTasks.addTask(new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
-		ResearchTasks.addTask(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"));
-		ResearchTasks.addTask(new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedLeadOre"));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedTinOre",
+				new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedVopprtOre",
+				new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedCopperOre",
+				new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedZincOre",
+				new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedLeadOre",
+				new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED));
 
 		OreDictionary.registerOre("crushedTinOre", new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
@@ -580,6 +580,7 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerResearch(RegistryEvent.Register<Research> event) {
+		registerResearchTasks();
 		Research bronze = new Research("bronze");
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
@@ -590,17 +591,21 @@ public class ModRegistry {
 		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		brass.registerResearch();
 
-		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.AXE),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.HAMMER),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.PICKAXE),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-		ResearchTasks.addTask(new MaterialToolIngredient(MaterialTool.SHOVEL),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"));
-
 		Research metalTools = new Research("metalTools");
 		metalTools.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"), 5);
 		metalTools.registerResearch();
+	}
+
+	private static void registerResearchTasks() {
+
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking", new MaterialToolIngredient(MaterialTool.AXE));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.HAMMER));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.SHOVEL));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.PICKAXE));
+		
+		ResearchTasks.addTask(Reference.RESEARCH_VANILLA_FURNACE, "potato", new ItemStack(Items.BAKED_POTATO));
 	}
 }

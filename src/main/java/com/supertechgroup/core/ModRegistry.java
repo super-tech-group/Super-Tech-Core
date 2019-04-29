@@ -28,6 +28,7 @@ import com.supertechgroup.core.research.researchstation.TileEntityResearchStatio
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
+import com.supertechgroup.core.worldgen.generators.WorldGeneratorKimberlite;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -606,6 +607,8 @@ public class ModRegistry {
 
 		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
 				FluidRegistry.getFluid("oil")));
+
+		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 4));
 	}
 
 	@SubscribeEvent
@@ -650,7 +653,7 @@ public class ModRegistry {
 				new MaterialToolIngredient(MaterialTool.SHOVEL));
 		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
 				new MaterialToolIngredient(MaterialTool.PICKAXE));
-		
+
 		ResearchTasks.addTask(Reference.RESEARCH_VANILLA_FURNACE, "potato", new ItemStack(Items.BAKED_POTATO));
 	}
 }

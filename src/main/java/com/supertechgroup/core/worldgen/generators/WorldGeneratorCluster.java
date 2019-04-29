@@ -36,9 +36,7 @@ public class WorldGeneratorCluster extends WorldGeneratorBase {
 			for (int i = 0; i < perChunk; i++) {
 				generateCluster(worldIn, rand, position.add(rand.nextInt(16), 0, rand.nextInt(16)));
 			}
-
 		}
-		OreSavedData.get(worldIn).setChunkGenerated((position.getX() / 16), (position.getZ() / 16));
 		return true;
 	}
 

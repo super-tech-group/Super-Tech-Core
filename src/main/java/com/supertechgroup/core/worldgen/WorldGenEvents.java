@@ -44,7 +44,6 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
  *
  */
 public class WorldGenEvents {
-
 	private static final ArrayList<EventType> vanillaOreGeneration = new ArrayList<>();
 
 	static {

@@ -59,6 +59,8 @@ item.supertechcore.itemConstructor.name=Constructor
 item.supertechcore.researchBook.name=Research Notebook
 
 gui.supertechcore.basicsmelting.name=Basic Smelting
+fluid.oil=Crude Oil
+tile.fluid.oil.name=Crude Oil
 
 #generic titles
 item.supertechcore.blade.name=%s Blade

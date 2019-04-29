@@ -9,7 +9,7 @@ import java.util.UUID;
  *
  */
 public interface ITeamCapability {
-	public UUID getTeam();
+	UUID getTeam();
 
-	public void setTeam(UUID teamID);
+	void setTeam(UUID teamID);
 }

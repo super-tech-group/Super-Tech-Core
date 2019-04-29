@@ -1,8 +1,11 @@
 package com.supertechgroup.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.fluids.BlockModFluid;
+import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.SuperTechItem;
@@ -22,6 +25,7 @@ import com.supertechgroup.core.research.researchstation.BlockResearchStation;
 import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
+import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -46,6 +50,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -82,6 +87,20 @@ public class ModRegistry {
 	public static CrudeIOBlock crudeIOBlock;
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
+
+	public static ArrayList<ModFluid> fluids = new ArrayList<>();
+
+	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
+			int temperature, boolean hasBlock) {
+		ModFluid fluid = (ModFluid) new ModFluid(name,
+				new ResourceLocation(Reference.MODID, "fluids/" + name + "_still"),
+				new ResourceLocation(Reference.MODID, "fluids/" + name + "_flow")).setHasBlock(hasBlock)
+						.setMaterial(net.minecraft.block.material.Material.WATER).setDensity(density)
+						.setGaseous(gaseous).setLuminosity(luminosity).setViscosity(viscosity)
+						.setTemperature(temperature);
+		FluidRegistry.registerFluid(fluid);
+		fluids.add(fluid);
+	}
 
 	/**
 	 *
@@ -152,6 +171,14 @@ public class ModRegistry {
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
+
+		for (ModFluid fluid : fluids) {
+			if (fluid.hasBlock()) {
+				((BlockModFluid) fluid.getBlock()).registerModels();
+
+			}
+		}
+
 	}
 
 	@SubscribeEvent
@@ -231,6 +258,21 @@ public class ModRegistry {
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "limestonecobble")));
 		OreDictionary.registerOre("fluxStone",
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "dolomitecobble")));
+
+		// fluids
+		for (ModFluid fluid : fluids) {
+			if (fluid.hasBlock()) {
+				BlockModFluid bmf = new BlockModFluid(fluid, net.minecraft.block.material.Material.WATER);
+
+				event.getRegistry().register(bmf);
+
+				ForgeRegistries.ITEMS.register(new ItemBlock(bmf).setRegistryName(bmf.getRegistryName()));
+			}
+		}
+	}
+
+	public static void registerFluids() {
+		createRegisterFluid("oil", 880, false, 0, 1200, 300, true);
 	}
 
 	public static void registerItemModels() {
@@ -556,6 +598,9 @@ public class ModRegistry {
 		CommonProxy.parsed.add(new WorldGeneratorCluster(
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:lapis"))),
 				"lapis", new int[] { 0 }, 5, 1, 7, 2, "intrusive", "marble"));
+
+		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
+				FluidRegistry.getFluid("oil")));
 	}
 
 	@SubscribeEvent

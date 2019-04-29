@@ -62,6 +62,11 @@ public class BlockResearchStation extends Block {
 	}
 
 	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
@@ -110,11 +115,6 @@ public class BlockResearchStation extends Block {
 					.setTeam(((EntityPlayerMP) placer).getCapability(TeamCapabilityProvider.TEAM_CAP, null).getTeam());
 			worldIn.getTileEntity(pos).markDirty();
 		}
-	}
-
-	@Override
-	public boolean hasTileEntity(IBlockState state) {
-		return true;
 	}
 
 	public void registerModels() {

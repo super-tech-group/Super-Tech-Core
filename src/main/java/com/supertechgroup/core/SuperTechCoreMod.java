@@ -7,6 +7,7 @@ import com.supertechgroup.core.proxy.CommonProxy;
 import com.supertechgroup.core.research.teams.InviteToResearchTeamCommand;
 import com.supertechgroup.core.research.teams.JoinResearchTeamCommmand;
 
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -19,6 +20,9 @@ public class SuperTechCoreMod {
 	@Mod.Instance(Reference.MODID)
 	public static SuperTechCoreMod instance;
 	public static Logger logger;
+	static {
+		FluidRegistry.enableUniversalBucket();
+	}
 	/**
 	 * The proxy to be used. Holds various functions and objects that may need to be
 	 * different based on side.

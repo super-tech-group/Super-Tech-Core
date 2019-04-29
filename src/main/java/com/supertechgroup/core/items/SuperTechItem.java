@@ -27,6 +27,7 @@ public class SuperTechItem extends ItemBase {
 	public final static int FLUX = 8;
 	public static final int FIRE_CLAY = 9;
 	public static final int FIRE_BRICK = 10;
+	public static final int WOOD_PULP = 11;
 
 	public SuperTechItem() {
 		super("itemTechComponent");
@@ -44,7 +45,7 @@ public class SuperTechItem extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for (int i = 0; i < 11; i++) {
+		for (int i = 0; i < 12; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -75,6 +76,8 @@ public class SuperTechItem extends ItemBase {
 			return super.getUnlocalizedName() + ".fireClay";
 		case FIRE_BRICK:
 			return super.getUnlocalizedName() + ".fireBrick";
+		case WOOD_PULP:
+			return super.getUnlocalizedName() + ".woodPulp";
 		default:
 			return super.getUnlocalizedName();
 		}
@@ -103,6 +106,8 @@ public class SuperTechItem extends ItemBase {
 				new ModelResourceLocation("supertechcore:itemFireClay", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(this, FIRE_BRICK,
 				new ModelResourceLocation("supertechcore:itemFireBrick", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, WOOD_PULP,
+				new ModelResourceLocation("supertechcore:itemwoodPulp", "inventory"));
 	}
 
 	public void setupDictionary() {
@@ -115,5 +120,6 @@ public class SuperTechItem extends ItemBase {
 		OreDictionary.registerOre("heatingElement", new ItemStack(this, 1, HEATING_UNIT));
 		OreDictionary.registerOre("slag", new ItemStack(this, 1, SLAG));
 		OreDictionary.registerOre("flux", new ItemStack(this, 1, FLUX));
+		OreDictionary.registerOre("woodPulp", new ItemStack(this, 1, WOOD_PULP));
 	}
 }

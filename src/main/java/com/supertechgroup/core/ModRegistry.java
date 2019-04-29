@@ -8,6 +8,7 @@ import com.supertechgroup.core.fluids.BlockModFluid;
 import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
+import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
@@ -19,6 +20,7 @@ import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallTileEntit
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.recipies.MaterialToolIngredient;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
@@ -483,7 +485,7 @@ public class ModRegistry {
 		new Ore("Chromite", 0xC0C0CC).registerOre();// iron, chromium. potential for magnesium
 		new Ore("Cinnabar", 0x8b0017).registerOre();// mercury, sulfur
 		new Ore("Cobaltite", 0xd2b48c).registerOre();// cobalt, arsenic, sulfur; small percentage of iron and nickel
-		new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
+		Ore galena = new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
 		new Ore("Hematite", 0x101c1f).registerOre();// iron ore
 		new Ore("Ilmenite", 0x323230).registerOre();// iron, titanium
 		Ore sphalerite = new Ore("Sphalerite", 0x323230).registerOre();// zinc, sulfur, iron.
@@ -526,19 +528,22 @@ public class ModRegistry {
 		}.registerOre();
 
 		// advanced ore dictionary stuff
-		ResearchTasks.addTask(new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"));
-		ResearchTasks.addTask(new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
-		ResearchTasks.addTask(new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
-		ResearchTasks.addTask(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedTinOre",
+				new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedVopprtOre",
+				new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedCopperOre",
+				new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedZincOre",
+				new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedLeadOre",
+				new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED));
 
 		OreDictionary.registerOre("crushedTinOre", new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
-		OreDictionary.registerOre("crushedCopperOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedZincOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedLeadOre", new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED));
 
 		// setup ore veins
 		CommonProxy.parsed.add(new WorldGeneratorPlate(
@@ -620,9 +625,32 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerResearch(RegistryEvent.Register<Research> event) {
+		registerResearchTasks();
 		Research bronze = new Research("bronze");
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		bronze.registerResearch();
+
+		Research brass = new Research("brass");
+		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"), 5);
+		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
+		brass.registerResearch();
+
+		Research metalTools = new Research("metalTools");
+		metalTools.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"), 5);
+		metalTools.registerResearch();
+	}
+
+	private static void registerResearchTasks() {
+
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking", new MaterialToolIngredient(MaterialTool.AXE));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.HAMMER));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.SHOVEL));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.PICKAXE));
+		
+		ResearchTasks.addTask(Reference.RESEARCH_VANILLA_FURNACE, "potato", new ItemStack(Items.BAKED_POTATO));
 	}
 }

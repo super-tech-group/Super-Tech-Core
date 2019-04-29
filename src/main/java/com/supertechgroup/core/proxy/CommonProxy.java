@@ -25,6 +25,7 @@ import com.supertechgroup.core.machinery.multiblock.MultiblockHandler;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.recipies.BasicSmelterRecipe;
+import com.supertechgroup.core.recipies.ShapedResearchRecipe;
 import com.supertechgroup.core.recipies.ShapelessResearchRecipe;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchEvents;
@@ -162,7 +163,130 @@ public abstract class CommonProxy {
 										new OreIngredient("plankWood"), 's', new OreIngredient("stickWood") })
 												.setRegistryName(Reference.MODID, "pickaxeWood"));
 
+		Material bronze = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":bronze"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("axes"),
+						new ItemStack(bronze.getItemAxe(), 1, MaterialTool.AXE),
+						new Object[] { new String[] { " xx", " sx", " s " }, 'x', new OreIngredient("ingotBronze"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "axeBronze"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("shovels"),
+						new ItemStack(bronze.getItemShovel(), 1, MaterialTool.SHOVEL),
+						new Object[] { new String[] { " x ", " s ", " s " }, 'x', new OreIngredient("ingotBronze"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "shovelBronze"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("pickaxes"),
+						new ItemStack(bronze.getItemPickaxe(), 1, MaterialTool.PICKAXE),
+						new Object[] { new String[] { "xxx", " s ", " s " }, 'x', new OreIngredient("ingotBronze"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "pickaxeBronze"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("hammers"),
+						new ItemStack(bronze.getItemHammer(), 1, MaterialTool.HAMMER),
+						new Object[] { new String[] { " x ", " sx", "s  " }, 'x', new OreIngredient("ingotBronze"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "hammerBronze"));
+
+		Material brass = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":brass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("axes"),
+						new ItemStack(brass.getItemAxe(), 1, MaterialTool.AXE),
+						new Object[] { new String[] { " xx", " sx", " s " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "axeBrass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("shovels"),
+						new ItemStack(brass.getItemShovel(), 1, MaterialTool.SHOVEL),
+						new Object[] { new String[] { " x ", " s ", " s " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "shovelBrass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("pickaxes"),
+						new ItemStack(brass.getItemPickaxe(), 1, MaterialTool.PICKAXE),
+						new Object[] { new String[] { "xxx", " s ", " s " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "pickaxeBrass"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("hammers"),
+						new ItemStack(brass.getItemHammer(), 1, MaterialTool.HAMMER),
+						new Object[] { new String[] { " x ", " sx", "s  " }, 'x', new OreIngredient("ingotBrass"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")),
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "hammerBrass"));
+
+		Material copper = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":copper"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("axes"),
+						new ItemStack(copper.getItemAxe(), 1, MaterialTool.AXE),
+						new Object[] { new String[] { " xx", " sx", " s " }, 'x', new OreIngredient("ingotCopper"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "axeCopper"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("shovels"),
+						new ItemStack(copper.getItemShovel(), 1, MaterialTool.SHOVEL),
+						new Object[] { new String[] { " x ", " s ", " s " }, 'x', new OreIngredient("ingotCopper"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "shovelCopper"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("pickaxes"),
+						new ItemStack(copper.getItemPickaxe(), 1, MaterialTool.PICKAXE),
+						new Object[] { new String[] { "xxx", " s ", " s " }, 'x', new OreIngredient("ingotCopper"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "pickaxeCopper"));
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("hammers"),
+						new ItemStack(copper.getItemHammer(), 1, MaterialTool.HAMMER),
+						new Object[] { new String[] { " x ", " sx", "s  " }, 'x', new OreIngredient("ingotCopper"), 's',
+								new OreIngredient("stickWood") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "metalTools")))
+								.setRegistryName(Reference.MODID, "hammerCopper"));
+
 		// basic ingot/nuggets
+		Item bronzeItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":bronze"))
+				.getMaterialItem();
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("ingots"),
+						new ItemStack(bronzeItem, 1, MaterialItem.INGOT),
+						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("nuggetBronze") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")))
+								.setRegistryName(Reference.MODID, "bronzeIngot"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessResearchRecipe(new ResourceLocation("nuggets"),
+				new ItemStack(bronzeItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotBronze") },
+				Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")))
+						.setRegistryName(Reference.MODID, "bronzeNugget"));
+
+		Item brassItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":brass")).getMaterialItem();
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedResearchRecipe(new ResourceLocation("ingots"),
+						new ItemStack(brassItem, 1, MaterialItem.INGOT),
+						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("nuggetBrass") },
+						Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+								.setRegistryName(Reference.MODID, "brassIngot"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessResearchRecipe(new ResourceLocation("nuggets"),
+				new ItemStack(brassItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotBrass") },
+				Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")))
+						.setRegistryName(Reference.MODID, "brassNugget"));
+
 		Item ironItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":iron")).getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapedOreRecipe(new ResourceLocation("ingots"),
@@ -194,6 +318,21 @@ public abstract class CommonProxy {
 								new OreIngredient("ingotTin"), new OreIngredient("toolHammer") })
 										.setRegistryName(Reference.MODID, "tinPlate"));
 
+		Item leadItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":lead"))
+				.getMaterialItem();
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapedOreRecipe(new ResourceLocation("ingots"),
+						new ItemStack(leadItem, 1, MaterialItem.INGOT),
+						new Object[] { new String[] { "xxx", "xxx", "xxx" }, 'x', new OreIngredient("nuggetLead") })
+								.setRegistryName(Reference.MODID, "leadIngot"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("nuggets"),
+				new ItemStack(leadItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotLead") })
+						.setRegistryName(Reference.MODID, "leadNugget"));
+		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("plates"),
+				new ItemStack(leadItem, 1, MaterialItem.PLATE), new Object[] { new OreIngredient("ingotLead"),
+						new OreIngredient("ingotLead"), new OreIngredient("toolHammer") })
+								.setRegistryName(Reference.MODID, "leadPlate"));
+		
 		Item copperItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":copper"))
 				.getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
@@ -281,6 +420,14 @@ public abstract class CommonProxy {
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
 		BasicSmelterRecipe.registerRecipe(sphaleriteSmelt, new ResourceLocation(Reference.MODID, "crushed_sphalerite"));
 
+		Ore galena = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":galena"));
+		BasicSmelterRecipe galenaSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 1423, 23.12, 345.55);
+		BasicSmelterRecipe.registerRecipe(galenaSmelt, new ResourceLocation(Reference.MODID, "crushed_galena"));
+		
 		BasicSmelterRecipe bronzeSmelt = new BasicSmelterRecipe(
 				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze"))
@@ -292,8 +439,25 @@ public abstract class CommonProxy {
 				1186.15, 30, 435.62);
 		BasicSmelterRecipe.registerRecipe(bronzeSmelt, new ResourceLocation(Reference.MODID, "poor_bronze"));
 
+		BasicSmelterRecipe brassSmelt = new BasicSmelterRecipe(
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass"))
+								.getMaterialItem(), 1, MaterialItem.DIRTY) },
+				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 5,
+						MaterialItem.NUGGET),
+				1186.15, 30, 425.62);
+		BasicSmelterRecipe.registerRecipe(brassSmelt, new ResourceLocation(Reference.MODID, "poor_brass"));
+
 		// other recipies
 		IForgeRegistry<IRecipe> recipeRegistry = GameRegistry.findRegistry(IRecipe.class);
+		recipeRegistry
+				.register(
+						new ShapedOreRecipe(new ResourceLocation("buckets"), new ItemStack(Items.BUCKET),
+								new Object[] { new String[] { "bxb", " b " }, 'x', new OreIngredient("toolHammer"), 'b',
+										new OreIngredient("ingotCopper") }).setRegistryName(Reference.MODID,
+												"copperBucket"));
 		recipeRegistry.register(
 				new ShapedOreRecipe(new ResourceLocation("research"), new ItemStack(ModRegistry.researchStation),
 						new Object[] { new String[] { "bxb", "bcb" }, 'x', new ItemStack(Items.WRITABLE_BOOK), 'c',
@@ -302,6 +466,15 @@ public abstract class CommonProxy {
 		recipeRegistry.register(new ShapelessOreRecipe(new ResourceLocation("research"),
 				ItemResearchBook.getEmptyBookStack(), new Object[] { new ItemStack(Items.WRITABLE_BOOK) })
 						.setRegistryName(Reference.MODID, "emptyResearchBook"));
+		recipeRegistry
+				.register(
+						new ShapelessOreRecipe(new ResourceLocation("paper"),
+								new ItemStack(ModRegistry.itemTech, 2, SuperTechItem.WOOD_PULP),
+								new Object[] { new OreIngredient("logWood"), new OreIngredient("toolHammer"),
+										new ItemStack(Items.WATER_BUCKET) }).setRegistryName(Reference.MODID,
+												"woodenPaper"));
+		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.WOOD_PULP),
+				new ItemStack(Items.PAPER, 2), 0.15f);
 
 		ShapelessResearchRecipe dirtyBronzeDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
 				new ItemStack(
@@ -313,6 +486,16 @@ public abstract class CommonProxy {
 						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedTinOre") });
 		dirtyBronzeDust.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")));
 		recipeRegistry.register(dirtyBronzeDust.setRegistryName(Reference.MODID, "oreDirtyBronzeDust"));
+
+		ShapelessResearchRecipe dirtyBrassDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
+				new ItemStack(
+						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 3,
+						MaterialItem.DIRTY),
+				new Object[] { new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedCopperOre"), new OreIngredient("crushedCopperOre"),
+						new OreIngredient("crushedZincOre") });
+		dirtyBrassDust.addResearchUnlock(Research.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")));
+		recipeRegistry.register(dirtyBrassDust.setRegistryName(Reference.MODID, "oreDirtyBrassDust"));
 
 	}
 

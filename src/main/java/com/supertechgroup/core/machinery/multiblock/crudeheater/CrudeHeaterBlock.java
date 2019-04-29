@@ -24,6 +24,7 @@ public class CrudeHeaterBlock extends Block implements ITileEntityProvider {
 		super(Material.ROCK);
 		this.setUnlocalizedName(Reference.MODID + ".crudeHeater");
 		this.setRegistryName(Reference.MODID, "crudeHeater");
+		this.setHardness(2.0f);
 	}
 
 	@Override

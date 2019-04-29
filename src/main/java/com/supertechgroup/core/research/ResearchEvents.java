@@ -32,6 +32,7 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
@@ -56,6 +57,25 @@ public class ResearchEvents {
 			return;
 		}
 		event.addCapability(TEAM_LIST_CAP, new ListCapabilityProvider());
+	}
+
+	@SubscribeEvent
+	public void onPlayerFurnaceSmelt(PlayerEvent.ItemSmeltedEvent event) {
+		ItemStack hand = event.player.getHeldItemOffhand();
+		if (hand.getItem().equals(ModRegistry.itemResearchBook) && hand.getTagCompound() != null
+				&& hand.getTagCompound().getInteger("remaining") > 0) {
+			NBTTagCompound tag = hand.getTagCompound();
+			NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
+			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(Reference.RESEARCH_VANILLA_FURNACE,
+					event.smelting);
+			if (!craftingResearch.toString().equals("null:void")) {
+				list.appendTag((new NBTTagString(craftingResearch.toString())));
+				tag.setInteger("remaining", tag.getInteger("remaining") - 1);
+				tag.setTag("tasks", list);
+				hand.setTagCompound(tag);
+			}
+		}
+
 	}
 
 	@SubscribeEvent
@@ -124,7 +144,7 @@ public class ResearchEvents {
 		EntityPlayer player = event.getEntityPlayer();
 		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
 		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-		team.setTeam(oldTeam.getTeam());
+		team.setTeam(oldTeam.getTeam());AnvilRepairEvent a;
 	}
 
 	@SubscribeEvent
@@ -134,7 +154,8 @@ public class ResearchEvents {
 				&& hand.getTagCompound().getInteger("remaining") > 0) {
 			NBTTagCompound tag = hand.getTagCompound();
 			NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
-			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(event.crafting);
+			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(Reference.RESEARCH_CRAFTING,
+					event.crafting);
 			if (!craftingResearch.toString().equals("null:void")) {
 				list.appendTag((new NBTTagString(craftingResearch.toString())));
 				tag.setInteger("remaining", tag.getInteger("remaining") - 1);

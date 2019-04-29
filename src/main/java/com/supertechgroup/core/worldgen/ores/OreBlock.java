@@ -8,9 +8,8 @@ import javax.annotation.Nullable;
 
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
-import com.supertechgroup.core.network.PacketHandler;
-import com.supertechgroup.core.network.UpdateOresPacket;
-import com.supertechgroup.core.worldgen.OreSavedData;
+import com.supertechgroup.core.capabilities.ore.IOreCapability;
+import com.supertechgroup.core.capabilities.ore.OreCapabilityProvider;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -18,7 +17,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -69,7 +68,7 @@ public class OreBlock extends Block {
 	@Override
 	@Deprecated
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-		return OreSavedData.get(worldIn).getHardness(pos);
+		return worldIn.getChunkFromBlockCoords(pos).getCapability(OreCapabilityProvider.ORE_CAP, null).getHardness(pos);
 	}
 
 	// return OreSavedData.get(worldIn).getHardness(pos);// == null ?
@@ -97,8 +96,12 @@ public class OreBlock extends Block {
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 		World worldObject = SuperTechCoreMod.proxy.getWorld(world);
 		List<ItemStack> ret = new ArrayList<>();
-		ResourceLocation[] ores = OreSavedData.get(worldObject).getOres(pos);
-		ResourceLocation base = OreSavedData.get(worldObject).getBase(pos);
+
+		Chunk chunk = worldObject.getChunkFromBlockCoords(pos);
+		IOreCapability cap = chunk.getCapability(OreCapabilityProvider.ORE_CAP, null);
+
+		ResourceLocation[] ores = cap.getOres(pos);
+		ResourceLocation base = cap.getBase(pos);
 		byte type = 0;
 		if (base.getResourcePath().contains("nether")) {
 			type = -1;
@@ -122,9 +125,13 @@ public class OreBlock extends Block {
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IExtendedBlockState extendedBlockState = (IExtendedBlockState) state;
+		World worldObject = SuperTechCoreMod.proxy.getWorld(world);
 
-		ResourceLocation[] ores = OreSavedData.get(SuperTechCoreMod.proxy.getWorld(world)).getOres(pos);
-		ResourceLocation base = OreSavedData.get(SuperTechCoreMod.proxy.getWorld(world)).getBase(pos);
+		Chunk chunk = worldObject.getChunkFromBlockCoords(pos);
+		IOreCapability cap = chunk.getCapability(OreCapabilityProvider.ORE_CAP, null);
+
+		ResourceLocation[] ores = cap.getOres(pos);
+		ResourceLocation base = cap.getBase(pos);
 		ArrayList<ResourceLocation> oreList = new ArrayList<>();
 		for (ResourceLocation i : ores) {
 			oreList.add(i);
@@ -180,8 +187,10 @@ public class OreBlock extends Block {
 				return true;
 			}
 			boolean metalLeft = false;
-			ResourceLocation[] ores = OreSavedData.get(worldIn).getOres(pos);
-			ResourceLocation base = OreSavedData.get(worldIn).getBase(pos);
+			IOreCapability cap = worldIn.getChunkFromBlockCoords(pos).getCapability(OreCapabilityProvider.ORE_CAP,
+					null);
+			ResourceLocation[] ores = cap.getOres(pos);
+			ResourceLocation base = cap.getBase(pos);
 			int tagCount;
 			tagCount = player.getHeldItemMainhand().getEnchantmentTagList() != null
 					? player.getHeldItemMainhand().getEnchantmentTagList().tagCount()
@@ -214,17 +223,14 @@ public class OreBlock extends Block {
 
 			}
 			ores = removeNulls(ores);
-			OreSavedData.get(worldIn).setOres(pos, ores);
+			cap.setOres(pos, ores);
 			willHarvest = metalLeft;
 			if (!metalLeft) {// When we have removel all of the ore from the
 								// block...
 				worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
 			}
 			worldIn.notifyBlockUpdate(pos, state, state, 2);
-
-			UpdateOresPacket packet = new UpdateOresPacket(OreSavedData.get(player.world), pos);
-			PacketHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) player);
-
+			worldIn.getChunkFromBlockCoords(pos).markDirty();
 			return !metalLeft;
 		}
 		return true;

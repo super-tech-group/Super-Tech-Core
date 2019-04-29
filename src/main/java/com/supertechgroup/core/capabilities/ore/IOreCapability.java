@@ -2,10 +2,12 @@ package com.supertechgroup.core.capabilities.ore;
 
 import java.util.HashMap;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public interface IOreCapability {
-	static final int NUM_X_BITS = 1 + MathHelper.log2(MathHelper.smallestEncompassingPowerOfTwo(16));
+	static final int NUM_X_BITS = 1 + MathHelper.log2(MathHelper.smallestEncompassingPowerOfTwo(30000000));
 	static final int NUM_Z_BITS = NUM_X_BITS;
 	static final int NUM_Y_BITS = 64 - NUM_X_BITS - NUM_Z_BITS;
 	static final int Y_SHIFT = 0 + NUM_Z_BITS;
@@ -30,6 +32,14 @@ public interface IOreCapability {
 	public HashMap<Long, Object[]> getData();
 
 	public void setData(HashMap<Long, Object[]> data);
-	
-	
+
+	public float getHardness(BlockPos pos);
+
+	public ResourceLocation getBase(BlockPos pos);
+
+	public ResourceLocation[] getOres(BlockPos pos);
+
+	public void setOres(BlockPos pos, ResourceLocation[] ores);
+
+	public boolean isGenerated();
 }

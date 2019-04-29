@@ -9,7 +9,8 @@ import java.util.Random;
 
 import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
-import com.supertechgroup.core.worldgen.OreSavedData;
+import com.supertechgroup.core.capabilities.ore.IOreCapability;
+import com.supertechgroup.core.capabilities.ore.OreCapabilityProvider;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.rocks.RockManager;
 
@@ -17,6 +18,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
@@ -96,6 +98,8 @@ public abstract class WorldGeneratorBase {
 	 */
 	public boolean generateOreBlock(World world, BlockPos pos, IBlockState generatorStart) {
 		IBlockState state = world.getBlockState(pos);
+		Chunk chunk = world.getChunkFromBlockCoords(pos);
+		IOreCapability cap = chunk.getCapability(OreCapabilityProvider.ORE_CAP, null);
 		if (validStoneTypes.contains(state) && state.equals(generatorStart)) {
 			ArrayList<ResourceLocation> oresAdded = new ArrayList<>();
 			ores.forEach((Ore k, Double v) -> {
@@ -104,12 +108,14 @@ public abstract class WorldGeneratorBase {
 				}
 			});
 			if (!oresAdded.isEmpty()) {
-				ResourceLocation[] newOres = new ResourceLocation[oresAdded.size()];
-				for (int i = 0; i < newOres.length; i++) {
-					newOres[i] = oresAdded.get(i);
+				Object[] data = new Object[oresAdded.size() + 2];
+				data[0] = state.getBlockHardness(world, pos);
+				data[1] = RockManager.getTexture(state);
+				for (int i = 0; i < oresAdded.size(); i++) {
+					data[i + 2] = oresAdded.get(i);
 				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), RockManager.getTexture(state),
-						newOres, state.getBlockHardness(world, pos));
+				cap.setData(pos.getX(), pos.getY(), pos.getZ(), data);
+				chunk.markDirty();
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 
 			}
@@ -121,12 +127,14 @@ public abstract class WorldGeneratorBase {
 				}
 			});
 			if (!oresAdded.isEmpty()) {
-				ResourceLocation[] newOres = new ResourceLocation[oresAdded.size()];
-				for (int i = 0; i < newOres.length; i++) {
-					newOres[i] = oresAdded.get(i);
+				Object[] data = new Object[oresAdded.size() + 2];
+				data[0] = state.getBlockHardness(world, pos);
+				data[1] = Config.nether.get(state);
+				for (int i = 0; i < oresAdded.size(); i++) {
+					data[i + 2] = oresAdded.get(i);
 				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.nether.get(state), newOres,
-						state.getBlockHardness(world, pos));
+				cap.setData(pos.getX(), pos.getY(), pos.getZ(), data);
+				chunk.markDirty();
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 			}
 		} else if (Config.end.containsKey(state) && state.equals(generatorStart)) {
@@ -137,29 +145,35 @@ public abstract class WorldGeneratorBase {
 				}
 			});
 			if (!oresAdded.isEmpty()) {
-				ResourceLocation[] newOres = new ResourceLocation[oresAdded.size()];
-				for (int i = 0; i < newOres.length; i++) {
-					newOres[i] = oresAdded.get(i);
+				Object[] data = new Object[oresAdded.size() + 2];
+				data[0] = state.getBlockHardness(world, pos);
+				data[1] = Config.end.get(state);
+				for (int i = 0; i < oresAdded.size(); i++) {
+					data[i + 2] = oresAdded.get(i);
 				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.end.get(state), newOres,
-						state.getBlockHardness(world, pos));
+				cap.setData(pos.getX(), pos.getY(), pos.getZ(), data);
+				chunk.markDirty();
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 			}
 		} else if (state.getBlock() == ModRegistry.superore) {
-			if (OreSavedData.get(world).getBase(pos).equals(RockManager.getTexture(generatorStart))) {
+			if (cap.getBase(pos).equals(RockManager.getTexture(generatorStart))) {
 				ArrayList<ResourceLocation> oresAdded = new ArrayList<>();
 				ores.forEach((Ore k, Double v) -> {
 					if (world.rand.nextDouble() < v) {
 						oresAdded.add(k.getRegistryName());
 					}
 				});
-				ResourceLocation[] oldOres = OreSavedData.get(world).getOres(pos.getX(), pos.getY(), pos.getZ());
-				ResourceLocation[] newOres = Arrays.copyOf(oldOres, oldOres.length + oresAdded.size());
-				for (int i = 0; i < oresAdded.size(); i++) {
-					newOres[i + oldOres.length] = oresAdded.get(i);
+				Object[] oldData = cap.getData(pos.getX(), pos.getY(), pos.getZ());
+				Object[] data = new Object[oldData.length + oresAdded.size()];
+				for (int i = 0; i < oldData.length; i++) {
+					data[i] = oldData[i];
 				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(),
-						OreSavedData.get(world).getBase(pos), newOres, state.getBlockHardness(world, pos));
+				for (int i = 0; i < oresAdded.size(); i++) {
+					data[i + oldData.length] = oresAdded.get(i);
+				}
+				cap.setData(pos.getX(), pos.getY(), pos.getZ(), data);
+				chunk.markDirty();
+				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 			}
 		}
 		return true;

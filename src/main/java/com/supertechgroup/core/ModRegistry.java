@@ -31,6 +31,7 @@ import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorKimberlite;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
+import com.supertechgroup.core.worldgen.ores.NativeMetal;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.ores.OreBlock;
 import com.supertechgroup.core.worldgen.ores.OreItem;
@@ -314,6 +315,10 @@ public class ModRegistry {
 				.setDensity(8.96).setThermalExpansion(16.5).setThermalConductivity(401).setElectricalResistance(16.78)
 				.setYoungsModulus(119).setShearModulus(48).setBulkModulus(140).setHarvestLevel(1).build();
 		copper.registerMaterial();
+		new NativeMetal(copper).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativecopper"))),
+				"nativeCopper", new int[] { 0 }, 10, 1, 5, 2, "sedimentary"));
 		new MaterialBuilder("Zinc").setColor(0xbac4cb).setDensity(7.14).setThermalExpansion(30.2).setSpecificHeat(25.47)
 				.setThermalConductivity(116).setElectricalResistance(59.0).setYoungsModulus(108).setShearModulus(43)
 				.setBulkModulus(70).setHarvestLevel(1).build().registerMaterial();
@@ -339,6 +344,10 @@ public class ModRegistry {
 				.setThermalConductivity(429).setElectricalResistance(15.87).setYoungsModulus(83).setSpecificHeat(25.35)
 				.setShearModulus(30).setBulkModulus(100).setHarvestLevel(2).build();
 		silver.registerMaterial();
+		new NativeMetal(silver).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativesilver"))),
+				"nativeSilver", new int[] { 0 }, 10, 1, 2, 2, "sedimentary"));
 		new MaterialBuilder("Tellurium").setColor(0xb5b5bd).setDensity(6.24).setThermalExpansion(18)
 				.setThermalConductivity(2.5).setElectricalResistance(10000).setYoungsModulus(43).setShearModulus(16)
 				.setSpecificHeat(25.73).setBulkModulus(65).setHarvestLevel(2).build().registerMaterial();
@@ -356,6 +365,10 @@ public class ModRegistry {
 				.setThermalConductivity(318).setElectricalResistance(22.14).setYoungsModulus(79).setSpecificHeat(25.418)
 				.setShearModulus(27).setBulkModulus(180).setHarvestLevel(3).build();
 		gold.registerMaterial();
+		new NativeMetal(gold).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativegold"))),
+				"nativeGold", new int[] { 0 }, 10, 1, 2, 2, "sedimentary"));
 		Material lead = new MaterialBuilder("Lead").setColor(0x474c4d).setDensity(11.34).setThermalExpansion(28.9)
 				.setThermalConductivity(35.3).setElectricalResistance(208).setYoungsModulus(16).setSpecificHeat(26.665)
 				.setShearModulus(6).setBulkModulus(46).setHarvestLevel(3).build();

@@ -31,7 +31,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
-import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -79,57 +78,6 @@ public class WorldGenEvents {
 				UpdateOresPacket packet = new UpdateOresPacket(OreSavedData.get(e.world), newChunkX, newChunkZ);
 				PacketHandler.INSTANCE.sendTo(packet, e);
 				sentChunks.get(e.getUniqueID()).add(new MutablePair<>(newChunkX, newChunkZ));
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public void populateChunk(PopulateChunkEvent.Pre event) {
-		// replace all blocks of a type with another block type
-		// diesieben07 came up with this method
-		// (http://www.minecraftforge.net/forum/index.php/topic,21625.0.html)
-		Chunk chunk = event.getWorld().getChunkFromChunkCoords(event.getChunkX(), event.getChunkZ());
-
-		long seed = event.getWorld().getSeed();
-		SimplexNoise noise = new SimplexNoise();
-		Random offsetRandom = new Random(seed);
-		Vec3d offset1 = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
-				10000.0F * offsetRandom.nextFloat());
-		Vec3d offset3 = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
-				10000.0F * offsetRandom.nextFloat());
-		for (ExtendedBlockStorage storage : chunk.getBlockStorageArray()) {
-			if (storage != null) {
-				for (int x = 0; x < 16; ++x) {
-					for (int z = 0; z < 16; ++z) {
-						int igneous = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
-								genScale) * 15) + 20;
-						int sedimentary = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
-								genScale) * 15) + 20;
-						int height = chunk.getHeightValue(x & 15, z & 15);
-						for (int y = storage.getYLocation(); y < storage.getYLocation() + 16; y++) {
-
-							BlockPos coord = new BlockPos(x, y, z);
-
-							if (CommonProxy.vanillaReplace.contains(chunk.getBlockState(coord))) {
-								double val = noise.get3dNoiseValue(x + chunk.x * 16, y, z + chunk.z * 16, offset3,
-										genScale);
-								if (y < igneous) {
-									// RockType.IGNEOUS;
-									chunk.setBlockState(coord,
-											pickBlockFromSet(val, RockManager.stoneSpawns.get("igneous")));
-								} else if (y > height - sedimentary) {
-									// RockType.SEDIMENTARY;
-									chunk.setBlockState(coord,
-											pickBlockFromSet(val, RockManager.stoneSpawns.get("sedimentary")));
-								} else {
-									// RockType.METAMORPHIC;
-									chunk.setBlockState(coord,
-											pickBlockFromSet(val, RockManager.stoneSpawns.get("metamorphic")));
-								}
-							}
-						}
-					}
-				}
 			}
 		}
 	}
@@ -205,5 +153,57 @@ public class WorldGenEvents {
 	private IBlockState pickBlockFromSet(double value, Set<IBlockState> list) {
 		value = ((value + 1) / 2) * list.size();
 		return list.stream().skip((int) value).findFirst().get();
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
+	public void onPopulateChunk(PopulateChunkEvent.Pre event) {
+		// replace all blocks of a type with another block type
+		// diesieben07 came up with this method
+		// (http://www.minecraftforge.net/forum/index.php/topic,21625.0.html)
+		Chunk chunk = event.getWorld().getChunkFromChunkCoords(event.getChunkX(), event.getChunkZ());
+		long seed = event.getWorld().getSeed();
+		SimplexNoise noise = new SimplexNoise();
+		Random offsetRandom = new Random(seed);
+		Vec3d offset1 = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
+				10000.0F * offsetRandom.nextFloat());
+		Vec3d offset3 = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
+				10000.0F * offsetRandom.nextFloat());
+		for (ExtendedBlockStorage storage : chunk.getBlockStorageArray()) {
+			if (storage != null) {
+				for (int x = 0; x < 16; ++x) {
+					for (int z = 0; z < 16; ++z) {
+						int igneous = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
+								genScale) * 15) + 20;
+						int sedimentary = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
+								genScale) * 15) + 20;
+						int height = chunk.getHeightValue(x & 15, z & 15);
+//						int height = 255;
+						for (int y = storage.getYLocation(); y < storage.getYLocation() + 16; y++) {
+
+							BlockPos coord = new BlockPos(x, y, z);
+
+							if (CommonProxy.vanillaReplace.contains(chunk.getBlockState(coord))) {
+								double val = noise.get3dNoiseValue(x + chunk.x * 16, y, z + chunk.z * 16, offset3,
+										genScale);
+								if (y < igneous) {
+									// RockType.IGNEOUS;
+									chunk.setBlockState(coord,
+											pickBlockFromSet(val, RockManager.stoneSpawns.get("igneous")));
+								} else if (y > height - sedimentary) {
+									// RockType.SEDIMENTARY;
+									chunk.setBlockState(coord,
+											pickBlockFromSet(val, RockManager.stoneSpawns.get("sedimentary")));
+								} else {
+									// RockType.METAMORPHIC;
+									chunk.setBlockState(coord,
+											pickBlockFromSet(val, RockManager.stoneSpawns.get("metamorphic")));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		chunk.setModified(true);// this is important as it marks it to be saved
 	}
 }

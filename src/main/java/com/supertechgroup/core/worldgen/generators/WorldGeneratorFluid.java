@@ -2,8 +2,6 @@ package com.supertechgroup.core.worldgen.generators;
 
 import java.util.Random;
 
-import com.supertechgroup.core.worldgen.OreSavedData;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;

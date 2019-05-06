@@ -608,7 +608,7 @@ public class ModRegistry {
 		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
 				FluidRegistry.getFluid("oil")));
 
-		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 4));
+		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 20));
 	}
 
 	@SubscribeEvent

@@ -30,6 +30,7 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
+import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -82,13 +83,13 @@ public class WorldGenEvents {
 		}
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-	public void onChunkLoadEvent(ChunkEvent.Load event) {
+	@SubscribeEvent
+	public void populateChunk(PopulateChunkEvent.Pre event) {
 		// replace all blocks of a type with another block type
 		// diesieben07 came up with this method
 		// (http://www.minecraftforge.net/forum/index.php/topic,21625.0.html)
+		Chunk chunk = event.getWorld().getChunkFromChunkCoords(event.getChunkX(), event.getChunkZ());
 
-		Chunk chunk = event.getChunk();
 		long seed = event.getWorld().getSeed();
 		SimplexNoise noise = new SimplexNoise();
 		Random offsetRandom = new Random(seed);
@@ -105,8 +106,7 @@ public class WorldGenEvents {
 						int sedimentary = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
 								genScale) * 15) + 20;
 						int height = chunk.getHeightValue(x & 15, z & 15);
-//						int height = 255;
-						for (int y = 0; y < height; y++) {
+						for (int y = storage.getYLocation(); y < storage.getYLocation() + 16; y++) {
 
 							BlockPos coord = new BlockPos(x, y, z);
 
@@ -132,33 +132,6 @@ public class WorldGenEvents {
 				}
 			}
 		}
-		Random chunkRandom = chunk.getRandomWithSeed(seed);
-		if (chunkRandom.nextDouble() <= 0.25) {
-			int cx = chunkRandom.nextInt(10) + 3;
-			int cz = chunkRandom.nextInt(10) + 3;
-			double height = chunkRandom.nextInt(6) + 12;
-			IBlockState kimberlite = RockManager.stoneSpawns.get("kimberlite").iterator().next();
-			ResourceLocation[] oresAdded = new ResourceLocation[] { new ResourceLocation("supertechcore:diamond") };
-			for (double y = 0; y < height; y++) {
-				int s = (int) (4.0d * ((height - y) / height)) + 1;
-				for (int x = -s; x < s; x++) {
-					for (int z = -s; z < s; z++) {
-						BlockPos pos = new BlockPos(cx + x + chunk.x * 16, y, cz + z + chunk.z * 16);
-						if (!chunk.getBlockState(pos).equals(Blocks.BEDROCK.getDefaultState())) {
-							if (chunkRandom.nextDouble() < .1) {
-								OreSavedData.get(event.getWorld()).setData(pos.getX(), pos.getY(), pos.getZ(),
-										RockManager.getTexture(kimberlite), oresAdded,
-										kimberlite.getBlockHardness(chunk.getWorld(), pos));
-								chunk.setBlockState(pos, ModRegistry.superore.getDefaultState());
-							} else {
-								chunk.setBlockState(pos, kimberlite);
-							}
-						}
-					}
-				}
-			}
-		}
-		chunk.setModified(true);// this is important as it marks it to be saved
 	}
 
 	@SubscribeEvent

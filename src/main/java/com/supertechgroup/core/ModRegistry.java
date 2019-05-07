@@ -40,6 +40,7 @@ import com.supertechgroup.core.worldgen.rocks.RockManager;
 import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -221,21 +222,26 @@ public class ModRegistry {
 				"igneous", "andesite", "vanilla", "extrusive", "intermediate");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE),
-				new ResourceLocation("minecraft:blocks/andesite"));
+				new ResourceLocation("minecraft:blocks/stone_andesite"));
 		createStoneType("basalt", 5, 100, 2, event, "igneous", "extrusive");
-		RockManager.addRockTypes(Blocks.SANDSTONE.getDefaultState(), "sedimentary", "sandstone", "vanilla", "clastic");
+		RockManager.addRockTypes(
+				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
+				"sedimentary", "sandstone", "vanilla", "clastic");
+		RockManager.addTextureOverride(
+				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
+				new ResourceLocation("minecraft:blocks/sandstone_smooth"));
 		RockManager.addRockTypes(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE), "igneous",
 				"diorite", "vanilla", "intrusive", "intermediate");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE),
-				new ResourceLocation("minecraft:blocks/diorite"));
+				new ResourceLocation("minecraft:blocks/stone_diorite"));
 		RockManager.addRockTypes(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), "igneous",
 				"granite", "vanilla", "felsic", "intrusive");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE),
-				new ResourceLocation("minecraft:blocks/granite"));
+				new ResourceLocation("minecraft:blocks/stone_granite"));
 		createStoneType("rhyolite", 1.5, 10, 0, event, "igneous", "felsic", "extrusive");
 		createStoneType("gabbro", 1.5, 10, 0, event, "igneous", "mafic", "intrusive");
 		createStoneType("scoria", 1.5, 10, 0, event, "igneous", "mafic", "extrusive");

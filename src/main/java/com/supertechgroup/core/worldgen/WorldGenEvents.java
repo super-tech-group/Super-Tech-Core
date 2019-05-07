@@ -9,19 +9,15 @@ import java.util.UUID;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import com.supertechgroup.core.Config;
-import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
 import com.supertechgroup.core.util.SimplexNoise;
 import com.supertechgroup.core.worldgen.rocks.RockManager;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -123,22 +119,6 @@ public class WorldGenEvents {
 
 		World world = e.getPlayer().world;
 		if (forChunk.hasNoTags() || !get.isChunkGenerated(x, z)) {
-			for (int x1 = chunk.x * 16; x1 < chunk.x * 16 + 16; x1++) {
-				for (int y1 = 0; y1 < 256; y1++) {
-					for (int z1 = chunk.z * 16; z1 < chunk.z * 16 + 16; z1++) {
-
-						BlockPos targetBlockPos = new BlockPos(x1, y1, z1);
-						IBlockState targetBlockState = world.getBlockState(targetBlockPos);
-						Block targetBlock = targetBlockState.getBlock();
-
-						if (targetBlock.equals(ModRegistry.superore)
-								&& get.getBase(targetBlockPos) == new ResourceLocation("minecraft:stone")) {
-							world.setBlockState(targetBlockPos, Blocks.STONE.getDefaultState());
-						}
-
-					}
-				}
-			}
 			Random random = chunk.getRandomWithSeed(world.getSeed());
 			CommonProxy.parsed.forEach((gen) -> {
 				gen.generate(random, chunk.x, chunk.z, world, null, world.getChunkProvider());
@@ -150,11 +130,6 @@ public class WorldGenEvents {
 		handleOreUpdate(e.getPlayer(), x, z);
 	}
 
-	private IBlockState pickBlockFromSet(double value, Set<IBlockState> list) {
-		value = ((value + 1) / 2) * list.size();
-		return list.stream().skip((int) value).findFirst().get();
-	}
-
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
 	public void onPopulateChunk(PopulateChunkEvent.Pre event) {
 		// replace all blocks of a type with another block type
@@ -164,26 +139,25 @@ public class WorldGenEvents {
 		long seed = event.getWorld().getSeed();
 		SimplexNoise noise = new SimplexNoise();
 		Random offsetRandom = new Random(seed);
-		Vec3d offset1 = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
+		Vec3d layerOffset = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
 				10000.0F * offsetRandom.nextFloat());
-		Vec3d offset3 = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
+		Vec3d geomeOffset = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
 				10000.0F * offsetRandom.nextFloat());
 		for (ExtendedBlockStorage storage : chunk.getBlockStorageArray()) {
 			if (storage != null) {
 				for (int x = 0; x < 16; ++x) {
 					for (int z = 0; z < 16; ++z) {
-						int igneous = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
+						int igneous = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, layerOffset,
 								genScale) * 15) + 20;
-						int sedimentary = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, offset1,
+						int sedimentary = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, layerOffset,
 								genScale) * 15) + 20;
 						int height = chunk.getHeightValue(x & 15, z & 15);
-//						int height = 255;
 						for (int y = storage.getYLocation(); y < storage.getYLocation() + 16; y++) {
 
 							BlockPos coord = new BlockPos(x, y, z);
 
 							if (CommonProxy.vanillaReplace.contains(chunk.getBlockState(coord))) {
-								double val = noise.get3dNoiseValue(x + chunk.x * 16, y, z + chunk.z * 16, offset3,
+								double val = noise.get3dNoiseValue(x + chunk.x * 16, y, z + chunk.z * 16, geomeOffset,
 										genScale);
 								if (y < igneous) {
 									// RockType.IGNEOUS;
@@ -205,5 +179,10 @@ public class WorldGenEvents {
 			}
 		}
 		chunk.setModified(true);// this is important as it marks it to be saved
+	}
+
+	private IBlockState pickBlockFromSet(double value, Set<IBlockState> list) {
+		value = ((value + 1) / 2) * list.size();
+		return list.stream().skip((int) value).findFirst().get();
 	}
 }

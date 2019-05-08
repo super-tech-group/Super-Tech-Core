@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.supertechgroup.core.agriculture.CottonCropBlock;
+import com.supertechgroup.core.agriculture.HempCropBlock;
 import com.supertechgroup.core.fluids.BlockModFluid;
 import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
@@ -93,10 +94,12 @@ public class ModRegistry {
 	public static CrudeHeaterBlock crudeHeaterBlock;
 
 	public static CottonCropBlock cottonCrop;
+	public static HempCropBlock hempCrop;
 
 	public static ArrayList<ModFluid> fluids = new ArrayList<>();
 
 	public static Item itemCotton;
+	public static Item itemHempSeed;
 
 	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
 			int temperature, boolean hasBlock) {
@@ -186,10 +189,11 @@ public class ModRegistry {
 
 			}
 		}
-		
 
 		ModelLoader.setCustomModelResourceLocation(itemCotton, 0,
 				new ModelResourceLocation("supertechcore:cotton", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(itemHempSeed, 0,
+				new ModelResourceLocation("supertechcore:seed_hemp", "inventory"));
 
 	}
 
@@ -224,6 +228,9 @@ public class ModRegistry {
 
 		cottonCrop = new CottonCropBlock();
 		event.getRegistry().register(cottonCrop);
+
+		hempCrop = new HempCropBlock();
+		event.getRegistry().register(hempCrop);
 
 		// Rocks
 
@@ -303,7 +310,10 @@ public class ModRegistry {
 		itemResearchBook = new ItemResearchBook();
 		itemCotton = new ItemSeeds(cottonCrop, Blocks.FARMLAND).setUnlocalizedName("cotton")
 				.setRegistryName(Reference.MODID, "cotton");
-		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton);
+		itemHempSeed = new ItemSeeds(hempCrop, Blocks.FARMLAND).setUnlocalizedName("hemp_seed")
+				.setRegistryName(Reference.MODID, "hempSeed");
+
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton, itemHempSeed);
 
 		itemTech.setupDictionary();
 

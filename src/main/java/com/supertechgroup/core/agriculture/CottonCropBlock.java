@@ -14,11 +14,13 @@ public class CottonCropBlock extends BlockCrops {
 		this.setRegistryName(Reference.MODID, "cotton");
 	}
 
-	protected Item getSeed() {
+	@Override
+	protected Item getCrop() {
 		return ModRegistry.itemCotton;
 	}
 
-	protected Item getCrop() {
+	@Override
+	protected Item getSeed() {
 		return ModRegistry.itemCotton;
 	}
 }

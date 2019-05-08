@@ -29,6 +29,8 @@ public class SuperTechItem extends ItemBase {
 	public static final int FIRE_BRICK = 10;
 	public static final int WOOD_PULP = 11;
 
+	public static final int HEMP_FIBER = 12;
+
 	public SuperTechItem() {
 		super("itemTechComponent");
 		setMaxDamage(0);
@@ -45,7 +47,7 @@ public class SuperTechItem extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for (int i = 0; i < 12; i++) {
+		for (int i = 0; i < 13; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -78,6 +80,8 @@ public class SuperTechItem extends ItemBase {
 			return super.getUnlocalizedName() + ".fireBrick";
 		case WOOD_PULP:
 			return super.getUnlocalizedName() + ".woodPulp";
+		case HEMP_FIBER:
+			return super.getUnlocalizedName() + ".hempFiber";
 		default:
 			return super.getUnlocalizedName();
 		}
@@ -108,6 +112,8 @@ public class SuperTechItem extends ItemBase {
 				new ModelResourceLocation("supertechcore:itemFireBrick", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(this, WOOD_PULP,
 				new ModelResourceLocation("supertechcore:itemwoodPulp", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, HEMP_FIBER,
+				new ModelResourceLocation("supertechcore:itemHempFiber", "inventory"));
 	}
 
 	public void setupDictionary() {

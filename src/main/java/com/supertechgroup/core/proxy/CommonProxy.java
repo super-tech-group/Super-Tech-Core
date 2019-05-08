@@ -11,6 +11,7 @@ import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.agriculture.CottonGenerator;
+import com.supertechgroup.core.agriculture.HempGenerator;
 import com.supertechgroup.core.capabilities.team.ITeamCapability;
 import com.supertechgroup.core.capabilities.team.TeamCapability;
 import com.supertechgroup.core.capabilities.team.TeamCapabilityStorage;
@@ -554,8 +555,9 @@ public abstract class CommonProxy {
 		CapabilityManager.INSTANCE.register(IListCapability.class, new ListCapabilityStorage(), ListCapability.class);
 
 		ModRegistry.registerFluids();
-		
+
 		GameRegistry.registerWorldGenerator(new CottonGenerator(), 0);
+		GameRegistry.registerWorldGenerator(new HempGenerator(), 0);
 	}
 
 	public abstract void registerItemRenderer(Item item, int i, String name);

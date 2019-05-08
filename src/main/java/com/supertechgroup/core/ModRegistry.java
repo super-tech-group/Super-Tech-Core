@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.agriculture.CottonCropBlock;
 import com.supertechgroup.core.fluids.BlockModFluid;
 import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
@@ -46,6 +47,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -90,7 +92,11 @@ public class ModRegistry {
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
 
+	public static CottonCropBlock cottonCrop;
+
 	public static ArrayList<ModFluid> fluids = new ArrayList<>();
+
+	public static Item itemCotton;
 
 	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
 			int temperature, boolean hasBlock) {
@@ -180,6 +186,10 @@ public class ModRegistry {
 
 			}
 		}
+		
+
+		ModelLoader.setCustomModelResourceLocation(itemCotton, 0,
+				new ModelResourceLocation("supertechcore:cotton", "inventory"));
 
 	}
 
@@ -211,6 +221,9 @@ public class ModRegistry {
 				.register(new ItemBlock(researchStation).setRegistryName(researchStation.getRegistryName()));
 		event.getRegistry().register(researchStation);
 		GameRegistry.registerTileEntity(TileEntityResearchStation.class, researchStation.getRegistryName());
+
+		cottonCrop = new CottonCropBlock();
+		event.getRegistry().register(cottonCrop);
 
 		// Rocks
 
@@ -288,10 +301,12 @@ public class ModRegistry {
 
 		itemTech = new SuperTechItem();
 		itemResearchBook = new ItemResearchBook();
-
-		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor);
+		itemCotton = new ItemSeeds(cottonCrop, Blocks.FARMLAND).setUnlocalizedName("cotton")
+				.setRegistryName(Reference.MODID, "cotton");
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton);
 
 		itemTech.setupDictionary();
+
 	}
 
 	@SubscribeEvent
@@ -650,7 +665,7 @@ public class ModRegistry {
 				new MaterialToolIngredient(MaterialTool.SHOVEL));
 		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
 				new MaterialToolIngredient(MaterialTool.PICKAXE));
-		
+
 		ResearchTasks.addTask(Reference.RESEARCH_VANILLA_FURNACE, "potato", new ItemStack(Items.BAKED_POTATO));
 	}
 }

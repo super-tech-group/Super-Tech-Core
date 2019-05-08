@@ -58,6 +58,8 @@ item.supertechcore.itemTechComponent.fireBrick.name=Firebrick
 item.supertechcore.itemConstructor.name=Constructor
 item.supertechcore.researchBook.name=Research Notebook
 
+item.cotton.name=Cotton
+
 gui.supertechcore.basicsmelting.name=Basic Smelting
 fluid.oil=Crude Oil
 tile.fluid.oil.name=Crude Oil

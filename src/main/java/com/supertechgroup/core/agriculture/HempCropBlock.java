@@ -16,6 +16,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumPlantType;
 
 public class HempCropBlock extends BlockCrops {
 	public static final PropertyInteger HEMP_AGE = PropertyInteger.create("age", 0, 3);
@@ -24,6 +25,11 @@ public class HempCropBlock extends BlockCrops {
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D) };
+
+	@Override
+	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
+		return EnumPlantType.Crop;
+	}
 
 	public HempCropBlock() {
 		super();

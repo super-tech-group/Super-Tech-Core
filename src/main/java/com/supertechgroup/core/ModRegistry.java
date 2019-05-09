@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.supertechgroup.core.agriculture.CottonCropBlock;
+import com.supertechgroup.core.agriculture.FertileFarmlandBlock;
 import com.supertechgroup.core.agriculture.HempCropBlock;
 import com.supertechgroup.core.fluids.BlockModFluid;
 import com.supertechgroup.core.fluids.ModFluid;
@@ -101,6 +102,8 @@ public class ModRegistry {
 	public static Item itemCotton;
 	public static Item itemHempSeed;
 
+	public static Block fertileBlock;
+
 	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
 			int temperature, boolean hasBlock) {
 		ModFluid fluid = (ModFluid) new ModFluid(name,
@@ -182,6 +185,7 @@ public class ModRegistry {
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
+		((FertileFarmlandBlock) fertileBlock).registerModels();
 
 		for (ModFluid fluid : fluids) {
 			if (fluid.hasBlock()) {
@@ -231,6 +235,10 @@ public class ModRegistry {
 
 		hempCrop = new HempCropBlock();
 		event.getRegistry().register(hempCrop);
+
+		fertileBlock = new FertileFarmlandBlock();
+		ForgeRegistries.ITEMS.register(new ItemBlock(fertileBlock).setRegistryName(fertileBlock.getRegistryName()));
+		event.getRegistry().register(fertileBlock);
 
 		// Rocks
 

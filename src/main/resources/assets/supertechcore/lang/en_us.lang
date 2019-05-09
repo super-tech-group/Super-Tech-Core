@@ -44,6 +44,8 @@ tile.supertechcore.scoriacobble.name=Scoria Cobblestone
 tile.supertechcore.shalecobble.name=Shale Cobblestone
 tile.supertechcore.slatecobble.name=Slate Cobblestone
 
+tile.fertilefarmland.name=Fertilized Farmland
+
 item.supertechcore.itemTechComponent.circuitBasic.name=Basic Circuit
 item.supertechcore.itemTechComponent.circuitAdvanced.name=Advanced Circuit
 item.supertechcore.itemTechComponent.circuitElite.name=Elite Circuit

@@ -17,13 +17,13 @@ public class CottonCropBlock extends BlockCrops {
 	}
 
 	@Override
-	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
-		return EnumPlantType.Crop;
+	protected Item getCrop() {
+		return ModRegistry.itemCotton;
 	}
 
 	@Override
-	protected Item getCrop() {
-		return ModRegistry.itemCotton;
+	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
+		return EnumPlantType.Crop;
 	}
 
 	@Override

@@ -26,11 +26,6 @@ public class HempCropBlock extends BlockCrops {
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D) };
 
-	@Override
-	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
-		return EnumPlantType.Crop;
-	}
-
 	public HempCropBlock() {
 		super();
 		this.setUnlocalizedName(Reference.MODID + ".hemp");
@@ -72,5 +67,10 @@ public class HempCropBlock extends BlockCrops {
 	@Override
 	public int getMaxAge() {
 		return 3;
+	}
+
+	@Override
+	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
+		return EnumPlantType.Crop;
 	}
 }

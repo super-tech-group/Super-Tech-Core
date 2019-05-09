@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.supertechgroup.core.agriculture.CottonCropBlock;
 import com.supertechgroup.core.agriculture.FertileFarmlandBlock;
+import com.supertechgroup.core.agriculture.FertilizerItem;
 import com.supertechgroup.core.agriculture.HempCropBlock;
 import com.supertechgroup.core.fluids.BlockModFluid;
 import com.supertechgroup.core.fluids.ModFluid;
@@ -103,6 +104,7 @@ public class ModRegistry {
 	public static Item itemHempSeed;
 
 	public static Block fertileBlock;
+	public static FertilizerItem itemFertilizer;
 
 	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
 			int temperature, boolean hasBlock) {
@@ -185,6 +187,7 @@ public class ModRegistry {
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
+		itemFertilizer.registerItemModel();
 		((FertileFarmlandBlock) fertileBlock).registerModels();
 
 		for (ModFluid fluid : fluids) {
@@ -320,8 +323,10 @@ public class ModRegistry {
 				.setRegistryName(Reference.MODID, "cotton");
 		itemHempSeed = new ItemSeeds(hempCrop, Blocks.FARMLAND).setUnlocalizedName("hemp_seed")
 				.setRegistryName(Reference.MODID, "hempSeed");
+		itemFertilizer = new FertilizerItem();
 
-		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton, itemHempSeed);
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton, itemHempSeed,
+				itemFertilizer);
 
 		itemTech.setupDictionary();
 

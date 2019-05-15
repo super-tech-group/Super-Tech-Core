@@ -1,4 +1,4 @@
-package com.supertechgroup.core.recipies;
+package com.supertechgroup.core.recipe;
 
 import java.lang.reflect.Field;
 import java.util.UUID;
@@ -20,9 +20,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable {
+public class ShapelessResearchRecipe extends ShapelessOreRecipe implements IUnlockable {
 
 	private static final Field eventHandlerField = ObfuscationReflectionHelper.findField(InventoryCrafting.class,
 			"eventHandler");
@@ -50,7 +50,7 @@ public class ShapedResearchRecipe extends ShapedOreRecipe implements IUnlockable
 
 	ComplexResearchRequirement required = new ComplexResearchRequirement(ComplexResearchRequirement.ALL);
 
-	public ShapedResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe,
+	public ShapelessResearchRecipe(ResourceLocation group, ItemStack result, Object[] recipe,
 			IResearchRequirement... requirements) {
 		super(group, result, recipe);
 		for (IResearchRequirement rr : requirements) {

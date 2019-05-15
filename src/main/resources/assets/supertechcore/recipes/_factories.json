@@ -1,0 +1,10 @@
+{
+   "ingredients":{
+      "materialItem":"com.supertechgroup.core.recipe.MaterialItemIngredientFactory",
+      "materialTool":"com.supertechgroup.core.recipe.MaterialToolIngredientFactory"
+   },
+   "recipes":{
+      "addNBT":"com.supertechgroup.core.recipe.AddNBTRecipeFactory",
+	  "smelting": "com.supertechgroup.core.recipe.FurnaceRecipeFactory"
+   }
+}

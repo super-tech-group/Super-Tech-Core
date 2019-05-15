@@ -1,4 +1,4 @@
-package com.supertechgroup.core.recipies;
+package com.supertechgroup.core.recipe;
 
 import com.supertechgroup.core.metallurgy.Material;
 
@@ -28,5 +28,11 @@ public class MaterialIngredientCriteria {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "{" + property.toString() + " " + type.toString() + " " + value + "}";
+
 	}
 }

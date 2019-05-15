@@ -1,4 +1,4 @@
-package com.supertechgroup.core.recipies;
+package com.supertechgroup.core.recipe;
 
 import java.util.Collection;
 import java.util.HashMap;

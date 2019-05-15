@@ -3,7 +3,7 @@ package com.supertechgroup.core.machinery.basicsmelter;
 import com.supertechgroup.core.capabilities.heat.HeatCapabilityProvider;
 import com.supertechgroup.core.capabilities.heat.IHeatCapability;
 import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
-import com.supertechgroup.core.recipies.BasicSmelterRecipe;
+import com.supertechgroup.core.recipe.BasicSmelterRecipe;
 import com.supertechgroup.core.util.Helpers;
 
 import net.minecraft.entity.player.EntityPlayer;

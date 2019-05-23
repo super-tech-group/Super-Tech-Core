@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "age=0": { "model": "supertechcore:cotton_stage0" },
+        "age=1": { "model": "supertechcore:cotton_stage1" },
+        "age=2": { "model": "supertechcore:cotton_stage2" },
+        "age=3": { "model": "supertechcore:cotton_stage3" },
+        "age=4": { "model": "supertechcore:cotton_stage4" },
+        "age=5": { "model": "supertechcore:cotton_stage5" },
+        "age=6": { "model": "supertechcore:cotton_stage6" },
+        "age=7": { "model": "supertechcore:cotton_stage7" }
+    }
+}

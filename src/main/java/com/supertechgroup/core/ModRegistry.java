@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.agriculture.CottonCropBlock;
+import com.supertechgroup.core.agriculture.FertileFarmlandBlock;
+import com.supertechgroup.core.agriculture.FertilizerItem;
+import com.supertechgroup.core.agriculture.HempCropBlock;
 import com.supertechgroup.core.fluids.BlockModFluid;
 import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
@@ -49,6 +53,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -93,7 +98,16 @@ public class ModRegistry {
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
 
+	public static CottonCropBlock cottonCrop;
+	public static HempCropBlock hempCrop;
+
 	public static ArrayList<ModFluid> fluids = new ArrayList<>();
+
+	public static Item itemCotton;
+	public static Item itemHempSeed;
+
+	public static Block fertileBlock;
+	public static FertilizerItem itemFertilizer;
 
 	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
 			int temperature, boolean hasBlock) {
@@ -176,6 +190,8 @@ public class ModRegistry {
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
+		itemFertilizer.registerItemModel();
+		((FertileFarmlandBlock) fertileBlock).registerModels();
 
 		for (ModFluid fluid : fluids) {
 			if (fluid.hasBlock()) {
@@ -183,6 +199,11 @@ public class ModRegistry {
 
 			}
 		}
+
+		ModelLoader.setCustomModelResourceLocation(itemCotton, 0,
+				new ModelResourceLocation("supertechcore:cotton", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(itemHempSeed, 0,
+				new ModelResourceLocation("supertechcore:seed_hemp", "inventory"));
 
 	}
 
@@ -214,6 +235,16 @@ public class ModRegistry {
 				.register(new ItemBlock(researchStation).setRegistryName(researchStation.getRegistryName()));
 		event.getRegistry().register(researchStation);
 		GameRegistry.registerTileEntity(TileEntityResearchStation.class, researchStation.getRegistryName());
+
+		cottonCrop = new CottonCropBlock();
+		event.getRegistry().register(cottonCrop);
+
+		hempCrop = new HempCropBlock();
+		event.getRegistry().register(hempCrop);
+
+		fertileBlock = new FertileFarmlandBlock();
+		ForgeRegistries.ITEMS.register(new ItemBlock(fertileBlock).setRegistryName(fertileBlock.getRegistryName()));
+		event.getRegistry().register(fertileBlock);
 
 		// Rocks
 
@@ -296,10 +327,17 @@ public class ModRegistry {
 
 		itemTech = new SuperTechItem();
 		itemResearchBook = new ItemResearchBook();
+		itemCotton = new ItemSeeds(cottonCrop, Blocks.FARMLAND).setUnlocalizedName("cotton")
+				.setRegistryName(Reference.MODID, "cotton");
+		itemHempSeed = new ItemSeeds(hempCrop, Blocks.FARMLAND).setUnlocalizedName("hemp_seed")
+				.setRegistryName(Reference.MODID, "hempSeed");
+		itemFertilizer = new FertilizerItem();
 
-		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor);
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton, itemHempSeed,
+				itemFertilizer);
 
 		itemTech.setupDictionary();
+
 	}
 
 	@SubscribeEvent

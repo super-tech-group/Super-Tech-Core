@@ -12,9 +12,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class SuperTechItem extends ItemBase {
+
 	public enum Types {
-		BASIC_CIRCUIT, ADVANCED_CIRCUIT, ELITE_CIRCUIT, ULTIMATE_CIRCUIT, BASIC_CASING, SMALL_POWER_UNIT,
-		HEATING_ELEMENT, SLAG, FLUX, FIRECLAY, FIREBRICK, UNKNOWN
+		UNKNOWN, BASIC_CIRCUIT, ADVANCED_CIRCUIT, ELITE_CIRCUIT, ULTIMATE_CIRCUIT, BASIC_CASING, SMALL_POWER_UNIT,
+		HEATING_ELEMENT, SLAG, FLUX, FIRECLAY, FIREBRICK, WOOD_PULP, HEMP_FIBER
 	}
 
 	public SuperTechItem() {
@@ -33,6 +34,7 @@ public class SuperTechItem extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+
 		for (int i = 0; i < Types.values().length; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
@@ -40,6 +42,7 @@ public class SuperTechItem extends ItemBase {
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
+
 		Types metadata = stack.getMetadata() < Types.values().length ? Types.values()[stack.getMetadata()]
 				: Types.UNKNOWN;
 		return super.getUnlocalizedName() + "." + metadata.toString().toLowerCase();
@@ -62,5 +65,7 @@ public class SuperTechItem extends ItemBase {
 		OreDictionary.registerOre("heatingElement", new ItemStack(this, 1, Types.HEATING_ELEMENT.ordinal()));
 		OreDictionary.registerOre("slag", new ItemStack(this, 1, Types.SLAG.ordinal()));
 		OreDictionary.registerOre("flux", new ItemStack(this, 1, Types.FLUX.ordinal()));
+		OreDictionary.registerOre("woodPulp", new ItemStack(this, 1, Types.WOOD_PULP.ordinal()));
+
 	}
 }

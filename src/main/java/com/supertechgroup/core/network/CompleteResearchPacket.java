@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
 
-import com.supertechgroup.core.SuperTechCoreMod;
 import com.supertechgroup.core.integration.jei.JEIMainPlugin;
 import com.supertechgroup.core.research.IUnlockable;
 import com.supertechgroup.core.research.Research;
@@ -27,24 +26,20 @@ public class CompleteResearchPacket implements IMessage {
 
 		@Override
 		public IMessage onMessage(CompleteResearchPacket message, MessageContext ctx) {
-			if (SuperTechCoreMod.proxy.getWorld(null) != null) {
-				NBTTagList list = message.tag.getTagList("complete", Constants.NBT.TAG_STRING);
-				list.forEach((cr) -> {
-					System.out.println("Completing client-side: " + cr);
-					Research r = Research.REGISTRY.getValue(new ResourceLocation(((NBTTagString) cr).getString()));
-					clientCompleted.add(r);
-				});
-				GameRegistry.findRegistry(IRecipe.class).forEach((iRecipe) -> {
-					if (iRecipe instanceof IUnlockable) {
-						IUnlockable unlockable = (IUnlockable) iRecipe;
-						if (unlockable.isUnlocked()) {
-							JEIMainPlugin.handleItemBlacklisting(iRecipe.getRecipeOutput(), false);
-						}
+			NBTTagList list = message.tag.getTagList("complete", Constants.NBT.TAG_STRING);
+			list.forEach((cr) -> {
+				System.out.println("Completing client-side: " + cr);
+				Research r = Research.REGISTRY.getValue(new ResourceLocation(((NBTTagString) cr).getString()));
+				clientCompleted.add(r);
+			});
+			GameRegistry.findRegistry(IRecipe.class).forEach((iRecipe) -> {
+				if (iRecipe instanceof IUnlockable) {
+					IUnlockable unlockable = (IUnlockable) iRecipe;
+					if (unlockable.isUnlocked()) {
+						JEIMainPlugin.handleItemBlacklisting(iRecipe.getRecipeOutput(), false);
 					}
-				});
-
-			}
-
+				}
+			});
 			return null;
 		}
 

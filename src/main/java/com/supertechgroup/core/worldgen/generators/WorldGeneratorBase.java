@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.worldgen.OreSavedData;
 import com.supertechgroup.core.worldgen.ores.Ore;
@@ -77,8 +76,7 @@ public abstract class WorldGeneratorBase {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator,
 			IChunkProvider chunkProvider) {
 		if (dims.contains(world.provider.getDimension())) {
-			BlockPos pos = new BlockPos(chunkX * 16 + world.rand.nextInt(8) + 4, 0,
-					chunkZ * 16 + world.rand.nextInt(8) + 4);
+			BlockPos pos = new BlockPos(chunkX * 16, 0, chunkZ * 16);
 			generate(world, random, pos);
 		}
 	}
@@ -112,38 +110,6 @@ public abstract class WorldGeneratorBase {
 						newOres, state.getBlockHardness(world, pos));
 				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 
-			}
-		} else if (Config.nether.containsKey(state) && state.equals(generatorStart)) {
-			ArrayList<ResourceLocation> oresAdded = new ArrayList<>();
-			ores.forEach((Ore k, Double v) -> {
-				if (world.rand.nextDouble() < v) {
-					oresAdded.add(k.getRegistryName());
-				}
-			});
-			if (!oresAdded.isEmpty()) {
-				ResourceLocation[] newOres = new ResourceLocation[oresAdded.size()];
-				for (int i = 0; i < newOres.length; i++) {
-					newOres[i] = oresAdded.get(i);
-				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.nether.get(state), newOres,
-						state.getBlockHardness(world, pos));
-				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
-			}
-		} else if (Config.end.containsKey(state) && state.equals(generatorStart)) {
-			ArrayList<ResourceLocation> oresAdded = new ArrayList<>();
-			ores.forEach((Ore k, Double v) -> {
-				if (world.rand.nextDouble() < v) {
-					oresAdded.add(k.getRegistryName());
-				}
-			});
-			if (!oresAdded.isEmpty()) {
-				ResourceLocation[] newOres = new ResourceLocation[oresAdded.size()];
-				for (int i = 0; i < newOres.length; i++) {
-					newOres[i] = oresAdded.get(i);
-				}
-				OreSavedData.get(world).setData(pos.getX(), pos.getY(), pos.getZ(), Config.end.get(state), newOres,
-						state.getBlockHardness(world, pos));
-				world.setBlockState(pos, ModRegistry.superore.getDefaultState());
 			}
 		} else if (state.getBlock() == ModRegistry.superore) {
 			if (OreSavedData.get(world).getBase(pos).equals(RockManager.getTexture(generatorStart))) {

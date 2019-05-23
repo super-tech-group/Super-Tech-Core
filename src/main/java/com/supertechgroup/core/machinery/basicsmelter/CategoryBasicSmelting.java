@@ -21,13 +21,8 @@ public class CategoryBasicSmelting implements IRecipeCategory<WrapperBasicSmelti
 	}
 
 	@Override
-	public String getUid() {
-		return Reference.CATEGORY_BASIC_SMELTING;
-	}
-
-	@Override
-	public String getTitle() {
-		return localizedName;
+	public IDrawable getBackground() {
+		return background;
 	}
 
 	@Override
@@ -36,8 +31,13 @@ public class CategoryBasicSmelting implements IRecipeCategory<WrapperBasicSmelti
 	}
 
 	@Override
-	public IDrawable getBackground() {
-		return background;
+	public String getTitle() {
+		return localizedName;
+	}
+
+	@Override
+	public String getUid() {
+		return Reference.CATEGORY_BASIC_SMELTING;
 	}
 
 	@Override

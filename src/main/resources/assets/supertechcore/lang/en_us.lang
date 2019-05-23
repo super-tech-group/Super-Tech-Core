@@ -44,6 +44,8 @@ tile.supertechcore.scoriacobble.name=Scoria Cobblestone
 tile.supertechcore.shalecobble.name=Shale Cobblestone
 tile.supertechcore.slatecobble.name=Slate Cobblestone
 
+tile.fertileFarmland.name=Fertilized Farmland
+
 item.supertechcore.itemTechComponent.basic_circuit.name=Basic Circuit
 item.supertechcore.itemTechComponent.advanced_circuit.name=Advanced Circuit
 item.supertechcore.itemTechComponent.elite_circuit.name=Elite Circuit
@@ -56,9 +58,17 @@ item.supertechcore.itemTechComponent.flux.name=Flux
 item.supertechcore.itemTechComponent.fireclay.name=Fireclay
 item.supertechcore.itemTechComponent.firebrick.name=Firebrick
 item.supertechcore.itemConstructor.name=Constructor
+item.supertechcore.itemTechComponent.wood_pulp=Wood Pulp
+item.supertechcore.itemTechComponent.hemp_fiber=Hemp Fiber
+
 item.supertechcore.researchBook.name=Research Notebook
 
+item.cotton.name=Cotton
+item.hemp_seed.name=Hemp Seeds
+
 gui.supertechcore.basicsmelting.name=Basic Smelting
+fluid.oil=Crude Oil
+tile.fluid.oil.name=Crude Oil
 
 #generic titles
 item.supertechcore.blade.name=%s Blade

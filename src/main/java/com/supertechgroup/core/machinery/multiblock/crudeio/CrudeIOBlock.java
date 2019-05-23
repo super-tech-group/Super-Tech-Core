@@ -24,6 +24,7 @@ public class CrudeIOBlock extends Block implements ITileEntityProvider {
 		super(Material.ROCK);
 		this.setUnlocalizedName(Reference.MODID + ".crudeIO");
 		this.setRegistryName(Reference.MODID, "crudeIO");
+		this.setHardness(2.0f);
 	}
 
 	@Override

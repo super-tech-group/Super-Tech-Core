@@ -35,7 +35,7 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		Material building;
 
 		public MaterialBuilder(String name) {
-			building = new Material(name, 0x000000, -1, -1, 5.0, 999999, 10, 30, 15, 200, 150);
+			building = new Material(name, 0x000000, -1, 0, 5.0, 999999, 10, 30, 15, 200, 150);
 		}
 
 		public Material build() {
@@ -411,6 +411,12 @@ public class Material extends IForgeRegistryEntry.Impl<Material> {
 		subItemStack = new ItemStack(itemPickaxe, 1, MaterialTool.PICKAXE);
 		OreDictionary.registerOre("pickaxe" + getName(), subItemStack);
 		OreDictionary.registerOre("toolPickaxe", subItemStack);
+		subItemStack = new ItemStack(itemPickaxe, 1, MaterialTool.SHOVEL);
+		OreDictionary.registerOre("shovel" + getName(), subItemStack);
+		OreDictionary.registerOre("toolShovel", subItemStack);
+		subItemStack = new ItemStack(itemPickaxe, 1, MaterialTool.AXE);
+		OreDictionary.registerOre("axe" + getName(), subItemStack);
+		OreDictionary.registerOre("toolAxe", subItemStack);
 		subItemStack = new ItemStack(itemPliers, 1, MaterialTool.PLIERS);
 		OreDictionary.registerOre("pliers" + getName(), subItemStack);
 		OreDictionary.registerOre("toolPliers", subItemStack);

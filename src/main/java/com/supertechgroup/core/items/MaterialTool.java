@@ -146,16 +146,16 @@ public class MaterialTool extends ItemTool {
 		int ret = -1;
 		switch (toolType) {
 		case PICKAXE:
-			ret = toolClass.equalsIgnoreCase("pickaxe") ? material.getToolLevel() : -1;
+			ret = toolClass.equalsIgnoreCase("pickaxe") ? material.getToolLevel() : 1;
 			break;
 		case SHOVEL:
-			ret = toolClass.equalsIgnoreCase("shovel") ? material.getToolLevel() : -1;
+			ret = toolClass.equalsIgnoreCase("shovel") ? material.getToolLevel() : 1;
 			break;
 		case AXE:
-			ret = toolClass.equalsIgnoreCase("axe") ? material.getToolLevel() : -1;
+			ret = toolClass.equalsIgnoreCase("axe") ? material.getToolLevel() : 1;
 			break;
 		case HAMMER:
-			ret = toolClass.equalsIgnoreCase("hammer") ? material.getToolLevel() : -1;
+			ret = toolClass.equalsIgnoreCase("hammer") ? material.getToolLevel() : 1;
 			break;
 		}
 		return ret;

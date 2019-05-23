@@ -12,6 +12,7 @@ public class Reference {
 	public static final String RESEARCH_DATA_NAME = Reference.MODID + "_ResearchData";
 
 	public static final String RESEARCH_CRAFTING = "crafting";
+	public static final String RESEARCH_VANILLA_FURNACE = "furnace";
 	public static final String RESEARCH_SMELTING = "smelting";
 	public static final String RESEARCH_TOOL_USE = "toolUsage";
 
@@ -19,8 +20,8 @@ public class Reference {
 	public static final int GUI_CRUDE_HEATER = 1;
 
 	public static final ResourceLocation EMPTY_RESOURCE = new ResourceLocation("void:null");
-	
+
 	public static final String CATEGORY_BASIC_SMELTING = "SuperTechCore.Basic_Smelting";
-	
-	public static final ResourceLocation GUI_JEI_1 = new ResourceLocation(MODID,"textures/gui/jei_gui_1.png");
+
+	public static final ResourceLocation GUI_JEI_1 = new ResourceLocation(MODID, "textures/gui/jei_gui_1.png");
 }

@@ -1,7 +1,6 @@
 package com.supertechgroup.core.machinery.multiblock.crudeheater;
 
 import com.supertechgroup.core.Reference;
-import com.supertechgroup.core.machinery.multiblock.TileMultiBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -25,6 +24,7 @@ public class CrudeHeaterBlock extends Block implements ITileEntityProvider {
 		super(Material.ROCK);
 		this.setUnlocalizedName(Reference.MODID + ".crudeHeater");
 		this.setRegistryName(Reference.MODID, "crudeHeater");
+		this.setHardness(2.0f);
 	}
 
 	@Override

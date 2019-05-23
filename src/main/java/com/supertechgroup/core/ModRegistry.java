@@ -1,10 +1,18 @@
 package com.supertechgroup.core;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.agriculture.CottonCropBlock;
+import com.supertechgroup.core.agriculture.FertileFarmlandBlock;
+import com.supertechgroup.core.agriculture.FertilizerItem;
+import com.supertechgroup.core.agriculture.HempCropBlock;
+import com.supertechgroup.core.fluids.BlockModFluid;
+import com.supertechgroup.core.fluids.ModFluid;
 import com.supertechgroup.core.items.ItemConstructor;
 import com.supertechgroup.core.items.ItemResearchBook;
+import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
@@ -16,14 +24,18 @@ import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallTileEntit
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.recipies.MaterialToolIngredient;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
 import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
+import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
+import com.supertechgroup.core.worldgen.generators.WorldGeneratorKimberlite;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
+import com.supertechgroup.core.worldgen.ores.NativeMetal;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.ores.OreBlock;
 import com.supertechgroup.core.worldgen.ores.OreItem;
@@ -32,6 +44,7 @@ import com.supertechgroup.core.worldgen.rocks.RockManager;
 import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -40,12 +53,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -82,6 +97,29 @@ public class ModRegistry {
 	public static CrudeIOBlock crudeIOBlock;
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
+
+	public static CottonCropBlock cottonCrop;
+	public static HempCropBlock hempCrop;
+
+	public static ArrayList<ModFluid> fluids = new ArrayList<>();
+
+	public static Item itemCotton;
+	public static Item itemHempSeed;
+
+	public static Block fertileBlock;
+	public static FertilizerItem itemFertilizer;
+
+	private static void createRegisterFluid(String name, int density, boolean gaseous, int luminosity, int viscosity,
+			int temperature, boolean hasBlock) {
+		ModFluid fluid = (ModFluid) new ModFluid(name,
+				new ResourceLocation(Reference.MODID, "fluids/" + name + "_still"),
+				new ResourceLocation(Reference.MODID, "fluids/" + name + "_flow")).setHasBlock(hasBlock)
+						.setMaterial(net.minecraft.block.material.Material.WATER).setDensity(density)
+						.setGaseous(gaseous).setLuminosity(luminosity).setViscosity(viscosity)
+						.setTemperature(temperature);
+		FluidRegistry.registerFluid(fluid);
+		fluids.add(fluid);
+	}
 
 	/**
 	 *
@@ -152,6 +190,21 @@ public class ModRegistry {
 		crudeIOBlock.registerModels();
 		crudeWallBlock.registerModels();
 		crudeHeaterBlock.registerModels();
+		itemFertilizer.registerItemModel();
+		((FertileFarmlandBlock) fertileBlock).registerModels();
+
+		for (ModFluid fluid : fluids) {
+			if (fluid.hasBlock()) {
+				((BlockModFluid) fluid.getBlock()).registerModels();
+
+			}
+		}
+
+		ModelLoader.setCustomModelResourceLocation(itemCotton, 0,
+				new ModelResourceLocation("supertechcore:cotton", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(itemHempSeed, 0,
+				new ModelResourceLocation("supertechcore:seed_hemp", "inventory"));
+
 	}
 
 	@SubscribeEvent
@@ -183,6 +236,16 @@ public class ModRegistry {
 		event.getRegistry().register(researchStation);
 		GameRegistry.registerTileEntity(TileEntityResearchStation.class, researchStation.getRegistryName());
 
+		cottonCrop = new CottonCropBlock();
+		event.getRegistry().register(cottonCrop);
+
+		hempCrop = new HempCropBlock();
+		event.getRegistry().register(hempCrop);
+
+		fertileBlock = new FertileFarmlandBlock();
+		ForgeRegistries.ITEMS.register(new ItemBlock(fertileBlock).setRegistryName(fertileBlock.getRegistryName()));
+		event.getRegistry().register(fertileBlock);
+
 		// Rocks
 
 		RockManager.addRockTypes(
@@ -190,21 +253,26 @@ public class ModRegistry {
 				"igneous", "andesite", "vanilla", "extrusive", "intermediate");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE),
-				new ResourceLocation("minecraft:blocks/andesite"));
+				new ResourceLocation("minecraft:blocks/stone_andesite"));
 		createStoneType("basalt", 5, 100, 2, event, "igneous", "extrusive");
-		RockManager.addRockTypes(Blocks.SANDSTONE.getDefaultState(), "sedimentary", "sandstone", "vanilla", "clastic");
+		RockManager.addRockTypes(
+				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
+				"sedimentary", "sandstone", "vanilla", "clastic");
+		RockManager.addTextureOverride(
+				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
+				new ResourceLocation("minecraft:blocks/sandstone_smooth"));
 		RockManager.addRockTypes(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE), "igneous",
 				"diorite", "vanilla", "intrusive", "intermediate");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE),
-				new ResourceLocation("minecraft:blocks/diorite"));
+				new ResourceLocation("minecraft:blocks/stone_diorite"));
 		RockManager.addRockTypes(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), "igneous",
 				"granite", "vanilla", "felsic", "intrusive");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE),
-				new ResourceLocation("minecraft:blocks/granite"));
+				new ResourceLocation("minecraft:blocks/stone_granite"));
 		createStoneType("rhyolite", 1.5, 10, 0, event, "igneous", "felsic", "extrusive");
 		createStoneType("gabbro", 1.5, 10, 0, event, "igneous", "mafic", "intrusive");
 		createStoneType("scoria", 1.5, 10, 0, event, "igneous", "mafic", "extrusive");
@@ -231,6 +299,21 @@ public class ModRegistry {
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "limestonecobble")));
 		OreDictionary.registerOre("fluxStone",
 				event.getRegistry().getValue(new ResourceLocation(Reference.MODID, "dolomitecobble")));
+
+		// fluids
+		for (ModFluid fluid : fluids) {
+			if (fluid.hasBlock()) {
+				BlockModFluid bmf = new BlockModFluid(fluid, net.minecraft.block.material.Material.WATER);
+
+				event.getRegistry().register(bmf);
+
+				ForgeRegistries.ITEMS.register(new ItemBlock(bmf).setRegistryName(bmf.getRegistryName()));
+			}
+		}
+	}
+
+	public static void registerFluids() {
+		createRegisterFluid("oil", 880, false, 0, 1200, 300, true);
 	}
 
 	public static void registerItemModels() {
@@ -244,10 +327,17 @@ public class ModRegistry {
 
 		itemTech = new SuperTechItem();
 		itemResearchBook = new ItemResearchBook();
+		itemCotton = new ItemSeeds(cottonCrop, Blocks.FARMLAND).setUnlocalizedName("cotton")
+				.setRegistryName(Reference.MODID, "cotton");
+		itemHempSeed = new ItemSeeds(hempCrop, Blocks.FARMLAND).setUnlocalizedName("hemp_seed")
+				.setRegistryName(Reference.MODID, "hempSeed");
+		itemFertilizer = new FertilizerItem();
 
-		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor);
+		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton, itemHempSeed,
+				itemFertilizer);
 
 		itemTech.setupDictionary();
+
 	}
 
 	@SubscribeEvent
@@ -269,6 +359,10 @@ public class ModRegistry {
 				.setDensity(8.96).setThermalExpansion(16.5).setThermalConductivity(401).setElectricalResistance(16.78)
 				.setYoungsModulus(119).setShearModulus(48).setBulkModulus(140).setHarvestLevel(1).build();
 		copper.registerMaterial();
+		new NativeMetal(copper).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativecopper"))),
+				"nativeCopper", new int[] { 0 }, 10, 1, 5, 2, "sedimentary"));
 		new MaterialBuilder("Zinc").setColor(0xbac4cb).setDensity(7.14).setThermalExpansion(30.2).setSpecificHeat(25.47)
 				.setThermalConductivity(116).setElectricalResistance(59.0).setYoungsModulus(108).setShearModulus(43)
 				.setBulkModulus(70).setHarvestLevel(1).build().registerMaterial();
@@ -294,6 +388,10 @@ public class ModRegistry {
 				.setThermalConductivity(429).setElectricalResistance(15.87).setYoungsModulus(83).setSpecificHeat(25.35)
 				.setShearModulus(30).setBulkModulus(100).setHarvestLevel(2).build();
 		silver.registerMaterial();
+		new NativeMetal(silver).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativesilver"))),
+				"nativeSilver", new int[] { 0 }, 10, 1, 2, 2, "sedimentary"));
 		new MaterialBuilder("Tellurium").setColor(0xb5b5bd).setDensity(6.24).setThermalExpansion(18)
 				.setThermalConductivity(2.5).setElectricalResistance(10000).setYoungsModulus(43).setShearModulus(16)
 				.setSpecificHeat(25.73).setBulkModulus(65).setHarvestLevel(2).build().registerMaterial();
@@ -311,6 +409,10 @@ public class ModRegistry {
 				.setThermalConductivity(318).setElectricalResistance(22.14).setYoungsModulus(79).setSpecificHeat(25.418)
 				.setShearModulus(27).setBulkModulus(180).setHarvestLevel(3).build();
 		gold.registerMaterial();
+		new NativeMetal(gold).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativegold"))),
+				"nativeGold", new int[] { 0 }, 10, 1, 2, 2, "sedimentary"));
 		Material lead = new MaterialBuilder("Lead").setColor(0x474c4d).setDensity(11.34).setThermalExpansion(28.9)
 				.setThermalConductivity(35.3).setElectricalResistance(208).setYoungsModulus(16).setSpecificHeat(26.665)
 				.setShearModulus(6).setBulkModulus(46).setHarvestLevel(3).build();
@@ -441,7 +543,7 @@ public class ModRegistry {
 		new Ore("Chromite", 0xC0C0CC).registerOre();// iron, chromium. potential for magnesium
 		new Ore("Cinnabar", 0x8b0017).registerOre();// mercury, sulfur
 		new Ore("Cobaltite", 0xd2b48c).registerOre();// cobalt, arsenic, sulfur; small percentage of iron and nickel
-		new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
+		Ore galena = new Ore("Galena", 0xbeb2b2).registerOre();// silver/lead ore
 		new Ore("Hematite", 0x101c1f).registerOre();// iron ore
 		new Ore("Ilmenite", 0x323230).registerOre();// iron, titanium
 		Ore sphalerite = new Ore("Sphalerite", 0x323230).registerOre();// zinc, sulfur, iron.
@@ -484,19 +586,22 @@ public class ModRegistry {
 		}.registerOre();
 
 		// advanced ore dictionary stuff
-		ResearchTasks.addTask(new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"));
-		ResearchTasks.addTask(new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
-		ResearchTasks.addTask(new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"));
-		ResearchTasks.addTask(new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED),
-				new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedTinOre",
+				new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedVopprtOre",
+				new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedCopperOre",
+				new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedZincOre",
+				new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "crushedLeadOre",
+				new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED));
 
 		OreDictionary.registerOre("crushedTinOre", new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED));
 		OreDictionary.registerOre("crushedCopperOre", new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED));
-		OreDictionary.registerOre("crushedCopperOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedZincOre", new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED));
+		OreDictionary.registerOre("crushedLeadOre", new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED));
 
 		// setup ore veins
 		CommonProxy.parsed.add(new WorldGeneratorPlate(
@@ -556,6 +661,11 @@ public class ModRegistry {
 		CommonProxy.parsed.add(new WorldGeneratorCluster(
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:lapis"))),
 				"lapis", new int[] { 0 }, 5, 1, 7, 2, "intrusive", "marble"));
+
+		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
+				FluidRegistry.getFluid("oil")));
+
+		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 20));
 	}
 
 	@SubscribeEvent
@@ -575,9 +685,32 @@ public class ModRegistry {
 
 	@SubscribeEvent
 	public static void registerResearch(RegistryEvent.Register<Research> event) {
+		registerResearchTasks();
 		Research bronze = new Research("bronze");
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedTinOre"), 5);
 		bronze.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
 		bronze.registerResearch();
+
+		Research brass = new Research("brass");
+		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedZincOre"), 5);
+		brass.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "crushedCopperOre"), 5);
+		brass.registerResearch();
+
+		Research metalTools = new Research("metalTools");
+		metalTools.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"), 5);
+		metalTools.registerResearch();
+	}
+
+	private static void registerResearchTasks() {
+
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking", new MaterialToolIngredient(MaterialTool.AXE));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.HAMMER));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.SHOVEL));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredient(MaterialTool.PICKAXE));
+
+		ResearchTasks.addTask(Reference.RESEARCH_VANILLA_FURNACE, "potato", new ItemStack(Items.BAKED_POTATO));
 	}
 }

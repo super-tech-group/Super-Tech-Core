@@ -1,0 +1,6 @@
+{
+    "parent": "block/crop",
+    "textures": {
+        "crop": "supertechcore:blocks/cotton_stage_0"
+    }
+}

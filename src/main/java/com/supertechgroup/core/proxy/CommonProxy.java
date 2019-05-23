@@ -425,9 +425,9 @@ public abstract class CommonProxy {
 
 		Ore galena = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":galena"));
 		BasicSmelterRecipe galenaSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1,  Types.FLUX.ordinal()),
 						new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1,  Types.SLAG.ordinal()),
 				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 1423, 23.12, 345.55);
 		BasicSmelterRecipe.registerRecipe(galenaSmelt, new ResourceLocation(Reference.MODID, "crushed_galena"));
 		
@@ -443,10 +443,10 @@ public abstract class CommonProxy {
 		BasicSmelterRecipe.registerRecipe(bronzeSmelt, new ResourceLocation(Reference.MODID, "poor_bronze"));
 
 		BasicSmelterRecipe brassSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1,  Types.FLUX.ordinal()),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass"))
 								.getMaterialItem(), 1, MaterialItem.DIRTY) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1,  Types.SLAG.ordinal()),
 				new ItemStack(
 						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 5,
 						MaterialItem.NUGGET),
@@ -472,11 +472,11 @@ public abstract class CommonProxy {
 		recipeRegistry
 				.register(
 						new ShapelessOreRecipe(new ResourceLocation("paper"),
-								new ItemStack(ModRegistry.itemTech, 2, SuperTechItem.WOOD_PULP),
+								new ItemStack(ModRegistry.itemTech, 2,  Types.WOOD_PULP.ordinal()),
 								new Object[] { new OreIngredient("logWood"), new OreIngredient("toolHammer"),
 										new ItemStack(Items.WATER_BUCKET) }).setRegistryName(Reference.MODID,
 												"woodenPaper"));
-		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.WOOD_PULP),
+		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, Types.WOOD_PULP.ordinal()),
 				new ItemStack(Items.PAPER, 2), 0.15f);
 
 		ShapelessResearchRecipe dirtyBronzeDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),

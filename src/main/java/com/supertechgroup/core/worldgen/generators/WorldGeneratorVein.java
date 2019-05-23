@@ -3,7 +3,6 @@ package com.supertechgroup.core.worldgen.generators;
 import java.util.Map;
 import java.util.Random;
 
-import com.supertechgroup.core.worldgen.OreSavedData;
 import com.supertechgroup.core.worldgen.ores.Ore;
 
 import net.minecraft.block.state.IBlockState;
@@ -54,8 +53,6 @@ public class WorldGeneratorVein extends WorldGeneratorBase {
 				generateVein(worldIn, rand, position);
 			}
 		}
-
-		OreSavedData.get(worldIn).setChunkGenerated((position.getX() / 16), (position.getZ() / 16));
 		return true;
 	}
 

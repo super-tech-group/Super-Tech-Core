@@ -1,3 +1,5 @@
+generator.SuperTechWorld = Super Tech World
+
 tile.supertechcore.superore.name=Super Tech Ore
 tile.supertechcore.basicresearcher.name=Basic Research Station
 tile.supertechcore.multiwall.name=Multiblock Wall
@@ -44,20 +46,23 @@ tile.supertechcore.scoriacobble.name=Scoria Cobblestone
 tile.supertechcore.shalecobble.name=Shale Cobblestone
 tile.supertechcore.slatecobble.name=Slate Cobblestone
 
-tile.fertilefarmland.name=Fertilized Farmland
+tile.fertileFarmland.name=Fertilized Farmland
 
-item.supertechcore.itemTechComponent.circuitBasic.name=Basic Circuit
-item.supertechcore.itemTechComponent.circuitAdvanced.name=Advanced Circuit
-item.supertechcore.itemTechComponent.circuitElite.name=Elite Circuit
-item.supertechcore.itemTechComponent.circuitUltimate.name=Ultimate Circuit
-item.supertechcore.itemTechComponent.casingBasic.name=Basic Casing
-item.supertechcore.itemTechComponent.heatingElement.name=Heating Element
-item.supertechcore.itemTechComponent.powerUnitSmall.name=Small Power Unit
+item.supertechcore.itemTechComponent.basic_circuit.name=Basic Circuit
+item.supertechcore.itemTechComponent.advanced_circuit.name=Advanced Circuit
+item.supertechcore.itemTechComponent.elite_circuit.name=Elite Circuit
+item.supertechcore.itemTechComponent.ultimate_circuit.name=Ultimate Circuit
+item.supertechcore.itemTechComponent.basic_casing.name=Basic Casing
+item.supertechcore.itemTechComponent.heating_element.name=Heating Element
+item.supertechcore.itemTechComponent.small_power_unit.name=Small Power Unit
 item.supertechcore.itemTechComponent.slag.name=Slag
 item.supertechcore.itemTechComponent.flux.name=Flux
-item.supertechcore.itemTechComponent.fireClay.name=Fireclay
-item.supertechcore.itemTechComponent.fireBrick.name=Firebrick
+item.supertechcore.itemTechComponent.fireclay.name=Fireclay
+item.supertechcore.itemTechComponent.firebrick.name=Firebrick
 item.supertechcore.itemConstructor.name=Constructor
+item.supertechcore.itemTechComponent.wood_pulp=Wood Pulp
+item.supertechcore.itemTechComponent.hemp_fiber=Hemp Fiber
+
 item.supertechcore.researchBook.name=Research Notebook
 
 item.cotton.name=Cotton

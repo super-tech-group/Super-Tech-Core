@@ -1,6 +1,6 @@
 generator.SuperTechWorld = Super Tech World
 
-tile.supertechcore.superore.name=Super Tech Ore
+tile.supertechcoresuperore.name=Super Tech Ore
 tile.supertechcore.basicresearcher.name=Basic Research Station
 tile.supertechcore.multiwall.name=Multiblock Wall
 tile.supertechcore.researchStation.name=Research Station

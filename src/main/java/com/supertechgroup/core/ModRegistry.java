@@ -665,7 +665,7 @@ public class ModRegistry {
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:lapis"))),
 				"lapis", new int[] { 0 }, 5, 1, 7, 2, "intrusive", "marble"));
 
-		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
+		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 6, new String[] { "metamorphic" },
 				FluidRegistry.getFluid("oil")));
 
 		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 20));

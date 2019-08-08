@@ -68,7 +68,39 @@ public class ChunkProviderSuperTech implements IChunkGenerator {
 	private MapGenVillage villageGenerator = new MapGenVillage();
 	private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 	private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
-	private MapGenBase ravineGenerator = new MapGenRavine();
+	private MapGenBase ravineGenerator = new MapGenRavine() {
+		private boolean isExceptionBiome(net.minecraft.world.biome.Biome biome) {
+			if (biome == net.minecraft.init.Biomes.BEACH)
+				return true;
+			if (biome == net.minecraft.init.Biomes.DESERT)
+				return true;
+			if (biome == net.minecraft.init.Biomes.MUSHROOM_ISLAND)
+				return true;
+			if (biome == net.minecraft.init.Biomes.MUSHROOM_ISLAND_SHORE)
+				return true;
+			return false;
+		}
+
+		protected void digBlock(ChunkPrimer data, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop) {
+			net.minecraft.world.biome.Biome biome = world.getBiome(new BlockPos(x + chunkX * 16, 0, z + chunkZ * 16));
+			IBlockState state = data.getBlockState(x, y, z);
+			IBlockState top = isExceptionBiome(biome) ? Blocks.GRASS.getDefaultState() : biome.topBlock;
+			IBlockState filler = isExceptionBiome(biome) ? Blocks.DIRT.getDefaultState() : biome.fillerBlock;
+
+			if (state.getBlock() instanceof BlockRock || state.getBlock() == top.getBlock()
+					|| state.getBlock() == filler.getBlock()) {
+				if (y - 1 < 10) {
+					data.setBlockState(x, y, z, FLOWING_LAVA);
+				} else {
+					data.setBlockState(x, y, z, AIR);
+
+					if (foundTop && data.getBlockState(x, y - 1, z).getBlock() == filler.getBlock()) {
+						data.setBlockState(x, y - 1, z, top.getBlock().getDefaultState());
+					}
+				}
+			}
+		}
+	};
 	private StructureOceanMonument oceanMonumentGenerator = new StructureOceanMonument();
 	private Biome[] biomesForGeneration;
 	double[] mainNoiseRegion;
@@ -251,15 +283,15 @@ public class ChunkProviderSuperTech implements IChunkGenerator {
 				int c = 0;
 				for (int k = 255; k >= 0; k--) {
 					if (k <= rand.nextInt(5)) {
-						primer.setBlockState(i, k, j, Blocks.BEDROCK.getDefaultState());
+						primer.setBlockState(j, k, i, Blocks.BEDROCK.getDefaultState());
 					}
-					if (primer.getBlockState(i, k, j).getBlock().isOpaqueCube(primer.getBlockState(i, k, j))) {
+					if (primer.getBlockState(j, k, i).getBlock().isOpaqueCube(primer.getBlockState(j, k, i))) {
 						if (c == 0) {
 							c++;
-							primer.setBlockState(i, k, j, biome.topBlock);
+							primer.setBlockState(j, k, i, biome.topBlock);
 						} else if (c < 3) {
 							c++;
-							primer.setBlockState(i, k, j, biome.fillerBlock);
+							primer.setBlockState(j, k, i, biome.fillerBlock);
 						}
 					}
 

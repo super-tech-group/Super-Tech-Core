@@ -43,6 +43,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -321,8 +322,7 @@ public abstract class CommonProxy {
 								new OreIngredient("ingotTin"), new OreIngredient("toolHammer") })
 										.setRegistryName(Reference.MODID, "tinPlate"));
 
-		Item leadItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":lead"))
-				.getMaterialItem();
+		Item leadItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":lead")).getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapedOreRecipe(new ResourceLocation("ingots"),
 						new ItemStack(leadItem, 1, MaterialItem.INGOT),
@@ -331,11 +331,12 @@ public abstract class CommonProxy {
 		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("nuggets"),
 				new ItemStack(leadItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotLead") })
 						.setRegistryName(Reference.MODID, "leadNugget"));
-		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("plates"),
-				new ItemStack(leadItem, 1, MaterialItem.PLATE), new Object[] { new OreIngredient("ingotLead"),
-						new OreIngredient("ingotLead"), new OreIngredient("toolHammer") })
-								.setRegistryName(Reference.MODID, "leadPlate"));
-		
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapelessOreRecipe(new ResourceLocation("plates"),
+						new ItemStack(leadItem, 1, MaterialItem.PLATE), new Object[] { new OreIngredient("ingotLead"),
+								new OreIngredient("ingotLead"), new OreIngredient("toolHammer") })
+										.setRegistryName(Reference.MODID, "leadPlate"));
+
 		Item copperItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":copper"))
 				.getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
@@ -425,12 +426,12 @@ public abstract class CommonProxy {
 
 		Ore galena = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":galena"));
 		BasicSmelterRecipe galenaSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1,  Types.FLUX.ordinal()),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1,  Types.SLAG.ordinal()),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 1423, 23.12, 345.55);
 		BasicSmelterRecipe.registerRecipe(galenaSmelt, new ResourceLocation(Reference.MODID, "crushed_galena"));
-		
+
 		BasicSmelterRecipe bronzeSmelt = new BasicSmelterRecipe(
 				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze"))
@@ -443,10 +444,10 @@ public abstract class CommonProxy {
 		BasicSmelterRecipe.registerRecipe(bronzeSmelt, new ResourceLocation(Reference.MODID, "poor_bronze"));
 
 		BasicSmelterRecipe brassSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1,  Types.FLUX.ordinal()),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass"))
 								.getMaterialItem(), 1, MaterialItem.DIRTY) },
-				new ItemStack(ModRegistry.itemTech, 1,  Types.SLAG.ordinal()),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(
 						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 5,
 						MaterialItem.NUGGET),
@@ -472,7 +473,7 @@ public abstract class CommonProxy {
 		recipeRegistry
 				.register(
 						new ShapelessOreRecipe(new ResourceLocation("paper"),
-								new ItemStack(ModRegistry.itemTech, 2,  Types.WOOD_PULP.ordinal()),
+								new ItemStack(ModRegistry.itemTech, 2, Types.WOOD_PULP.ordinal()),
 								new Object[] { new OreIngredient("logWood"), new OreIngredient("toolHammer"),
 										new ItemStack(Items.WATER_BUCKET) }).setRegistryName(Reference.MODID,
 												"woodenPaper"));
@@ -511,13 +512,27 @@ public abstract class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(SuperTechCoreMod.instance, new GuiProxy());
 
-		// remove unwanted vanilla items
+		// remove unwanted vanilla crafting recipies
 		ForgeRegistry<IRecipe> recipeRegistry = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
 		List<Item> disabledItems = Arrays.asList(ModRegistry.disabledVanillaItems);
+		List<Item> disabledRecipies = Arrays.asList(ModRegistry.disabledVanillaCrafting);
 		for (IRecipe r : Lists.newArrayList(recipeRegistry)) {
-			if (disabledItems.contains(r.getRecipeOutput().getItem())) {
+			if (disabledItems.contains(r.getRecipeOutput().getItem())
+					|| disabledRecipies.contains(r.getRecipeOutput().getItem())) {
 				recipeRegistry.remove(r.getRegistryName());
 			}
+		}
+
+		// remove vanilla smelting
+		ArrayList<ItemStack> toRemove = new ArrayList<>();
+		List<Item> disabledSmelting = Arrays.asList(ModRegistry.disabledVanillaSmelting);
+		FurnaceRecipes.instance().getSmeltingList().forEach((i, o) -> {
+			if (disabledSmelting.contains(o.getItem())) {
+				toRemove.add(i);
+			}
+		});
+		for (ItemStack i : toRemove) {
+			FurnaceRecipes.instance().getSmeltingList().remove(i);
 		}
 
 		// setup geology

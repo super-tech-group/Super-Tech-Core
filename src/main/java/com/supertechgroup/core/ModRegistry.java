@@ -32,8 +32,10 @@ import com.supertechgroup.core.research.researchstation.TileEntityResearchStatio
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
+import com.supertechgroup.core.worldgen.generators.WorldGeneratorKimberlite;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorPlate;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorVein;
+import com.supertechgroup.core.worldgen.ores.NativeMetal;
 import com.supertechgroup.core.worldgen.ores.Ore;
 import com.supertechgroup.core.worldgen.ores.OreBlock;
 import com.supertechgroup.core.worldgen.ores.OreItem;
@@ -42,6 +44,7 @@ import com.supertechgroup.core.worldgen.rocks.RockManager;
 import com.supertechgroup.core.worldgen.rocks.StateMapperRock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
@@ -250,21 +253,26 @@ public class ModRegistry {
 				"igneous", "andesite", "vanilla", "extrusive", "intermediate");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE),
-				new ResourceLocation("minecraft:blocks/andesite"));
+				new ResourceLocation("minecraft:blocks/stone_andesite"));
 		createStoneType("basalt", 5, 100, 2, event, "igneous", "extrusive");
-		RockManager.addRockTypes(Blocks.SANDSTONE.getDefaultState(), "sedimentary", "sandstone", "vanilla", "clastic");
+		RockManager.addRockTypes(
+				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
+				"sedimentary", "sandstone", "vanilla", "clastic");
+		RockManager.addTextureOverride(
+				Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH),
+				new ResourceLocation("minecraft:blocks/sandstone_smooth"));
 		RockManager.addRockTypes(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE), "igneous",
 				"diorite", "vanilla", "intrusive", "intermediate");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE),
-				new ResourceLocation("minecraft:blocks/diorite"));
+				new ResourceLocation("minecraft:blocks/stone_diorite"));
 		RockManager.addRockTypes(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), "igneous",
 				"granite", "vanilla", "felsic", "intrusive");
 		RockManager.addTextureOverride(
 				Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE),
-				new ResourceLocation("minecraft:blocks/granite"));
+				new ResourceLocation("minecraft:blocks/stone_granite"));
 		createStoneType("rhyolite", 1.5, 10, 0, event, "igneous", "felsic", "extrusive");
 		createStoneType("gabbro", 1.5, 10, 0, event, "igneous", "mafic", "intrusive");
 		createStoneType("scoria", 1.5, 10, 0, event, "igneous", "mafic", "extrusive");
@@ -351,6 +359,10 @@ public class ModRegistry {
 				.setDensity(8.96).setThermalExpansion(16.5).setThermalConductivity(401).setElectricalResistance(16.78)
 				.setYoungsModulus(119).setShearModulus(48).setBulkModulus(140).setHarvestLevel(1).build();
 		copper.registerMaterial();
+		new NativeMetal(copper).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativecopper"))),
+				"nativeCopper", new int[] { 0 }, 10, 1, 5, 2, "sedimentary"));
 		new MaterialBuilder("Zinc").setColor(0xbac4cb).setDensity(7.14).setThermalExpansion(30.2).setSpecificHeat(25.47)
 				.setThermalConductivity(116).setElectricalResistance(59.0).setYoungsModulus(108).setShearModulus(43)
 				.setBulkModulus(70).setHarvestLevel(1).build().registerMaterial();
@@ -376,6 +388,10 @@ public class ModRegistry {
 				.setThermalConductivity(429).setElectricalResistance(15.87).setYoungsModulus(83).setSpecificHeat(25.35)
 				.setShearModulus(30).setBulkModulus(100).setHarvestLevel(2).build();
 		silver.registerMaterial();
+		new NativeMetal(silver).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativesilver"))),
+				"nativeSilver", new int[] { 0 }, 10, 1, 2, 2, "sedimentary"));
 		new MaterialBuilder("Tellurium").setColor(0xb5b5bd).setDensity(6.24).setThermalExpansion(18)
 				.setThermalConductivity(2.5).setElectricalResistance(10000).setYoungsModulus(43).setShearModulus(16)
 				.setSpecificHeat(25.73).setBulkModulus(65).setHarvestLevel(2).build().registerMaterial();
@@ -393,6 +409,10 @@ public class ModRegistry {
 				.setThermalConductivity(318).setElectricalResistance(22.14).setYoungsModulus(79).setSpecificHeat(25.418)
 				.setShearModulus(27).setBulkModulus(180).setHarvestLevel(3).build();
 		gold.registerMaterial();
+		new NativeMetal(gold).registerOre();
+		CommonProxy.parsed.add(new WorldGeneratorCluster(
+				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:nativegold"))),
+				"nativeGold", new int[] { 0 }, 10, 1, 2, 2, "sedimentary"));
 		Material lead = new MaterialBuilder("Lead").setColor(0x474c4d).setDensity(11.34).setThermalExpansion(28.9)
 				.setThermalConductivity(35.3).setElectricalResistance(208).setYoungsModulus(16).setSpecificHeat(26.665)
 				.setShearModulus(6).setBulkModulus(46).setHarvestLevel(3).build();
@@ -644,6 +664,8 @@ public class ModRegistry {
 
 		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
 				FluidRegistry.getFluid("oil")));
+
+		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 20));
 	}
 
 	@SubscribeEvent

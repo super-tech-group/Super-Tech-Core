@@ -30,6 +30,7 @@ public class SuperTechItem extends ItemBase {
 	public static final int WOOD_PULP = 11;
 
 	public static final int HEMP_FIBER = 12;
+	public static final int CORN_COB = 13;
 
 	public SuperTechItem() {
 		super("itemTechComponent");
@@ -47,7 +48,7 @@ public class SuperTechItem extends ItemBase {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for (int i = 0; i < 13; i++) {
+		for (int i = 0; i < 14; i++) {
 			subItems.add(new ItemStack(this, 1, i));
 		}
 	}
@@ -82,6 +83,8 @@ public class SuperTechItem extends ItemBase {
 			return super.getUnlocalizedName() + ".woodPulp";
 		case HEMP_FIBER:
 			return super.getUnlocalizedName() + ".hempFiber";
+		case CORN_COB:
+			return super.getUnlocalizedName() + ".cornCob";
 		default:
 			return super.getUnlocalizedName();
 		}
@@ -114,6 +117,8 @@ public class SuperTechItem extends ItemBase {
 				new ModelResourceLocation("supertechcore:itemwoodPulp", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(this, HEMP_FIBER,
 				new ModelResourceLocation("supertechcore:itemHempFiber", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(this, CORN_COB,
+				new ModelResourceLocation("supertechcore:itemCornCob", "inventory"));
 	}
 
 	public void setupDictionary() {
@@ -127,5 +132,7 @@ public class SuperTechItem extends ItemBase {
 		OreDictionary.registerOre("slag", new ItemStack(this, 1, SLAG));
 		OreDictionary.registerOre("flux", new ItemStack(this, 1, FLUX));
 		OreDictionary.registerOre("woodPulp", new ItemStack(this, 1, WOOD_PULP));
+		OreDictionary.registerOre("cropCorn", new ItemStack(this, 1, CORN_COB));
+		OreDictionary.registerOre("cropHemp", new ItemStack(this, 1, HEMP_FIBER));
 	}
 }

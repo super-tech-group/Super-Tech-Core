@@ -10,6 +10,7 @@ import com.supertechgroup.core.Config;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.SuperTechCoreMod;
+import com.supertechgroup.core.agriculture.CornCropGenerator;
 import com.supertechgroup.core.agriculture.CottonGenerator;
 import com.supertechgroup.core.agriculture.HempGenerator;
 import com.supertechgroup.core.capabilities.team.ITeamCapability;
@@ -558,6 +559,7 @@ public abstract class CommonProxy {
 
 		GameRegistry.registerWorldGenerator(new CottonGenerator(), 0);
 		GameRegistry.registerWorldGenerator(new HempGenerator(), 0);
+		GameRegistry.registerWorldGenerator(new CornCropGenerator(), 0);
 	}
 
 	public abstract void registerItemRenderer(Item item, int i, String name);

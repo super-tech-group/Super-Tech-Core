@@ -57,11 +57,15 @@ item.supertechcore.itemTechComponent.slag.name=Slag
 item.supertechcore.itemTechComponent.flux.name=Flux
 item.supertechcore.itemTechComponent.fireClay.name=Fireclay
 item.supertechcore.itemTechComponent.fireBrick.name=Firebrick
+item.supertechcore.itemTechComponent.cornCob.name=Corn Cob
+
 item.supertechcore.itemConstructor.name=Constructor
+
 item.supertechcore.researchBook.name=Research Notebook
 
 item.cotton.name=Cotton
 item.hemp_seed.name=Hemp Seeds
+item.corn_seed.name=Corn Seeds
 
 gui.supertechcore.basicsmelting.name=Basic Smelting
 fluid.oil=Crude Oil

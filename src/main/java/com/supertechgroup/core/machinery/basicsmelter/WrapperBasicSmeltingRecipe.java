@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.supertechgroup.core.recipies.BasicSmelterRecipe;
+import com.supertechgroup.core.recipe.BasicSmelterRecipe;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;

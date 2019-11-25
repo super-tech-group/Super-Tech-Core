@@ -27,7 +27,7 @@ import com.supertechgroup.core.machinery.multiblock.crudewall.CrudeWallTileEntit
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.metallurgy.Material.MaterialBuilder;
 import com.supertechgroup.core.proxy.CommonProxy;
-import com.supertechgroup.core.recipies.MaterialToolIngredient;
+import com.supertechgroup.core.recipe.MaterialToolIngredientFactory;
 import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
@@ -731,14 +731,14 @@ public class ModRegistry {
 
 	private static void registerResearchTasks() {
 
-		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking", new MaterialToolIngredient(MaterialTool.AXE));
 		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
-				new MaterialToolIngredient(MaterialTool.HAMMER));
+				new MaterialToolIngredientFactory.MaterialToolIngredient(MaterialTool.AXE));
 		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
-				new MaterialToolIngredient(MaterialTool.SHOVEL));
+				new MaterialToolIngredientFactory.MaterialToolIngredient(MaterialTool.HAMMER));
 		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
-				new MaterialToolIngredient(MaterialTool.PICKAXE));
-
+				new MaterialToolIngredientFactory.MaterialToolIngredient(MaterialTool.SHOVEL));
+		ResearchTasks.addTask(Reference.RESEARCH_CRAFTING, "toolMaking",
+				new MaterialToolIngredientFactory.MaterialToolIngredient(MaterialTool.PICKAXE));
 		ResearchTasks.addTask(Reference.RESEARCH_VANILLA_FURNACE, "potato", new ItemStack(Items.BAKED_POTATO));
 	}
 }

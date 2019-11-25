@@ -148,4 +148,38 @@ public class MaterialItem extends ItemBase {
 		return "item.itemMaterialObject.ERROR_" + metadata;
 	}
 
+	public static int getTypeFromString(String string) {
+		switch (string.toLowerCase()) {
+		case "dust":
+			return DUST;
+		case "gear":
+			return GEAR;
+		case "nugget":
+			return NUGGET;
+		case "plate":
+			return PLATE;
+		case "rod":
+			return ROD;
+		case "clump":
+			return CLUMP;
+		case "crystal":
+			return CRYSTAL;
+		case "shard":
+			return SHARD;
+		case "wire":
+			return WIRE;
+		case "dirty":
+			return DIRTY;
+		case "foil":
+			return FOIL;
+		case "tiny":
+			return TINY;
+		case "coin":
+			return COIN;
+		case "blade":
+			return BLADE;
+		}
+		return 0;
+	}
+
 }

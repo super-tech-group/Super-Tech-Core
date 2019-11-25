@@ -5,7 +5,7 @@ import java.util.Collections;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.machinery.basicsmelter.CategoryBasicSmelting;
 import com.supertechgroup.core.machinery.basicsmelter.WrapperBasicSmeltingRecipe;
-import com.supertechgroup.core.recipies.BasicSmelterRecipe;
+import com.supertechgroup.core.recipe.BasicSmelterRecipe;
 
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModPlugin;

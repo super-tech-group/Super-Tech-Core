@@ -61,21 +61,7 @@ public class ResearchEvents {
 
 	@SubscribeEvent
 	public void onPlayerFurnaceSmelt(PlayerEvent.ItemSmeltedEvent event) {
-		ItemStack hand = event.player.getHeldItemOffhand();
-		if (hand.getItem().equals(ModRegistry.itemResearchBook) && hand.getTagCompound() != null
-				&& hand.getTagCompound().getInteger("remaining") > 0) {
-			NBTTagCompound tag = hand.getTagCompound();
-			NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
-			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(Reference.RESEARCH_VANILLA_FURNACE,
-					event.smelting);
-			if (!craftingResearch.toString().equals("null:void")) {
-				list.appendTag((new NBTTagString(craftingResearch.toString())));
-				tag.setInteger("remaining", tag.getInteger("remaining") - 1);
-				tag.setTag("tasks", list);
-				hand.setTagCompound(tag);
-			}
-		}
-
+		performBookUpdate(event.player, event.smelting, Reference.RESEARCH_VANILLA_FURNACE);
 	}
 
 	@SubscribeEvent
@@ -144,23 +130,40 @@ public class ResearchEvents {
 		EntityPlayer player = event.getEntityPlayer();
 		ITeamCapability team = player.getCapability(TeamCapabilityProvider.TEAM_CAP, null);
 		ITeamCapability oldTeam = event.getOriginal().getCapability(TeamCapabilityProvider.TEAM_CAP, null);
-		team.setTeam(oldTeam.getTeam());AnvilRepairEvent a;
+		team.setTeam(oldTeam.getTeam());
 	}
 
 	@SubscribeEvent
 	public void onPlayerCraft(PlayerEvent.ItemCraftedEvent event) {
-		ItemStack hand = event.player.getHeldItemOffhand();
-		if (hand.getItem().equals(ModRegistry.itemResearchBook) && hand.getTagCompound() != null
-				&& hand.getTagCompound().getInteger("remaining") > 0) {
-			NBTTagCompound tag = hand.getTagCompound();
-			NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
-			ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(Reference.RESEARCH_CRAFTING,
-					event.crafting);
-			if (!craftingResearch.toString().equals("null:void")) {
-				list.appendTag((new NBTTagString(craftingResearch.toString())));
-				tag.setInteger("remaining", tag.getInteger("remaining") - 1);
-				tag.setTag("tasks", list);
-				hand.setTagCompound(tag);
+		performBookUpdate(event.player, event.crafting, Reference.RESEARCH_CRAFTING);
+	}
+
+	/**
+	 * Update the first available research book in the players inventory
+	 * 
+	 * @param player The player that performed the event
+	 * @param result The resulting ItemStack
+	 * @param type   The type of research done, I.E. Reference.RESEARCH_CRAFTING
+	 */
+	private void performBookUpdate(EntityPlayer player, ItemStack result, String type) {
+		for (int i = 0; i < 36; i++) {
+			ItemStack hand = player.inventory.mainInventory.get(i);
+			try {
+				System.out.print(hand.getItem().getUnlocalizedName());
+			} catch (Exception ex) {
+			}
+			if (hand.getItem().equals(ModRegistry.itemResearchBook) && hand.getTagCompound() != null
+					&& hand.getTagCompound().getInteger("remaining") > 0) {
+				NBTTagCompound tag = hand.getTagCompound();
+				NBTTagList list = tag.getTagList("tasks", Constants.NBT.TAG_STRING);
+				ResourceLocation craftingResearch = ResearchTasks.getFromResultStack(type, result);
+				if (!craftingResearch.toString().equals("null:void")) {
+					list.appendTag((new NBTTagString(craftingResearch.toString())));
+					tag.setInteger("remaining", tag.getInteger("remaining") - 1);
+					tag.setTag("tasks", list);
+					hand.setTagCompound(tag);
+				}
+				break;
 			}
 		}
 	}

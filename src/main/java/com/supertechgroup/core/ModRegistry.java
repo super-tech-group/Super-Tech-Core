@@ -29,6 +29,7 @@ import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
 import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
+import com.supertechgroup.core.worldgen.WorldTypeSuperTech;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
@@ -72,6 +73,8 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 @EventBusSubscriber(modid = Reference.MODID)
 public class ModRegistry {
+
+	public static final WorldTypeSuperTech worldType = new WorldTypeSuperTech();
 
 	public static final Item[] disabledVanillaItems = new Item[] { Items.GOLD_NUGGET, Items.IRON_NUGGET,
 			Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_PICKAXE, Items.WOODEN_SHOVEL, Items.WOODEN_SWORD,
@@ -662,7 +665,7 @@ public class ModRegistry {
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:lapis"))),
 				"lapis", new int[] { 0 }, 5, 1, 7, 2, "intrusive", "marble"));
 
-		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
+		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 6, new String[] { "metamorphic" },
 				FluidRegistry.getFluid("oil")));
 
 		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 20));

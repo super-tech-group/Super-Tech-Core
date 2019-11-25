@@ -1,6 +1,9 @@
 package com.supertechgroup.core.proxy;
 
 import com.supertechgroup.core.Reference;
+import com.supertechgroup.core.machinery.multiblock.crudeCoupling.CrudeCouplingContainer;
+import com.supertechgroup.core.machinery.multiblock.crudeCoupling.CrudeCouplingGui;
+import com.supertechgroup.core.machinery.multiblock.crudeCoupling.CrudeCouplingTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterContainer;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterGui;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterTileEntity;
@@ -29,6 +32,11 @@ public class GuiProxy implements IGuiHandler {
 			CrudeHeaterTileEntity heater = (CrudeHeaterTileEntity) te;
 			System.out.println("Opening heater");
 			return new CrudeHeaterGui(heater, new CrudeHeaterContainer(player.inventory, heater));
+		case Reference.GUI_CRUDE_COUPLING:
+			CrudeCouplingTileEntity coupling = (CrudeCouplingTileEntity) te;
+			System.out.println("Opening copuling");
+			return new CrudeCouplingGui(coupling, new CrudeCouplingContainer(player.inventory, coupling));
+
 		}
 		return null;
 	}
@@ -42,6 +50,8 @@ public class GuiProxy implements IGuiHandler {
 			return new CrudeIOContainer(player.inventory, (CrudeIOTileEntity) tile);
 		case Reference.GUI_CRUDE_HEATER:
 			return new CrudeHeaterContainer(player.inventory, (CrudeHeaterTileEntity) tile);
+		case Reference.GUI_CRUDE_COUPLING:
+			return new CrudeCouplingContainer(player.inventory, (CrudeCouplingTileEntity) tile);
 		}
 		return null;
 	}

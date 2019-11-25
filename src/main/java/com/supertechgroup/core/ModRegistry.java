@@ -16,6 +16,8 @@ import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.items.SuperTechItem;
 import com.supertechgroup.core.machinery.basicsmelter.TileEntityBasicSmelter;
+import com.supertechgroup.core.machinery.multiblock.crudeCoupling.CrudeCouplingBlock;
+import com.supertechgroup.core.machinery.multiblock.crudeCoupling.CrudeCouplingTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterBlock;
 import com.supertechgroup.core.machinery.multiblock.crudeheater.CrudeHeaterTileEntity;
 import com.supertechgroup.core.machinery.multiblock.crudeio.CrudeIOBlock;
@@ -30,6 +32,7 @@ import com.supertechgroup.core.research.Research;
 import com.supertechgroup.core.research.ResearchTasks;
 import com.supertechgroup.core.research.researchstation.BlockResearchStation;
 import com.supertechgroup.core.research.researchstation.TileEntityResearchStation;
+import com.supertechgroup.core.worldgen.WorldTypeSuperTech;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorBase;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorCluster;
 import com.supertechgroup.core.worldgen.generators.WorldGeneratorFluid;
@@ -74,6 +77,8 @@ import net.minecraftforge.registries.RegistryBuilder;
 @EventBusSubscriber(modid = Reference.MODID)
 public class ModRegistry {
 
+	public static final WorldTypeSuperTech worldType = new WorldTypeSuperTech();
+
 	public static final Item[] disabledVanillaItems = new Item[] { Items.GOLD_NUGGET, Items.IRON_NUGGET,
 			Items.WOODEN_AXE, Items.WOODEN_HOE, Items.WOODEN_PICKAXE, Items.WOODEN_SHOVEL, Items.WOODEN_SWORD,
 			Items.STONE_AXE, Items.STONE_HOE, Items.STONE_PICKAXE, Items.STONE_SHOVEL, Items.STONE_SWORD,
@@ -88,6 +93,9 @@ public class ModRegistry {
 			Item.getItemFromBlock(Blocks.DIAMOND_BLOCK), Item.getItemFromBlock(Blocks.EMERALD_BLOCK),
 			Item.getItemFromBlock(Blocks.GOLD_BLOCK), Item.getItemFromBlock(Blocks.IRON_BLOCK),
 			Item.getItemFromBlock(Blocks.LAPIS_BLOCK), Item.getItemFromBlock(Blocks.QUARTZ_BLOCK) };
+	public static final Item[] disabledVanillaSmelting = new Item[] { Item.getItemFromBlock(Blocks.GLASS) };
+	public static final Item[] disabledVanillaCrafting = new Item[] { Items.GLASS_BOTTLE,
+			Item.getItemFromBlock(Blocks.GLASS_PANE) };
 
 	public static OreBlock superore;
 	public static BlockResearchStation researchStation;
@@ -96,6 +104,7 @@ public class ModRegistry {
 	public static ItemResearchBook itemResearchBook;
 	public static ItemConstructor itemConstructor;
 	public static CrudeIOBlock crudeIOBlock;
+	public static CrudeCouplingBlock crudeCouplingBlock;
 	public static CrudeWallBlock crudeWallBlock;
 	public static CrudeHeaterBlock crudeHeaterBlock;
 
@@ -218,6 +227,12 @@ public class ModRegistry {
 		event.getRegistry().register(crudeIOBlock);
 		ForgeRegistries.ITEMS.register(new ItemBlock(crudeIOBlock).setRegistryName(crudeIOBlock.getRegistryName()));
 		GameRegistry.registerTileEntity(CrudeIOTileEntity.class, crudeIOBlock.getRegistryName());
+
+		crudeCouplingBlock = new CrudeCouplingBlock();
+		event.getRegistry().register(crudeCouplingBlock);
+		ForgeRegistries.ITEMS
+				.register(new ItemBlock(crudeCouplingBlock).setRegistryName(crudeCouplingBlock.getRegistryName()));
+		GameRegistry.registerTileEntity(CrudeCouplingTileEntity.class, crudeCouplingBlock.getRegistryName());
 
 		crudeHeaterBlock = new CrudeHeaterBlock();
 		event.getRegistry().register(crudeHeaterBlock);
@@ -672,7 +687,7 @@ public class ModRegistry {
 				WorldGeneratorBase.singleOre(Ore.REGISTRY.getValue(new ResourceLocation("supertechcore:lapis"))),
 				"lapis", new int[] { 0 }, 5, 1, 7, 2, "intrusive", "marble"));
 
-		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 12, new String[] { "metamorphic" },
+		CommonProxy.parsed.add(new WorldGeneratorFluid("oil", new int[] { 0 }, 5, 6, new String[] { "metamorphic" },
 				FluidRegistry.getFluid("oil")));
 
 		CommonProxy.parsed.add(new WorldGeneratorKimberlite("kimberlite", new int[] { 0 }, 20));
@@ -709,6 +724,9 @@ public class ModRegistry {
 		Research metalTools = new Research("metalTools");
 		metalTools.addTask(new ResourceLocation(Reference.RESEARCH_CRAFTING, "toolMaking"), 5);
 		metalTools.registerResearch();
+
+		Research basicMechanics = new Research("basicMechanics");
+		basicMechanics.registerResearch();
 	}
 
 	private static void registerResearchTasks() {

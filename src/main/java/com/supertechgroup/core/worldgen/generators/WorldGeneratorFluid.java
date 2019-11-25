@@ -19,7 +19,7 @@ public class WorldGeneratorFluid extends WorldGeneratorBase {
 
 	@Override
 	public boolean generate(World worldIn, Random rand, BlockPos position) {
-		position = position.add(rand.nextInt(16), rand.nextInt(48) + 10, rand.nextInt(16));
+		position = position.add(rand.nextInt(16), rand.nextInt(128), rand.nextInt(16));
 		if (fluidBlock != null && (chance == 1 || rand.nextInt(chance) == 0)) {
 			if (this.validStoneTypes.contains(worldIn.getBlockState(position))) {
 				generateDeposit(worldIn, rand, position);

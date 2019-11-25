@@ -3,7 +3,6 @@ package com.supertechgroup.core.worldgen;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -12,24 +11,16 @@ import com.supertechgroup.core.Config;
 import com.supertechgroup.core.network.PacketHandler;
 import com.supertechgroup.core.network.UpdateOresPacket;
 import com.supertechgroup.core.proxy.CommonProxy;
-import com.supertechgroup.core.util.SimplexNoise;
-import com.supertechgroup.core.worldgen.rocks.RockManager;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType;
-import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.ChunkWatchEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
@@ -130,59 +121,4 @@ public class WorldGenEvents {
 		handleOreUpdate(e.getPlayer(), x, z);
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = true)
-	public void onPopulateChunk(PopulateChunkEvent.Pre event) {
-		// replace all blocks of a type with another block type
-		// diesieben07 came up with this method
-		// (http://www.minecraftforge.net/forum/index.php/topic,21625.0.html)
-		Chunk chunk = event.getWorld().getChunkFromChunkCoords(event.getChunkX(), event.getChunkZ());
-		long seed = event.getWorld().getSeed();
-		SimplexNoise noise = new SimplexNoise();
-		Random offsetRandom = new Random(seed);
-		Vec3d layerOffset = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
-				10000.0F * offsetRandom.nextFloat());
-		Vec3d geomeOffset = new Vec3d(10000.0F * offsetRandom.nextFloat(), 10000.0F * offsetRandom.nextFloat(),
-				10000.0F * offsetRandom.nextFloat());
-		for (ExtendedBlockStorage storage : chunk.getBlockStorageArray()) {
-			if (storage != null) {
-				for (int x = 0; x < 16; ++x) {
-					for (int z = 0; z < 16; ++z) {
-						int igneous = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, layerOffset,
-								genScale) * 15) + 20;
-						int sedimentary = (int) (noise.get2dNoiseValue(x + chunk.x * 16, z + chunk.z * 16, layerOffset,
-								genScale) * 15) + 20;
-						int height = chunk.getHeightValue(x & 15, z & 15);
-						for (int y = storage.getYLocation(); y < storage.getYLocation() + 16; y++) {
-
-							BlockPos coord = new BlockPos(x, y, z);
-
-							if (CommonProxy.vanillaReplace.contains(chunk.getBlockState(coord))) {
-								double val = noise.get3dNoiseValue(x + chunk.x * 16, y, z + chunk.z * 16, geomeOffset,
-										genScale);
-								if (y < igneous) {
-									// RockType.IGNEOUS;
-									chunk.setBlockState(coord,
-											pickBlockFromSet(val, RockManager.stoneSpawns.get("igneous")));
-								} else if (y > height - sedimentary) {
-									// RockType.SEDIMENTARY;
-									chunk.setBlockState(coord,
-											pickBlockFromSet(val, RockManager.stoneSpawns.get("sedimentary")));
-								} else {
-									// RockType.METAMORPHIC;
-									chunk.setBlockState(coord,
-											pickBlockFromSet(val, RockManager.stoneSpawns.get("metamorphic")));
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		chunk.setModified(true);// this is important as it marks it to be saved
-	}
-
-	private IBlockState pickBlockFromSet(double value, Set<IBlockState> list) {
-		value = ((value + 1) / 2) * list.size();
-		return list.stream().skip((int) value).findFirst().get();
-	}
 }

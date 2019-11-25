@@ -5,6 +5,7 @@ import java.util.Random;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.items.SuperTechItem;
+import com.supertechgroup.core.items.SuperTechItem.Types;
 
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.IProperty;
@@ -60,7 +61,7 @@ public class HempCropBlock extends BlockCrops {
 				if (rand.nextInt(2 * getMaxAge()) <= age) {
 					drops.add(new ItemStack(ModRegistry.itemHempSeed));
 				}
-				drops.add(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.HEMP_FIBER));
+				drops.add(new ItemStack(ModRegistry.itemTech, 1, Types.HEMP_FIBER.ordinal()));
 			}
 		}
 	}

@@ -18,6 +18,7 @@ public class Reference {
 
 	public static final int GUI_CRUDE_IO = 0;
 	public static final int GUI_CRUDE_HEATER = 1;
+	public static final int GUI_CRUDE_COUPLING = 2;
 
 	public static final ResourceLocation EMPTY_RESOURCE = new ResourceLocation("void:null");
 

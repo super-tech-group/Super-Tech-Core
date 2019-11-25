@@ -135,7 +135,7 @@ public class MaterialItemIngredientFactory implements IIngredientFactory {
 			ArrayList<MaterialIngredientCriteria> reqs = new ArrayList<>();
 			json.entrySet().forEach((element) -> {
 				if (element.getKey().equalsIgnoreCase("type") || element.getKey().equalsIgnoreCase("item")) {
-					// ignore this case, as we handle it later
+					// ignore these cases, as we handle them later
 				} else {
 					reqs.add(new MaterialIngredientCriteria(
 							Material.Property.valueOf(element.getKey().substring(0, element.getKey().length() - 1)),
@@ -157,7 +157,7 @@ public class MaterialItemIngredientFactory implements IIngredientFactory {
 		ArrayList<MaterialIngredientCriteria> reqs = new ArrayList<>();
 		json.entrySet().forEach((element) -> {
 			if (element.getKey().equalsIgnoreCase("type") || element.getKey().equalsIgnoreCase("item")) {
-				// ignore this case, as we handle it later
+				// ignore these cases, as we handle them later
 			} else {
 				reqs.add(new MaterialIngredientCriteria(
 						Material.Property

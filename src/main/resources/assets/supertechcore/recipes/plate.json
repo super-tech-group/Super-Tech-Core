@@ -9,6 +9,11 @@
       "type": "supertechcore:materialItem",
       "item": "gear",
 	  "density>": 2.5
+    },
+    {
+      "type": "supertechcore:materialTool",
+      "item": "shovel",
+	  "bulk_modulus>": 50
     }
   ],
   "result": {

@@ -255,4 +255,22 @@ public class MaterialTool extends ItemTool {
 		}
 		return false;
 	}
+
+	public static int getTypeFromString(String string) {
+		switch (string.toLowerCase()) {
+		case "hammer":
+			return HAMMER;
+		case "pliers":
+			return PLIERS;
+		case "draw_plate":
+			return DRAW_PLATE;
+		case "pickaxe":
+			return PICKAXE;
+		case "shovel":
+			return SHOVEL;
+		case "axe":
+			return AXE;
+		}
+		return 0;
+	}
 }

@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
-import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.recipe.MaterialIngredientCriteria.Type;
@@ -135,16 +134,15 @@ public class MaterialToolIngredientFactory implements IIngredientFactory {
 		ArrayList<MaterialIngredientCriteria> reqs = new ArrayList<>();
 		json.entrySet().forEach((element) -> {
 			if (element.getKey().equalsIgnoreCase("type") || element.getKey().equalsIgnoreCase("item")) {
-				// ignore this case, as we handle it later
+				// ignore these cases, as we handle them later
 			} else {
 				reqs.add(new MaterialIngredientCriteria(
 						Material.Property
 								.valueOf(element.getKey().substring(0, element.getKey().length() - 1).toUpperCase()),
-						element.getKey().substring(element.getKey().length() - 1) == ">" ? Type.ABOVE : Type.BELOW,
-						element.getValue().getAsDouble()));
+						element.getKey().endsWith(">") ? Type.ABOVE : Type.BELOW, element.getValue().getAsDouble()));
 			}
 		});
-		return new MaterialToolIngredient(MaterialItem.getTypeFromString(JsonUtils.getString(json, "item")),
+		return new MaterialToolIngredient(MaterialTool.getTypeFromString(JsonUtils.getString(json, "item")),
 				reqs.toArray(new MaterialIngredientCriteria[0]));
 	}
 }

@@ -7,6 +7,7 @@ tile.supertechcore.researchStation.name=Research Station
 tile.supertechcore.crude_wall.name=Crude Firebrick Wall
 tile.supertechcore.crudeIO.name=Crude Firebrick Interface
 tile.supertechcore.crudeHeater.name=Crude Firebrick Heater
+tile.supertechcore.crudeCoupling.name=Crude Firebrick Coupling
 
 tile.supertechcore.amphibolite.name=Amphibolite
 tile.supertechcore.basalt.name=Basalt

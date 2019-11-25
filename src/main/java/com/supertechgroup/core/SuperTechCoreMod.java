@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.supertechgroup.core.metallurgy.Material;
 import com.supertechgroup.core.proxy.CommonProxy;
+import com.supertechgroup.core.research.ResearchStatusCommand;
 import com.supertechgroup.core.research.teams.InviteToResearchTeamCommand;
 import com.supertechgroup.core.research.teams.JoinResearchTeamCommmand;
 
@@ -54,5 +55,6 @@ public class SuperTechCoreMod {
 	public void serverLoad(FMLServerStartingEvent event) {
 		event.registerServerCommand(new InviteToResearchTeamCommand());
 		event.registerServerCommand(new JoinResearchTeamCommmand());
+		event.registerServerCommand(new ResearchStatusCommand());
 	}
 }

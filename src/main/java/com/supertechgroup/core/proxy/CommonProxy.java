@@ -22,6 +22,7 @@ import com.supertechgroup.core.items.ItemResearchBook;
 import com.supertechgroup.core.items.MaterialItem;
 import com.supertechgroup.core.items.MaterialTool;
 import com.supertechgroup.core.items.SuperTechItem;
+import com.supertechgroup.core.items.SuperTechItem.Types;
 import com.supertechgroup.core.machinery.basicsmelter.MultiblockBasicSmelter;
 import com.supertechgroup.core.machinery.multiblock.MultiblockHandler;
 import com.supertechgroup.core.metallurgy.Material;
@@ -42,6 +43,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -73,18 +75,18 @@ public abstract class CommonProxy {
 	private void addBasicRecipies() {
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapelessOreRecipe(new ResourceLocation(Reference.MODID, "flux"),
-						new ItemStack(ModRegistry.itemTech, 4, SuperTechItem.FLUX),
+						new ItemStack(ModRegistry.itemTech, 4, Types.FLUX.ordinal()),
 						new Object[] { new OreIngredient("fluxStone"), new OreIngredient("toolHammer") })
 								.setRegistryName(Reference.MODID, "fluxdust"));
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "constructor"),
 						new ItemStack(ModRegistry.itemConstructor),
 						new Object[] { new String[] { " x ", "xsx", " s " }, 's', new ItemStack(Items.STICK), 'x',
-								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK) })
+								new ItemStack(ModRegistry.itemTech, 1, Types.FIREBRICK.ordinal()) })
 										.setRegistryName(Reference.MODID, "constructor"));
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapelessOreRecipe(new ResourceLocation(Reference.MODID, "fireclay"),
-						new ItemStack(ModRegistry.itemTech, 4, SuperTechItem.FIRE_CLAY),
+						new ItemStack(ModRegistry.itemTech, 4, Types.FIRECLAY.ordinal()),
 						new Object[] { new OreIngredient("sand"), new ItemStack(Items.CLAY_BALL),
 								new ItemStack(Items.CLAY_BALL), new ItemStack(Items.CLAY_BALL) })
 										.setRegistryName(Reference.MODID, "fireclay"));
@@ -92,23 +94,23 @@ public abstract class CommonProxy {
 				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "crude_heater"),
 						new ItemStack(ModRegistry.crudeHeaterBlock),
 						new Object[] { new String[] { "xxx", "xfx", "xxx" }, 'x',
-								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK), 'f',
+								new ItemStack(ModRegistry.itemTech, 1, Types.FIREBRICK.ordinal()), 'f',
 								new ItemStack(Blocks.FURNACE) }).setRegistryName(Reference.MODID, "crude_heater"));
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "crude_io"),
 						new ItemStack(ModRegistry.crudeIOBlock),
 						new Object[] { new String[] { "x x", "xxx", "x x" }, 'x',
-								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK) })
+								new ItemStack(ModRegistry.itemTech, 1, Types.FIREBRICK.ordinal()) })
 										.setRegistryName(Reference.MODID, "crude_io"));
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapedOreRecipe(new ResourceLocation(Reference.MODID, "crude_wall"),
 						new ItemStack(ModRegistry.crudeWallBlock),
 						new Object[] { new String[] { "xxx", "x x", "xxx" }, 'x',
-								new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK) })
+								new ItemStack(ModRegistry.itemTech, 1, Types.FIREBRICK.ordinal()) })
 										.setRegistryName(Reference.MODID, "crude_wall"));
 
-		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_CLAY),
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FIRE_BRICK), 0.5f);
+		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, Types.FIRECLAY.ordinal()),
+				new ItemStack(ModRegistry.itemTech, 1, Types.FIREBRICK.ordinal()), 0.5f);
 
 		// add basic tool recipies
 
@@ -320,8 +322,7 @@ public abstract class CommonProxy {
 								new OreIngredient("ingotTin"), new OreIngredient("toolHammer") })
 										.setRegistryName(Reference.MODID, "tinPlate"));
 
-		Item leadItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":lead"))
-				.getMaterialItem();
+		Item leadItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":lead")).getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
 				.register(new ShapedOreRecipe(new ResourceLocation("ingots"),
 						new ItemStack(leadItem, 1, MaterialItem.INGOT),
@@ -330,11 +331,12 @@ public abstract class CommonProxy {
 		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("nuggets"),
 				new ItemStack(leadItem, 9, MaterialItem.NUGGET), new Object[] { new OreIngredient("ingotLead") })
 						.setRegistryName(Reference.MODID, "leadNugget"));
-		GameRegistry.findRegistry(IRecipe.class).register(new ShapelessOreRecipe(new ResourceLocation("plates"),
-				new ItemStack(leadItem, 1, MaterialItem.PLATE), new Object[] { new OreIngredient("ingotLead"),
-						new OreIngredient("ingotLead"), new OreIngredient("toolHammer") })
-								.setRegistryName(Reference.MODID, "leadPlate"));
-		
+		GameRegistry.findRegistry(IRecipe.class)
+				.register(new ShapelessOreRecipe(new ResourceLocation("plates"),
+						new ItemStack(leadItem, 1, MaterialItem.PLATE), new Object[] { new OreIngredient("ingotLead"),
+								new OreIngredient("ingotLead"), new OreIngredient("toolHammer") })
+										.setRegistryName(Reference.MODID, "leadPlate"));
+
 		Item copperItem = Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":copper"))
 				.getMaterialItem();
 		GameRegistry.findRegistry(IRecipe.class)
@@ -368,73 +370,73 @@ public abstract class CommonProxy {
 		// basic ore processing
 		Ore magnetite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":magnetite"));
 		BasicSmelterRecipe magnetiteSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(magnetite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 1811, 27.75, 572.22);
 		BasicSmelterRecipe.registerRecipe(magnetiteSmelt, new ResourceLocation(Reference.MODID, "crushed_magnetite"));
 
 		Ore limonite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":limonite"));
 		BasicSmelterRecipe limoniteSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(limonite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 1811, 17.77, 388.88);
 		BasicSmelterRecipe.registerRecipe(limoniteSmelt, new ResourceLocation(Reference.MODID, "crushed_limonite"));
 
 		Ore hematite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":hematite"));
 		BasicSmelterRecipe hematiteSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(hematite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(ironItem, 5, MaterialItem.NUGGET), 1811, 22.83, 583.88);
 		BasicSmelterRecipe.registerRecipe(hematiteSmelt, new ResourceLocation(Reference.MODID, "crushed_hematite"));
 
 		Ore cassiterite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":cassiterite"));
 		BasicSmelterRecipe tinSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(cassiterite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(tinItem, 5, MaterialItem.NUGGET), 505.1, 34.95, 295.26);
 		BasicSmelterRecipe.registerRecipe(tinSmelt, new ResourceLocation(Reference.MODID, "crushed_cassiterite"));
 
 		Ore chalcocite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":chalcocite"));
 		BasicSmelterRecipe chalcociteSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(chalcocite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(copperItem, 5, MaterialItem.NUGGET), 1358, 48.37, 644.44);
 		BasicSmelterRecipe.registerRecipe(chalcociteSmelt, new ResourceLocation(Reference.MODID, "crushed_chalcocite"));
 
 		Ore bornite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":bornite"));
 		BasicSmelterRecipe borniteSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(bornite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(copperItem, 5, MaterialItem.NUGGET), 1358, 43.29, 565.55);
 		BasicSmelterRecipe.registerRecipe(borniteSmelt, new ResourceLocation(Reference.MODID, "crushed_bornite"));
 
 		Ore sphalerite = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":sphalerite"));
 		BasicSmelterRecipe sphaleriteSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(sphalerite.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(zincItem, 5, MaterialItem.NUGGET), 692.7, 15.02, 445.55);
 		BasicSmelterRecipe.registerRecipe(sphaleriteSmelt, new ResourceLocation(Reference.MODID, "crushed_sphalerite"));
 
 		Ore galena = Ore.REGISTRY.getValue(new ResourceLocation(Reference.MODID + ":galena"));
 		BasicSmelterRecipe galenaSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(galena.getItemOre(), 1, OreItem.CRUSHED) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(leadItem, 5, MaterialItem.NUGGET), 1423, 23.12, 345.55);
 		BasicSmelterRecipe.registerRecipe(galenaSmelt, new ResourceLocation(Reference.MODID, "crushed_galena"));
-		
+
 		BasicSmelterRecipe bronzeSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze"))
 								.getMaterialItem(), 1, MaterialItem.DIRTY) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(
 						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "bronze")).getMaterialItem(),
 						5, MaterialItem.NUGGET),
@@ -442,10 +444,10 @@ public abstract class CommonProxy {
 		BasicSmelterRecipe.registerRecipe(bronzeSmelt, new ResourceLocation(Reference.MODID, "poor_bronze"));
 
 		BasicSmelterRecipe brassSmelt = new BasicSmelterRecipe(
-				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.FLUX),
+				new ItemStack[] { new ItemStack(ModRegistry.itemTech, 1, Types.FLUX.ordinal()),
 						new ItemStack(Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass"))
 								.getMaterialItem(), 1, MaterialItem.DIRTY) },
-				new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.SLAG),
+				new ItemStack(ModRegistry.itemTech, 1, Types.SLAG.ordinal()),
 				new ItemStack(
 						Material.REGISTRY.getValue(new ResourceLocation(Reference.MODID, "brass")).getMaterialItem(), 5,
 						MaterialItem.NUGGET),
@@ -471,11 +473,11 @@ public abstract class CommonProxy {
 		recipeRegistry
 				.register(
 						new ShapelessOreRecipe(new ResourceLocation("paper"),
-								new ItemStack(ModRegistry.itemTech, 2, SuperTechItem.WOOD_PULP),
+								new ItemStack(ModRegistry.itemTech, 2, Types.WOOD_PULP.ordinal()),
 								new Object[] { new OreIngredient("logWood"), new OreIngredient("toolHammer"),
 										new ItemStack(Items.WATER_BUCKET) }).setRegistryName(Reference.MODID,
 												"woodenPaper"));
-		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, SuperTechItem.WOOD_PULP),
+		GameRegistry.addSmelting(new ItemStack(ModRegistry.itemTech, 1, Types.WOOD_PULP.ordinal()),
 				new ItemStack(Items.PAPER, 2), 0.15f);
 
 		ShapelessResearchRecipe dirtyBronzeDust = new ShapelessResearchRecipe(new ResourceLocation("crudePowderMixing"),
@@ -510,13 +512,27 @@ public abstract class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(SuperTechCoreMod.instance, new GuiProxy());
 
-		// remove unwanted vanilla items
+		// remove unwanted vanilla crafting recipies
 		ForgeRegistry<IRecipe> recipeRegistry = (ForgeRegistry<IRecipe>) ForgeRegistries.RECIPES;
 		List<Item> disabledItems = Arrays.asList(ModRegistry.disabledVanillaItems);
+		List<Item> disabledRecipies = Arrays.asList(ModRegistry.disabledVanillaCrafting);
 		for (IRecipe r : Lists.newArrayList(recipeRegistry)) {
-			if (disabledItems.contains(r.getRecipeOutput().getItem())) {
+			if (disabledItems.contains(r.getRecipeOutput().getItem())
+					|| disabledRecipies.contains(r.getRecipeOutput().getItem())) {
 				recipeRegistry.remove(r.getRegistryName());
 			}
+		}
+
+		// remove vanilla smelting
+		ArrayList<ItemStack> toRemove = new ArrayList<>();
+		List<Item> disabledSmelting = Arrays.asList(ModRegistry.disabledVanillaSmelting);
+		FurnaceRecipes.instance().getSmeltingList().forEach((i, o) -> {
+			if (disabledSmelting.contains(o.getItem())) {
+				toRemove.add(i);
+			}
+		});
+		for (ItemStack i : toRemove) {
+			FurnaceRecipes.instance().getSmeltingList().remove(i);
 		}
 
 		// setup geology

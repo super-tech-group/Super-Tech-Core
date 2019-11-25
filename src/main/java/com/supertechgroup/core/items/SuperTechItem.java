@@ -67,6 +67,6 @@ public class SuperTechItem extends ItemBase {
 		OreDictionary.registerOre("flux", new ItemStack(this, 1, Types.FLUX.ordinal()));
 		OreDictionary.registerOre("woodPulp", new ItemStack(this, 1, Types.WOOD_PULP.ordinal()));
 		OreDictionary.registerOre("cropCorn", new ItemStack(this, 1, Types.CORN_COB.ordinal()));
-		OreDictionary.registerOre("cropHemp", new ItemStack(this, 1, TypesHEMP_FIBER.ordinal()));
+		OreDictionary.registerOre("cropHemp", new ItemStack(this, 1, Types.HEMP_FIBER.ordinal()));
 	}
 }

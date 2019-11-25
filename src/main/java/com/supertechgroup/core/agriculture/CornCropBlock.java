@@ -60,7 +60,8 @@ public class CornCropBlock extends BlockCrops {
 		if (age >= getMaxAge()) {
 
 			for (int i = 0; i < 3 + fortune; ++i) {
-				drops.add(new ItemStack(ModRegistry.itemTech, rand.nextInt(3) + 2, SuperTechItem.CORN_COB));
+				drops.add(new ItemStack(ModRegistry.itemTech, rand.nextInt(3) + 2,
+						SuperTechItem.Types.CORN_COB.ordinal()));
 			}
 		}
 	}

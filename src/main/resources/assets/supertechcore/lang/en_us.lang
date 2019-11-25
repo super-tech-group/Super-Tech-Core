@@ -63,11 +63,13 @@ item.supertechcore.itemTechComponent.firebrick.name=Firebrick
 item.supertechcore.itemConstructor.name=Constructor
 item.supertechcore.itemTechComponent.wood_pulp=Wood Pulp
 item.supertechcore.itemTechComponent.hemp_fiber=Hemp Fiber
+item.supertechcore.itemTechComponent.cornCob.name=Corn Cob
 
 item.supertechcore.researchBook.name=Research Notebook
 
 item.cotton.name=Cotton
 item.hemp_seed.name=Hemp Seeds
+item.corn_seed.name=Corn Seeds
 
 gui.supertechcore.basicsmelting.name=Basic Smelting
 fluid.oil=Crude Oil

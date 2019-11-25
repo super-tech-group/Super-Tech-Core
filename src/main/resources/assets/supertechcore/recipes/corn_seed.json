@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "supertechcore:itemTechComponent",
+			"data": 13
+        }
+    ],
+    "result":
+    {
+        "item": "supertechcore:cornSeed",
+        "count": 4
+    }
+}

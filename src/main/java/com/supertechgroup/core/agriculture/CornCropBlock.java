@@ -5,14 +5,12 @@ import java.util.Random;
 import com.supertechgroup.core.ModRegistry;
 import com.supertechgroup.core.Reference;
 import com.supertechgroup.core.items.SuperTechItem;
-import com.supertechgroup.core.items.SuperTechItem.Types;
 
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -20,33 +18,37 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 
-public class HempCropBlock extends BlockCrops {
-	public static final PropertyInteger HEMP_AGE = PropertyInteger.create("age", 0, 3);
-	private static final AxisAlignedBB[] HEMP_AABB = new AxisAlignedBB[] {
+public class CornCropBlock extends BlockCrops {
+	public static final PropertyInteger CORN_AGE = PropertyInteger.create("age", 0, 7);
+	private static final AxisAlignedBB[] CORN_AABB = new AxisAlignedBB[] {
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.125D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.5D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D),
+			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D),
 			new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.875D, 1.0D) };
 
-	public HempCropBlock() {
+	public CornCropBlock() {
 		super();
-		this.setUnlocalizedName(Reference.MODID + ".hemp");
-		this.setRegistryName(Reference.MODID, "hemp");
+		this.setUnlocalizedName(Reference.MODID + ".corn");
+		this.setRegistryName(Reference.MODID, "corn");
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { HEMP_AGE });
+		return new BlockStateContainer(this, new IProperty[] { CORN_AGE });
 	}
 
 	@Override
 	protected PropertyInteger getAgeProperty() {
-		return HEMP_AGE;
+		return CORN_AGE;
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return HEMP_AABB[state.getValue(this.getAgeProperty()).intValue()];
+		return CORN_AABB[state.getValue(this.getAgeProperty()).intValue()];
 	}
 
 	@Override
@@ -58,17 +60,14 @@ public class HempCropBlock extends BlockCrops {
 		if (age >= getMaxAge()) {
 
 			for (int i = 0; i < 3 + fortune; ++i) {
-				if (rand.nextInt(2 * getMaxAge()) <= age) {
-					drops.add(new ItemStack(ModRegistry.itemHempSeed));
-				}
-				drops.add(new ItemStack(ModRegistry.itemTech, 1, Types.HEMP_FIBER.ordinal()));
+				drops.add(new ItemStack(ModRegistry.itemTech, rand.nextInt(3) + 2, SuperTechItem.CORN_COB));
 			}
 		}
 	}
 
 	@Override
 	public int getMaxAge() {
-		return 3;
+		return 7;
 	}
 
 	@Override

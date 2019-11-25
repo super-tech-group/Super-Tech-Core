@@ -23,7 +23,7 @@ public class CottonCropBlock extends BlockCrops {
 
 	@Override
 	public EnumPlantType getPlantType(net.minecraft.world.IBlockAccess world, BlockPos pos) {
-		return EnumPlantType.Crop;
+		return EnumPlantType.Plains;
 	}
 
 	@Override

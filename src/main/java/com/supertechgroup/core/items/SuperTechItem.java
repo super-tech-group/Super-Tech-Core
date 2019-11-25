@@ -13,9 +13,10 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class SuperTechItem extends ItemBase {
 
+
 	public enum Types {
 		UNKNOWN, BASIC_CIRCUIT, ADVANCED_CIRCUIT, ELITE_CIRCUIT, ULTIMATE_CIRCUIT, BASIC_CASING, SMALL_POWER_UNIT,
-		HEATING_ELEMENT, SLAG, FLUX, FIRECLAY, FIREBRICK, WOOD_PULP, HEMP_FIBER
+		HEATING_ELEMENT, SLAG, FLUX, FIRECLAY, FIREBRICK, WOOD_PULP, HEMP_FIBER, CORN_COB
 	}
 
 	public SuperTechItem() {
@@ -42,7 +43,6 @@ public class SuperTechItem extends ItemBase {
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-
 		Types metadata = stack.getMetadata() < Types.values().length ? Types.values()[stack.getMetadata()]
 				: Types.UNKNOWN;
 		return super.getUnlocalizedName() + "." + metadata.toString().toLowerCase();
@@ -66,6 +66,7 @@ public class SuperTechItem extends ItemBase {
 		OreDictionary.registerOre("slag", new ItemStack(this, 1, Types.SLAG.ordinal()));
 		OreDictionary.registerOre("flux", new ItemStack(this, 1, Types.FLUX.ordinal()));
 		OreDictionary.registerOre("woodPulp", new ItemStack(this, 1, Types.WOOD_PULP.ordinal()));
-
+		OreDictionary.registerOre("cropCorn", new ItemStack(this, 1, Types.CORN_COB.ordinal()));
+		OreDictionary.registerOre("cropHemp", new ItemStack(this, 1, TypesHEMP_FIBER.ordinal()));
 	}
 }

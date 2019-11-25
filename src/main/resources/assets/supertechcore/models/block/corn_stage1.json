@@ -1,0 +1,6 @@
+{
+    "parent": "supertechcore:block/tallcrop_single",
+    "textures": {
+        "crop": "supertechcore:blocks/corn_stage_1"
+    }
+}

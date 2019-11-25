@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.supertechgroup.core.agriculture.CornCropBlock;
 import com.supertechgroup.core.agriculture.CottonCropBlock;
 import com.supertechgroup.core.agriculture.FertileFarmlandBlock;
 import com.supertechgroup.core.agriculture.FertilizerItem;
@@ -109,11 +110,13 @@ public class ModRegistry {
 
 	public static CottonCropBlock cottonCrop;
 	public static HempCropBlock hempCrop;
+	public static CornCropBlock cornCrop;
 
 	public static ArrayList<ModFluid> fluids = new ArrayList<>();
 
 	public static Item itemCotton;
 	public static Item itemHempSeed;
+	public static Item itemCornSeed;
 
 	public static Block fertileBlock;
 	public static FertilizerItem itemFertilizer;
@@ -213,6 +216,8 @@ public class ModRegistry {
 				new ModelResourceLocation("supertechcore:cotton", "inventory"));
 		ModelLoader.setCustomModelResourceLocation(itemHempSeed, 0,
 				new ModelResourceLocation("supertechcore:seed_hemp", "inventory"));
+		ModelLoader.setCustomModelResourceLocation(itemCornSeed, 0,
+				new ModelResourceLocation("supertechcore:seed_corn", "inventory"));
 
 	}
 
@@ -256,6 +261,9 @@ public class ModRegistry {
 
 		hempCrop = new HempCropBlock();
 		event.getRegistry().register(hempCrop);
+
+		cornCrop = new CornCropBlock();
+		event.getRegistry().register(cornCrop);
 
 		fertileBlock = new FertileFarmlandBlock();
 		ForgeRegistries.ITEMS.register(new ItemBlock(fertileBlock).setRegistryName(fertileBlock.getRegistryName()));
@@ -346,10 +354,12 @@ public class ModRegistry {
 				.setRegistryName(Reference.MODID, "cotton");
 		itemHempSeed = new ItemSeeds(hempCrop, Blocks.FARMLAND).setUnlocalizedName("hemp_seed")
 				.setRegistryName(Reference.MODID, "hempSeed");
+		itemCornSeed = new ItemSeeds(cornCrop, Blocks.FARMLAND).setUnlocalizedName("corn_seed")
+				.setRegistryName(Reference.MODID, "cornSeed");
 		itemFertilizer = new FertilizerItem();
 
 		event.getRegistry().registerAll(itemTech, itemResearchBook, itemConstructor, itemCotton, itemHempSeed,
-				itemFertilizer);
+				itemCornSeed, itemFertilizer);
 
 		itemTech.setupDictionary();
 
